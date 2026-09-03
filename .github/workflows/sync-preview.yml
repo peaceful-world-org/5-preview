@@ -1,0 +1,90 @@
+name: Sync preview site
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/sync-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download current validated preview build
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://circular-rift-ad432s3.shipstatic.com"
+          files=(
+            ai-guide.js
+            analytics.js
+            app.js
+            apple-touch-icon-v4.png
+            boundary-tone.mp3
+            brand.css
+            completion-polish.css
+            copy-rotation.js
+            demo.html
+            feedback.css
+            feedback.js
+            five-mark.svg
+            i18n.js
+            icon-maskable-v4-512.png
+            icon-maskable.svg
+            icon-v4-192.png
+            icon-v4-512.png
+            icon.svg
+            index.html
+            install.css
+            ios-guide/part01.b64
+            ios-guide/part02.b64
+            ios-guide/part03.b64
+            ios-guide/part04.b64
+            ios-guide/part05.b64
+            ios-guide/part06.b64
+            ios-install-guide.js
+            locales/en.json
+            locales/index.json
+            locales/ru.json
+            logo.svg
+            manifest.webmanifest
+            minute-end-select.mp3
+            minute-start-chime.mp3
+            peaceful-world-logo.png
+            privacy.en.html
+            privacy.html
+            sound-v1.js
+            step-number.css
+            step-number.js
+            styles.css
+            sw.js
+            ui-click-tone.mp3
+          )
+          for file in "${files[@]}"; do
+            mkdir -p "$(dirname "$file")"
+            curl --retry 3 --retry-delay 1 -fsSL "$BASE/$file" -o "$file"
+            test -s "$file"
+          done
+
+      - name: Keep preview custom-domain marker
+        run: printf '%s\n' 'preview-5.peaceful-world.org' > CNAME
+
+      - name: Commit preview build
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No preview changes to commit."
+            exit 0
+          fi
+          git commit -m "Publish validated i18n preview build"
+          git push
