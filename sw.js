@@ -2,6 +2,7 @@
 const VERSION = 'v0.18.51-alpha-i18n1';
 const CORE = 'pw-core-' + VERSION;
 const NETWORK_TIMEOUT_MS = 1800;
+const IOS_GUIDE_PART_COUNT = 6;
 
 const CORE_ASSETS = [
   '/',
@@ -75,6 +76,15 @@ async function discoverLocaleAssets() {
       assets.push(`/locales/${code}.json`);
       if (typeof config?.privacy === 'string' && config.privacy.startsWith('/')) {
         assets.push(config.privacy);
+      }
+
+      const assetLocale = typeof config?.iosGuide?.assetLocale === 'string'
+        ? config.iosGuide.assetLocale.trim()
+        : '';
+      if (assetLocale && assetLocale !== 'ru' && /^[a-z0-9-]+$/i.test(assetLocale)) {
+        for (let index = 1; index <= IOS_GUIDE_PART_COUNT; index += 1) {
+          assets.push(`/assets/ios-guide/${encodeURIComponent(assetLocale)}/part${String(index).padStart(2, '0')}.b64`);
+        }
       }
     }
 
