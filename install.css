@@ -1,0 +1,46 @@
+/* 5 by Peaceful World — install prompt */
+.install-area{width:min(100%,340px);display:flex;flex-direction:column;align-items:center}
+.install-area[hidden],.home-install-area[hidden]{display:none!important}
+.install-action{margin-top:12px}
+.install-help{width:100%;margin-top:14px;padding:16px 17px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.82);box-shadow:0 8px 24px rgba(33,41,36,.025);text-align:left}
+.install-help[hidden]{display:none!important}
+.install-help-title{margin:0;color:var(--text);font-size:.9rem;font-weight:700}
+.install-help-copy{margin:8px 0 0;color:var(--muted);font-size:.84rem;line-height:1.55}
+.install-help-close{display:block;margin:12px 0 0 auto;border:0;background:transparent;color:var(--accent-text);font-size:.84rem;font-weight:650;cursor:pointer}
+.install-help-close:focus-visible{outline:2px solid #67766A;outline-offset:3px;border-radius:6px}
+.home-install-area{width:min(100%,340px);display:flex;flex-direction:column;align-items:center;margin-top:12px}
+.home-install-cta{width:100%;min-height:50px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.76);color:var(--text);font-size:.92rem;font-weight:650;cursor:pointer;box-shadow:0 7px 20px rgba(33,41,36,.025);transition:background .2s ease,transform .15s ease,box-shadow .2s ease}
+.home-install-cta:hover{background:#fff;box-shadow:0 9px 24px rgba(33,41,36,.04)}
+.home-install-cta:active{transform:scale(.985)}
+.home-install-cta:focus-visible{outline:2px solid #67766A;outline-offset:3px}
+.home-install-help{margin-top:10px}
+.home-install-area + .howto{margin-top:14px}
+
+/* iPhone: visual Safari installation guide. */
+.ios-install-guide[hidden]{display:none!important}
+.ios-install-guide{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));box-sizing:border-box}
+.ios-install-guide-backdrop{position:absolute;inset:0;background:rgba(25,31,27,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.ios-install-guide-sheet{position:relative;z-index:1;width:min(100%,560px);height:min(100%,860px);display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;border:1px solid rgba(33,41,36,.1);border-radius:24px;background:#FAFAF7;box-shadow:0 24px 70px rgba(20,27,23,.24);color:var(--text)}
+.ios-install-guide-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:19px 18px 8px}
+.ios-install-guide-kicker{margin:0 0 4px;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ios-install-guide-head h2{margin:0;font-size:1.22rem;line-height:1.2}
+.ios-install-guide-close{flex:0 0 42px;width:42px;height:42px;margin:-5px -4px 0 0;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--text);font:300 1.6rem/1 system-ui,sans-serif;cursor:pointer}
+.ios-install-guide-note{margin:0;padding:0 18px 14px;color:var(--muted);font-size:.86rem;line-height:1.45}
+.ios-install-guide-image-wrap{flex:1;min-height:0;overflow:auto;padding:0 10px 12px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.ios-install-guide-loading{margin:22px 12px;color:var(--muted);font-size:.88rem;line-height:1.5;text-align:center}
+.ios-install-guide-image{display:block;width:100%;max-width:100%;height:auto;border-radius:16px;background:#f1f0ec}
+.ios-install-guide-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:12px 14px max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(250,250,247,.96)}
+.ios-install-guide-open{margin-right:auto;color:var(--accent-text);font-size:.82rem;font-weight:650;text-decoration:none}
+.ios-install-guide-done{min-height:42px;padding:0 18px;border:0;border-radius:999px;background:var(--text);color:#fff;font-size:.86rem;font-weight:700;cursor:pointer}
+.ios-install-guide-close:focus-visible,.ios-install-guide-open:focus-visible,.ios-install-guide-done:focus-visible{outline:2px solid #67766A;outline-offset:3px}
+html.ios-install-guide-opened,html.ios-install-guide-opened body{overflow:hidden}
+
+@media(max-width:480px){
+  .ios-install-guide{padding:max(6px,env(safe-area-inset-top)) 6px max(6px,env(safe-area-inset-bottom))}
+  .ios-install-guide-sheet{height:100%;border-radius:22px}
+  .ios-install-guide-head{padding:16px 15px 7px}
+  .ios-install-guide-note{padding:0 15px 12px}
+  .ios-install-guide-image-wrap{padding:0 7px 9px}
+  .ios-install-guide-actions{padding-left:12px;padding-right:12px}
+}
+@media(max-height:720px){.install-action{margin-top:9px}.install-help{margin-top:10px;padding:13px 14px}.home-install-area{margin-top:9px}.home-install-cta{min-height:46px}.home-install-area + .howto{margin-top:10px}}

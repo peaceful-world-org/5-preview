@@ -1,0 +1,67 @@
+/* 5 by Peaceful World — calm completion-screen actions */
+.done-kicker{
+  margin-bottom:24px;
+  padding-left:0;
+  color:var(--muted);
+  font-size:.9rem;
+  font-weight:500;
+  letter-spacing:0;
+  line-height:1.4;
+}
+
+.done-action{
+  width:min(100%,300px);
+  min-height:46px;
+  margin-top:10px;
+  padding:0 20px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--text);
+  font-size:.92rem;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow:0 7px 20px rgba(33,41,36,.025);
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .15s ease;
+}
+
+.done-subtitle + .done-action{margin-top:22px}
+.done-action:hover{background:#fff;border-color:#DDE1DB;box-shadow:0 9px 24px rgba(33,41,36,.04)}
+.done-action:active{transform:scale(.985)}
+.done-support-action{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* When installation is available, make it the first quiet completion action. */
+.done-install-area{
+  width:min(100%,300px);
+  margin-top:22px;
+}
+.done-install-area .done-action{
+  width:100%;
+  margin-top:0;
+}
+.done-install-area .install-help{margin-top:10px}
+.done-install-area[hidden] + .done-action{margin-top:22px}
+
+@media(max-height:620px){
+  .done-kicker{margin-bottom:14px;font-size:.82rem}
+  .done-subtitle + .done-action{margin-top:15px}
+  .done-action{min-height:42px;margin-top:8px}
+  .done-install-area{margin-top:15px}
+  .done-install-area[hidden] + .done-action{margin-top:15px}
+}
+
+@media(orientation:landscape) and (max-height:520px){
+  .done-kicker{margin-bottom:7px;font-size:.76rem}
+  .done-subtitle + .done-action{margin-top:9px}
+  .done-action{width:min(100%,280px);min-height:38px;margin-top:6px;font-size:.84rem}
+  .done-install-area{width:min(100%,280px);margin-top:9px}
+  .done-install-area[hidden] + .done-action{margin-top:9px}
+}

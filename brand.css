@@ -1,0 +1,225 @@
+/* Home brand lockup: Peaceful World hand is a quiet top anchor; 5 stays the hero. */
+
+/* Keep the home composition top-anchored so opening the instructions grows downward
+   instead of re-centering the whole stack upward into the logo. */
+.home-screen{
+  justify-content:flex-start;
+}
+.home-screen .home-stack{
+  transform:none;
+  justify-content:flex-start;
+  padding-top:clamp(96px,10dvh,124px);
+  padding-bottom:24px;
+}
+
+.pw-origin-mark{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  margin:0;
+  z-index:2;
+  color:inherit;
+  text-decoration:none;
+  border-radius:50%;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.pw-origin-mark img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.pw-origin-mark:focus-visible{
+  outline:2px solid #67766A;
+  outline-offset:4px;
+}
+.pw-origin-mark:active{
+  transform:translateX(-50%) scale(.96);
+}
+
+/* Completion screen mirrors the entry screen: same Peaceful World anchor,
+   while the completion message remains independently centered. */
+.done-screen,
+.outro-screen{
+  justify-content:center;
+}
+.done-screen .done-stack,
+.outro-screen .outro-stack{
+  position:relative;
+  min-height:100%;
+  transform:none;
+  justify-content:center;
+  padding-bottom:24px;
+}
+
+.build-version{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.58rem;
+  font-weight:650;
+  letter-spacing:.12em;
+  line-height:1.2;
+  opacity:.7;
+}
+
+.howto-more-row{
+  margin-top:16px!important;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+.howto-more{
+  color:var(--accent-text);
+  font-size:.9rem;
+  font-weight:650;
+  text-decoration:none;
+}
+.howto-more:hover{
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+.howto-more:focus-visible{
+  outline:2px solid #67766A;
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* Utility links stay discoverable without competing with the practice CTA. */
+.home-privacy-row{
+  margin:10px 0 0;
+}
+.home-privacy-link{
+  min-height:44px;
+  padding:0 12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  font-size:.78rem;
+  text-decoration:none;
+  opacity:.78;
+}
+.home-privacy-link:hover{
+  color:var(--text);
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+.home-privacy-link:focus-visible{
+  outline:2px solid #67766A;
+  outline-offset:2px;
+  border-radius:999px;
+}
+.text-action{
+  min-height:44px;
+  padding-inline:12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Quiet epilogue: record the practice, not app engagement. */
+.outro-stack{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:0;
+}
+.outro-brand{
+  margin-top:54px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  color:var(--accent-text);
+  font-size:.68rem;
+  font-weight:720;
+  line-height:1.1;
+  letter-spacing:.17em;
+  padding-left:.17em;
+}
+.outro-title{
+  max-width:470px;
+  margin:36px 0 0;
+  font-size:clamp(2.4rem,10vw,3.75rem);
+  line-height:1.07;
+  font-weight:700;
+  letter-spacing:-.025em;
+}
+.outro-motto{
+  max-width:390px;
+  margin:24px 0 0;
+  color:var(--text);
+  font-size:1.02rem;
+  line-height:1.5;
+  font-weight:560;
+}
+.outro-home{
+  margin-top:26px;
+}
+
+@media(max-width:420px){
+  .home-screen .home-stack{padding-top:112px}
+  .pw-origin-mark{width:44px;height:44px;top:0}
+  .outro-brand{margin-top:48px}
+}
+
+@media(max-height:720px){
+  .home-screen .home-stack{padding-top:76px;padding-bottom:18px}
+  .done-screen .done-stack,
+  .outro-screen .outro-stack{padding-bottom:18px}
+  .pw-origin-mark{width:40px;height:40px;top:0}
+  .build-version{margin-top:8px;font-size:.55rem}
+  .outro-brand{margin-top:42px}
+  .outro-title{margin-top:26px}
+  .outro-motto{margin-top:18px}
+}
+
+@media(max-height:620px){
+  .home-screen .home-stack{padding-top:58px;padding-bottom:14px}
+  .done-screen .done-stack,
+  .outro-screen .outro-stack{padding-bottom:14px}
+  .pw-origin-mark{width:34px;height:34px;top:0}
+  .outro-brand{margin-top:34px}
+  .outro-title{margin-top:22px;font-size:clamp(2rem,9vw,3rem)}
+}
+
+@media(orientation:landscape) and (max-height:520px){
+  .home-screen .home-stack{padding-top:42px;padding-bottom:10px}
+  .done-screen .done-stack,
+  .outro-screen .outro-stack{padding-bottom:10px}
+  .pw-origin-mark{width:28px;height:28px;top:0}
+  .outro-brand{margin-top:28px;gap:4px}
+  .outro-title{margin-top:16px;font-size:1.9rem}
+  .outro-motto{margin-top:12px;font-size:.94rem}
+  .outro-home{margin-top:10px}
+}
+
+/* On phones the persistent AI Guide occupies the bottom edge of the home and
+   completion screens. Preserve enough scroll runway to bring utility actions
+   fully above the widget when a user wants them. */
+@media(max-width:640px){
+  .home-screen .home-stack,
+  .done-screen .done-stack{
+    padding-bottom:max(132px,calc(112px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* v0.18.46 brand refresh: use the approved Lora-derived 5 artwork as a fixed mark.
+   The source is an outlined SVG, so the PWA does not depend on loading the Lora font. */
+.five-mark{
+  width:clamp(5.2rem,24vw,6.8rem);
+  height:clamp(9.05rem,41.76vw,11.83rem);
+  flex:0 0 auto;
+  font-size:0;
+  letter-spacing:0;
+  line-height:0;
+  background:url('./five-mark.svg?_ship=ad432s3') center / contain no-repeat;
+}

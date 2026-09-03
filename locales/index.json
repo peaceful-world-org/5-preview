@@ -1,0 +1,50 @@
+{
+  "default": "en",
+  "legacyDefault": "ru",
+  "locales": {
+    "ru": {
+      "released": true,
+      "dir": "ltr",
+      "label": "Русский",
+      "copyVersion": "ru-v0.18.50-stable",
+      "rotationVersion": "ru-rotation-v1",
+      "privacy": "/privacy.html",
+      "privacyVersion": "1.6",
+      "shareHint": "ru",
+      "links": {
+        "site": "https://peaceful-world.org/ru/",
+        "support": "https://peaceful-world.org/help/ru",
+        "article": "https://peaceful-world.org/ru/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/c24ace59-2fe4-46be-afbc-ba4ee2c9ab4a"
+      },
+      "ai": {
+        "agentId": "agent_4701m19eebbhe8zr9vq8afq0r51k"
+      },
+      "iosGuide": {
+        "assetLocale": "ru"
+      }
+    },
+    "en": {
+      "released": false,
+      "dir": "ltr",
+      "label": "English",
+      "copyVersion": "en-v1",
+      "rotationVersion": null,
+      "privacy": "/privacy.en.html",
+      "privacyVersion": "1.6",
+      "shareHint": "en",
+      "links": {
+        "site": "https://peaceful-world.org/",
+        "support": "https://peaceful-world.org/help",
+        "article": null,
+        "notebook": null
+      },
+      "ai": {
+        "agentId": null
+      },
+      "iosGuide": {
+        "assetLocale": null
+      }
+    }
+  }
+}

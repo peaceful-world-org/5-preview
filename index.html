@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#FAFAF7" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="5 — пятиминутный тренажёр мирного ума от Peaceful World." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="5" />
+  <link rel="manifest" href="manifest.webmanifest?v=0.18.51&_ship=ad432s3" />
+  <link rel="icon" href="icon.svg?v=0.18.51&_ship=ad432s3" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png?_ship=ad432s3" />
+  <link rel="stylesheet" href="styles.css?_ship=ad432s3" />
+  <link rel="stylesheet" href="feedback.css?_ship=ad432s3" />
+  <link rel="stylesheet" href="brand.css?_ship=ad432s3" />
+  <link rel="stylesheet" href="install.css?_ship=ad432s3" />
+  <link rel="stylesheet" href="step-number.css?_ship=ad432s3" />
+  <link rel="stylesheet" href="completion-polish.css?_ship=ad432s3" />
+  <title>5 — Peace Practice by Peaceful World</title>
+</head>
+<body>
+  <main class="app">
+    <section id="home" class="screen active home-screen">
+      <div class="home-stack">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+          <img src="peaceful-world-logo.png?_ship=ad432s3" alt="" width="128" height="128" decoding="async" />
+        </a>
+
+        <div class="five-brand" aria-label="5, пять" data-i18n-aria-label="brand.aria">
+          <div class="five-mark" aria-hidden="true">5</div>
+          <div class="five-word" data-i18n="brand.word">пять</div>
+          <div class="five-byline">PEACEFUL WORLD PRACTICE</div>
+          <div class="build-version" aria-label="Альфа-версия 0.18.51" data-i18n-aria-label="build.aria">ALPHA · v0.18.51</div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="subtitle" data-i18n="home.subtitle">Тренажёр мирного ума</p>
+          <p class="intro intro-lines"><span data-i18n="home.intro.1">Пять простых упражнений.</span><span data-i18n="home.intro.2">Одна минута на каждое.</span></p>
+        </div>
+
+        <button id="startBtn" type="button" class="primary"><span data-i18n="home.start">Начать</span><span aria-hidden="true">→</span></button>
+
+        <div id="homeInstallArea" class="home-install-area" hidden>
+          <button id="homeInstallBtn" type="button" class="home-install-cta" data-i18n="home.install.cta">Установить</button>
+          <div id="homeInstallHelp" class="install-help home-install-help" hidden>
+            <p class="install-help-title" data-i18n="install.title">Как установить 5</p>
+            <p id="homeInstallHelpCopy" class="install-help-copy"></p>
+            <button id="homeInstallHelpClose" type="button" class="install-help-close" data-i18n="install.help.close">Понятно</button>
+          </div>
+        </div>
+
+        <details class="howto">
+          <summary data-i18n="home.howto.title">Как проходит тренировка</summary>
+          <div class="howto-body">
+            <p data-i18n="home.howto.p1">На каждом шаге сначала есть 5 секунд, чтобы прочитать подсказку и настроиться. Затем начинается полная минута тренировки.</p>
+            <p data-i18n="home.howto.p2">Используй эту минуту, чтобы удерживать внимание, думать, вспоминать или представлять. Не нужно искать правильный ответ.</p>
+            <p data-i18n="home.howto.p3">На последнем шаге прими одно небольшое решение и представь, как поступишь в подходящий момент.</p>
+            <p class="howto-more-row"><a class="howto-more" href="https://peaceful-world.org/ru/research/peaceful-world-practice" data-i18n-link="article" target="_blank" rel="noopener noreferrer" data-i18n="home.howto.more">Подробнее о тренажёре →</a></p>
+          </div>
+        </details>
+        <p class="home-privacy-row"><a class="home-privacy-link" href="privacy.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Конфиденциальность</a></p>
+      </div>
+    </section>
+
+    <section id="practice" class="screen practice-screen">
+      <div class="practice-topbar">
+        <button id="closeBtn" type="button" class="round-btn" aria-label="Завершить тренировку" data-i18n-aria-label="practice.close.aria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+        <div class="step-meta"><span id="stepCount">1 / 5</span><small data-i18n="practice.label">ТРЕНИРОВКА</small></div>
+        <button id="soundToggle" type="button" class="round-btn sound-on" aria-pressed="true" aria-label="Тиканье включено" data-i18n-aria-label="practice.sound.on.aria">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.2 1.8"></path><path class="sound-slash" d="M5.5 18.5l13-13"></path></svg>
+        </button>
+      </div>
+      <div id="dots" class="progress-dots" aria-hidden="true"></div>
+      <div id="practiceContent" class="practice-card">
+        <div id="stepNumber" class="step-number" aria-hidden="true">1</div>
+        <p class="kicker" data-i18n="practice.kicker">СЕЙЧАС</p>
+        <div class="step-copy">
+          <h2 id="stepTitle" tabindex="-1"></h2>
+          <p id="stepGuide" class="step-guide"></p>
+        </div>
+      </div>
+      <div class="practice-footer">
+        <div id="timerShell" class="timer-shell preparing" role="timer" aria-label="Подготовка, осталось 5 секунд">
+          <svg viewBox="0 0 120 120" class="timer-ring" aria-hidden="true">
+            <circle class="timer-track" cx="60" cy="60" r="49"></circle>
+            <circle id="progressRing" class="timer-progress" cx="60" cy="60" r="49"></circle>
+          </svg>
+          <div class="timer-center" aria-hidden="true"><div id="timer" class="timer">5</div><div id="timerCaption" class="timer-caption" data-i18n="practice.preparing">ПОДГОТОВКА</div></div>
+        </div>
+        <button id="pauseBtn" type="button" class="secondary pause-btn" data-i18n="practice.pause">Пауза</button>
+      </div>
+    </section>
+
+    <section id="done" class="screen done-screen">
+      <div class="done-stack">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+          <img src="peaceful-world-logo.png?_ship=ad432s3" alt="" width="128" height="128" decoding="async" />
+        </a>
+        <p id="doneKicker" class="brand-name done-kicker" data-i18n="done.kicker">Тренировка завершена</p>
+        <h1 id="doneTitle" class="done-title" tabindex="-1" data-i18n="done.title">Теперь просто действуй.</h1>
+        <p class="done-subtitle done-lines" data-i18n-lines="done.subtitle"><span>Закрой приложение</span><span>и вернись к своему дню.</span></p>
+        <button id="feedbackBtn" type="button" class="done-action" data-i18n="done.feedback">Поделиться впечатлением</button>
+        <button id="shareBtn" type="button" class="done-action" data-i18n="done.share">Поделиться с друзьями</button>
+        <a id="supportBtn" class="done-action done-support-action" href="https://peaceful-world.org/help/ru" data-i18n-link="support" target="_blank" rel="noopener noreferrer" data-i18n="done.support">Поддержать развитие</a>
+        <div id="installArea" class="install-area" hidden>
+          <button id="installBtn" type="button" class="text-action install-action" data-i18n="install.device.fallback">Установить 5 на устройство</button>
+          <div id="installHelp" class="install-help" hidden>
+            <p class="install-help-title" data-i18n="install.title">Как установить 5</p>
+            <p id="installHelpCopy" class="install-help-copy"></p>
+            <button id="installHelpClose" type="button" class="install-help-close" data-i18n="install.help.close">Понятно</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" class="screen feedback-screen" aria-labelledby="feedbackTitle">
+      <div class="feedback-stack">
+        <div id="feedbackHeader" class="feedback-header">
+          <button id="feedbackBackBtn" type="button" class="round-btn feedback-back" aria-label="Назад" data-i18n-aria-label="feedback.back.aria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+          <p class="brand-name feedback-kicker" data-i18n="feedback.kicker">ПОМОГИ УЛУЧШИТЬ 5</p>
+          <h1 id="feedbackTitle" class="feedback-title" tabindex="-1" data-i18n="feedback.title">Что удалось заметить?</h1>
+          <p class="feedback-intro" data-i18n="feedback.intro">Напиши или запиши голосом — что было понятно, что мешало, что стоило бы сказать иначе.</p>
+        </div>
+
+        <div id="feedbackFields">
+          <form id="feedbackForm" class="feedback-form" novalidate>
+            <div class="feedback-honeypot" aria-hidden="true">
+              <label for="feedbackWebsite">Website</label>
+              <input id="feedbackWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <label class="field-label" for="feedbackText" data-i18n="feedback.label">Твоё впечатление</label>
+            <textarea id="feedbackText" class="feedback-text" rows="7" maxlength="5000" placeholder="Напиши здесь..." data-i18n-placeholder="feedback.placeholder"></textarea>
+
+            <div id="feedbackAudio" class="feedback-audio">
+              <div class="audio-header">
+                <p class="audio-title" data-i18n="feedback.voice.title">Или запиши голос</p>
+                <button id="audioRecordBtn" type="button" class="audio-record-btn" data-i18n="feedback.voice.record">Записать голос</button>
+              </div>
+              <p id="audioStatus" class="audio-status" data-i18n="feedback.voice.initial">До 2 минут. Запись не отправится, пока ты не нажмёшь «Отправить».</p>
+              <div id="audioPreview" class="audio-preview" hidden>
+                <audio id="audioPlayer" preload="metadata"></audio>
+                <div class="audio-player-row">
+                  <button id="audioPlayBtn" type="button" class="audio-play-btn" aria-label="Прослушать запись" data-i18n-aria-label="feedback.audio.play.aria">▶</button>
+                  <div class="audio-player-main">
+                    <div class="audio-player-meta">
+                      <span id="audioPlaybackLabel" data-i18n="feedback.audio.label">Голосовая запись</span>
+                      <span id="audioDuration">0:00</span>
+                    </div>
+                    <input id="audioSeek" class="audio-seek" type="range" min="0" max="1" step="0.01" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="feedback.audio.seek.aria" />
+                  </div>
+                </div>
+                <div class="audio-actions"><button id="audioDeleteBtn" type="button" class="audio-delete-btn" data-i18n="feedback.audio.delete">Удалить запись</button></div>
+              </div>
+            </div>
+
+            <label class="research-optin"><input id="researchOptin" type="checkbox" /> <span data-i18n="feedback.optin">Хочу иногда помогать с тестированием и улучшением тренажёра</span></label>
+            <p class="feedback-consent-copy" data-i18n="feedback.optin.note">Если отметишь этот пункт, мы попросим email только для коротких вопросов и приглашений к тестированию. Это не подписка на новости.</p>
+
+            <div id="emailWrap" class="email-wrap" hidden>
+              <label class="field-label" for="feedbackEmail">Email</label>
+              <input id="feedbackEmail" class="feedback-email" type="email" inputmode="email" autocomplete="email" maxlength="320" placeholder="name@example.com" />
+            </div>
+
+            <p class="feedback-privacy" data-i18n="feedback.privacy.short">При отправке мы сохраняем текст или голос, язык, версию приложения, версию показанного набора текста, номер только что завершённой тренировки на этом устройстве и технические данные отправки. Эти данные используются только для улучшения 5. Email сохраняется только если ты согласишься участвовать в тестировании. Голосовые записи хранятся приватно.</p>
+            <p class="feedback-consent-copy feedback-privacy-policy-link"><a class="howto-more" href="privacy.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="feedback.privacy.link">Политика конфиденциальности →</a></p>
+            <button id="feedbackSubmit" type="submit" class="primary feedback-submit" data-i18n="feedback.submit">Отправить</button>
+            <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div id="feedbackSuccess" class="feedback-success" hidden>
+          <div class="feedback-success-mark" aria-hidden="true">✓</div>
+          <h2 tabindex="-1" data-i18n="feedback.success.title">Спасибо.</h2>
+          <p data-i18n="feedback.success.body">Отзыв сохранён. Он поможет сделать 5 точнее и улучшать переводы.</p>
+          <button id="feedbackSuccessBack" type="button" class="primary feedback-success-done" data-i18n="feedback.success.done">Готово</button>
+        </div>
+      </div>
+    </section>
+
+    <p id="srStatus" class="sr-only" aria-live="polite"></p>
+  </main>
+  <script src="i18n.js?_ship=ad432s3"></script>
+  <script src="copy-rotation.js?_ship=ad432s3"></script>
+  <script src="app.js?_ship=ad432s3"></script>
+  <script src="sound-v1.js?_ship=ad432s3"></script>
+  <script src="step-number.js?_ship=ad432s3"></script>
+  <script src="analytics.js?_ship=ad432s3"></script>
+  <script src="feedback.js?_ship=ad432s3"></script>
+  <script>
+    (() => {
+      const preview = new URLSearchParams(location.search).get('feedback');
+      if (!preview) return;
+
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+      const feedbackScreen = document.getElementById('feedback');
+      if (!feedbackScreen) return;
+      feedbackScreen.classList.add('active');
+      feedbackScreen.scrollTop = 0;
+
+      if (preview === 'success') {
+        const header = document.getElementById('feedbackHeader');
+        const fields = document.getElementById('feedbackFields');
+        const success = document.getElementById('feedbackSuccess');
+        if (header) header.hidden = true;
+        if (fields) fields.hidden = true;
+        if (success) success.hidden = false;
+        setTimeout(() => success?.querySelector('h2')?.focus({ preventScroll:true }), 0);
+      } else {
+        setTimeout(() => document.getElementById('feedbackTitle')?.focus({ preventScroll:true }), 0);
+      }
+    })();
+  </script>
+</body>
+</html>
