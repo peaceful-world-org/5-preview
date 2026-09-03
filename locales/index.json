@@ -25,7 +25,7 @@
       }
     },
     "en": {
-      "released": false,
+      "released": true,
       "dir": "ltr",
       "label": "English",
       "copyVersion": "en-v1",
