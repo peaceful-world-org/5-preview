@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BASE="https://circular-rift-ad432s3.shipstatic.com"
+          BASE="https://ethereal-neon-tut5d23.shipstatic.com"
           files=(
             ai-guide.js
             analytics.js
