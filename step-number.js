@@ -16,15 +16,130 @@ const i18nText = (key, fallback, vars) =>
 })();
 
 (() => {
+  const home = document.getElementById('home');
+  const host = home?.querySelector('.home-stack');
+  if (!home || !host || !window.PW_I18N) return;
+
+  const switcher = document.createElement('nav');
+  switcher.id = 'localeSwitcher';
+  switcher.className = 'locale-switcher';
+  switcher.hidden = true;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .locale-switcher{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:3px;color:var(--muted)}
+    .locale-switcher[hidden]{display:none!important}
+    .locale-switcher button{border:0;background:transparent;color:var(--muted);padding:4px 6px;font:inherit;font-size:.76rem;line-height:1.2;cursor:pointer;text-decoration:none;transition:color .18s ease,opacity .18s ease}
+    .locale-switcher button:hover{color:var(--text)}
+    .locale-switcher button[aria-pressed="true"]{color:var(--text);font-weight:650}
+    .locale-switcher button:disabled{cursor:default;opacity:.55}
+    .locale-switcher .locale-separator{font-size:.72rem;opacity:.55;user-select:none}
+    .locale-switcher button:focus-visible{outline:2px solid #67766A;outline-offset:2px;border-radius:7px}
+  `;
+  document.head.appendChild(style);
+
+  const privacyRow = host.querySelector('.home-privacy-row');
+  if (privacyRow) privacyRow.before(switcher);
+  else host.appendChild(switcher);
+
+  function availableLocales() {
+    const registry = window.PW_I18N.registry;
+    const preview = window.PW_I18N.isPreview;
+    return Object.entries(registry?.locales || {})
+      .filter(([, config]) => Boolean(config?.released || preview));
+  }
+
+  function render() {
+    const available = availableLocales();
+    switcher.hidden = available.length < 2;
+    if (switcher.hidden) {
+      switcher.replaceChildren();
+      return;
+    }
+
+    switcher.setAttribute('aria-label', i18nText('locale.switcher.aria', 'Выбрать язык'));
+    const fragment = document.createDocumentFragment();
+
+    available.forEach(([code, config], index) => {
+      if (index) {
+        const separator = document.createElement('span');
+        separator.className = 'locale-separator';
+        separator.setAttribute('aria-hidden', 'true');
+        separator.textContent = '·';
+        fragment.appendChild(separator);
+      }
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.locale = code;
+      button.textContent = config.label || code;
+      button.setAttribute('aria-pressed', String(code === window.PW_I18N.locale));
+      button.addEventListener('click', async () => {
+        if (code === window.PW_I18N.locale || switcher.dataset.busy === '1') return;
+        switcher.dataset.busy = '1';
+        switcher.querySelectorAll('button').forEach(item => { item.disabled = true; });
+        try {
+          await window.PW_I18N.setLocale(code, {
+            source: config.released ? 'explicit' : 'preview',
+            allowUnreleased: !config.released
+          });
+        } catch (error) {
+          console.warn('[5][i18n] locale switch failed', error);
+        } finally {
+          delete switcher.dataset.busy;
+          render();
+        }
+      });
+      fragment.appendChild(button);
+    });
+
+    switcher.replaceChildren(fragment);
+  }
+
+  window.PW_I18N.ready.then(render).catch(() => {});
+  document.addEventListener('pw:locale-changed', render);
+})();
+
+(() => {
+  const practice = document.getElementById('practice');
   const stepCount = document.getElementById('stepCount');
   const stepNumber = document.getElementById('stepNumber');
-  if (!stepCount || !stepNumber) return;
+  const stepTitle = document.getElementById('stepTitle');
+  if (!practice || !stepCount || !stepNumber) return;
+
+  let watchTimer = null;
+
   const sync = () => {
-    const match = stepCount.textContent.match(/\d+/);
-    stepNumber.textContent = match ? match[0] : '1';
+    let next = '';
+    try {
+      if (typeof stepIndex !== 'undefined' && Number.isInteger(stepIndex)) {
+        next = String(stepIndex + 1);
+      }
+    } catch (_) {}
+    if (!next) {
+      const match = String(stepCount.textContent || '').match(/\d+/);
+      next = match ? match[0] : '1';
+    }
+    if (stepNumber.textContent !== next) stepNumber.textContent = next;
   };
+
+  const syncWatcher = () => {
+    if (practice.classList.contains('active')) {
+      sync();
+      if (watchTimer === null) watchTimer = window.setInterval(sync, 250);
+      return;
+    }
+    if (watchTimer !== null) {
+      window.clearInterval(watchTimer);
+      watchTimer = null;
+    }
+  };
+
   sync();
   new MutationObserver(sync).observe(stepCount, { childList:true, characterData:true, subtree:true });
+  if (stepTitle) new MutationObserver(sync).observe(stepTitle, { childList:true, characterData:true, subtree:true });
+  new MutationObserver(syncWatcher).observe(practice, { attributes:true, attributeFilter:['class'] });
+  syncWatcher();
 })();
 
 (() => {
