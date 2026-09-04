@@ -1,15 +1,5 @@
 /* Home brand lockup: Peaceful World hand is a quiet top anchor; 5 stays the hero. */
 
-/* v0.18.51 visual polish: keep the existing warm palette, but tighten the tonal system.
-   These variables intentionally override the base tokens from styles.css because brand.css
-   loads later in the page. */
-:root{
-  --muted:#656D69;
-  --muted-quiet:#6B746F;
-  --accent-text:#59665A;
-  --line:#E3E5E1;
-}
-
 /* Keep the home composition top-anchored so opening the instructions grows downward
    instead of re-centering the whole stack upward into the logo. */
 .home-screen{
@@ -71,12 +61,12 @@
 
 .build-version{
   margin-top:10px;
-  color:var(--muted-quiet);
+  color:var(--muted);
   font-size:.58rem;
   font-weight:650;
   letter-spacing:.12em;
   line-height:1.2;
-  opacity:1;
+  opacity:.7;
 }
 
 .howto-more-row{
@@ -111,10 +101,10 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  color:var(--muted-quiet);
+  color:var(--muted);
   font-size:.78rem;
   text-decoration:none;
-  opacity:1;
+  opacity:.78;
 }
 .home-privacy-link:hover{
   color:var(--text);
@@ -231,5 +221,5 @@
   font-size:0;
   letter-spacing:0;
   line-height:0;
-  background:url('./five-mark.svg') center / contain no-repeat;
+  background:url('./five-mark.svg?_ship=tut5d23') center / contain no-repeat;
 }
