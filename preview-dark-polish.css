@@ -9,3 +9,18 @@ html[data-pw-theme="dark"] .step-number{
 html[data-pw-theme="dark"] .timer-shell.is-practice:not(.ending):not(.paused) .timer-center{
   opacity:.64;
 }
+
+/* Bring the progress rail up to the same quiet-readability level as the step numeral.
+   The active point keeps its existing treatment; only the passive/completed structure is lifted. */
+html[data-pw-theme="dark"] .dot::before{
+  background:#4A514B;
+}
+html[data-pw-theme="dark"] .dot:not(:last-child)::after{
+  background:#404741;
+}
+html[data-pw-theme="dark"] .dot.done::before{
+  background:#778479;
+}
+html[data-pw-theme="dark"] .dot.done::after{
+  background:#566158;
+}
