@@ -65,3 +65,120 @@
   .done-install-area{width:min(100%,280px);margin-top:9px}
   .done-install-area[hidden] + .done-action{margin-top:9px}
 }
+
+/* Production design system: interface recedes, practice remains. */
+:root{
+  --bg:#F9F8F4;
+  --surface:#FFFFFF;
+  --ink:#202522;
+  --text:#3D4541;
+  --muted:#6B716D;
+  --accent:#7B8D7B;
+  --accent-text:#677667;
+  --accent-soft:#E9EEE8;
+  --line:#E5E5E0;
+  --shadow:none;
+}
+
+.five-word{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:1.12rem;
+  font-style:normal;
+  font-weight:650;
+  letter-spacing:.02em;
+}
+.five-byline{letter-spacing:.175em}
+
+.primary{
+  background:#202522;
+  box-shadow:0 8px 20px rgba(32,37,34,.065);
+}
+
+.home-install-area{margin-top:5px}
+.home-install-cta{
+  width:auto;
+  min-height:44px;
+  padding:0 14px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--muted);
+  font-weight:520;
+  box-shadow:none!important;
+  text-decoration:underline;
+  text-decoration-style:dotted;
+  text-decoration-color:rgba(107,113,109,.38);
+  text-underline-offset:5px;
+}
+.home-install-cta:hover{background:transparent;color:var(--text);box-shadow:none}
+.home-install-area + .howto{margin-top:2px}
+
+.howto{
+  width:min(100%,380px);
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+.howto summary{
+  min-height:44px;
+  padding:11px 32px 11px 18px;
+  color:var(--muted);
+  font-weight:560;
+}
+.howto summary::after{right:10px}
+.howto[open] summary{border-bottom:1px solid var(--line)}
+.howto-body{padding-left:14px;padding-right:14px}
+
+/* No visible card: keep the grid, remove only the furniture. */
+.practice-card,
+.practice-card.is-prep,
+.practice-card.is-practice{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.practice-card{max-width:510px}
+#stepTitle{
+  max-width:460px;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+}
+.step-guide{
+  max-width:420px;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+}
+.step-number{color:rgba(103,118,103,.20)}
+
+/* Stronger sage is functional state, not decoration. */
+.timer-progress{stroke:#6E866E}
+.dot.active::before{
+  background:#6E866E;
+  box-shadow:0 0 0 5px rgba(110,134,110,.08);
+}
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible{outline-color:#6E866E}
+
+/* During the minute the clock recedes slightly. */
+.timer-shell.is-practice:not(.ending):not(.paused) .timer-center{opacity:.56}
+.timer-shell.is-practice:not(.ending):not(.paused) .timer-ring{opacity:.66}
+
+.round-btn,
+.secondary,
+.done-mark{box-shadow:none!important}
+.done-mark{background:transparent}
+.feedback-text,
+.feedback-email{box-shadow:none;background:rgba(255,255,255,.76)}
+
+/* Utility text is quiet by scale and placement, not by low contrast. */
+.build-version,
+.home-privacy-link{color:var(--muted);opacity:1!important}
+.locale-switcher,
+.locale-switcher button{color:var(--muted)}
+
+@media(prefers-reduced-motion:reduce){
+  .timer-center,
+  .timer-ring{transition-duration:.001ms!important}
+}
