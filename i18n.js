@@ -7,6 +7,7 @@
   const LOCALE_SOURCE_KEY = 'pw-locale-source';
   const LEGACY_LOCALE = 'ru';
   const PRODUCTION_HOST = '5.peaceful-world.org';
+  const PREVIEW_HOST = 'preview-5.peaceful-world.org';
   const LEGACY_STATE_KEYS = [
     'pw-completed-practices',
     'pw-analytics-consent-v1',
@@ -37,8 +38,14 @@
     return String(value).trim().toLowerCase().replace('_', '-').split('-')[0];
   }
 
+  function normalizedHostname() {
+    return String(location.hostname || '').trim().toLowerCase().replace(/\.+$/, '');
+  }
+
   function previewMode() {
-    if (location.hostname === PRODUCTION_HOST) return false;
+    const host = normalizedHostname();
+    if (host === PRODUCTION_HOST) return false;
+    if (host === PREVIEW_HOST) return true;
     const params = new URLSearchParams(location.search);
     return params.get('i18nPreview') === '1';
   }
@@ -218,56 +225,72 @@
 
     document.querySelectorAll('[data-i18n-link]').forEach(node => {
       const linkName = node.getAttribute('data-i18n-link');
+      if (!linkName) return;
       const href = resolveConfiguredLink(linkName);
-      if (href) node.setAttribute('href', href);
+      if (href) {
+        node.setAttribute('href', href);
+        node.hidden = false;
+      } else if (linkName !== 'privacy') {
+        node.hidden = true;
+      }
     });
   }
 
-  async function activateLocale(code, { source = 'explicit', persist = true, allowUnreleased = false } = {}) {
-    const normalized = normalizeLocale(code);
-    const canUseUnreleased = allowUnreleased && previewMode();
-    if (!validLocale(normalized, { includeUnreleased: canUseUnreleased })) {
-      throw new Error(`Unsupported locale: ${normalized || code}`);
+  async function activateLocale(code, { source = 'explicit', allowUnreleased = false } = {}) {
+    const next = normalizeLocale(code);
+    const canUseUnreleased = previewMode() && allowUnreleased;
+    if (locked) return false;
+    if (!validLocale(next, { includeUnreleased: canUseUnreleased })) {
+      throw new Error(`Unsupported locale: ${next}`);
     }
-    if (locked && normalized !== locale) return false;
 
-    const nextPack = await loadPack(normalized);
-    locale = normalized;
-    localeConfig = registry.locales[normalized];
+    const nextPack = await loadPack(next);
+    locale = next;
+    localeConfig = registry.locales[next];
     pack = nextPack;
-    if (persist) persistLocale(locale, source);
+    persistLocale(next, source);
     applyDocumentLocale();
-
     document.dispatchEvent(new CustomEvent('pw:locale-changed', {
-      detail: { locale, source, config: localeConfig }
+      detail: { locale, source, copyVersion: localeConfig?.copyVersion || '' }
     }));
     return true;
   }
 
-  function lockLocale() { locked = true; }
-  function unlockLocale() { locked = false; }
+  function lockLocale() {
+    locked = true;
+    return locale;
+  }
+
+  function unlockLocale() {
+    locked = false;
+  }
+
+  function bootstrapFailureFallback() {
+    locale = LEGACY_LOCALE;
+    localeConfig = registry?.locales?.[LEGACY_LOCALE] || { dir:'ltr' };
+    document.documentElement.lang = LEGACY_LOCALE;
+    document.documentElement.dir = 'ltr';
+  }
 
   const ready = (async () => {
     try {
       registry = await fetchJson(REGISTRY_URL);
       const initial = resolveInitialLocale();
-      const initialConfig = registry.locales[initial];
-      const initialSource = safeGet(LOCALE_SOURCE_KEY) || 'auto';
-      await activateLocale(initial, {
-        source: initialSource,
-        persist: true,
-        allowUnreleased: initialSource === 'preview' && Boolean(initialConfig && !initialConfig.released)
-      });
+      const initialPack = await loadPack(initial);
+      locale = initial;
+      localeConfig = registry.locales[initial];
+      pack = initialPack;
+      applyDocumentLocale();
+      document.dispatchEvent(new CustomEvent('pw:locale-ready', {
+        detail: { locale, source: safeGet(LOCALE_SOURCE_KEY) || '', copyVersion: localeConfig?.copyVersion || '' }
+      }));
       return locale;
     } catch (error) {
       console.error('[5][i18n] bootstrap failed', error);
       // The current production HTML is Russian, so a failed pre-release
       // bootstrap leaves the existing RU interface intact rather than
       // producing a partially translated screen.
-      locale = LEGACY_LOCALE;
-      localeConfig = registry?.locales?.[LEGACY_LOCALE] || { dir:'ltr' };
-      document.documentElement.lang = LEGACY_LOCALE;
-      document.documentElement.dir = 'ltr';
+      bootstrapFailureFallback();
       return locale;
     }
   })();

@@ -3,7 +3,7 @@
 
 window.PW_BUILD_VERSION = 'v0.18.51-alpha';
 
-const i18nText = (key, fallback, vars) =>
+var i18nText = (key, fallback, vars) =>
   window.PW_I18N?.text?.(key, fallback, vars) ?? fallback;
 
 (() => {

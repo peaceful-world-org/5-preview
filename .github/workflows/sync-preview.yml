@@ -1,10 +1,6 @@
-name: Sync preview site
+name: Reset preview from production
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/sync-preview.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download current validated preview build
+      - name: Download current production build
         shell: bash
         run: |
           set -euo pipefail
-          BASE="https://ethereal-neon-tut5d23.shipstatic.com"
+          BASE="https://5.peaceful-world.org"
           files=(
             ai-guide.js
             analytics.js
@@ -102,5 +98,5 @@ jobs:
             echo "No preview changes to commit."
             exit 0
           fi
-          git commit -m "Publish validated i18n preview build"
+          git commit -m "Reset preview from production"
           git push

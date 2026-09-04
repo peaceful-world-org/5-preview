@@ -25,7 +25,7 @@
       }
     },
     "en": {
-      "released": false,
+      "released": true,
       "dir": "ltr",
       "label": "English",
       "copyVersion": "en-v1",
@@ -43,7 +43,7 @@
         "agentId": null
       },
       "iosGuide": {
-        "assetLocale": null
+        "assetLocale": "en"
       }
     }
   }
