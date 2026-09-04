@@ -73,10 +73,16 @@ jobs:
         run: |
           set -euo pipefail
           test -s preview-utilities.js
+          test -s preview-dark-polish.css
           cat >> ai-guide.js <<'EOF'
 
           /* Permanent preview environment: test language/theme utilities without touching production. */
           if (location.hostname === 'preview-5.peaceful-world.org') {
+            const darkPolish = document.createElement('link');
+            darkPolish.rel = 'stylesheet';
+            darkPolish.href = 'preview-dark-polish.css?v=1';
+            document.head.appendChild(darkPolish);
+
             const utilities = document.createElement('script');
             utilities.src = 'preview-utilities.js?v=2';
             utilities.async = true;
