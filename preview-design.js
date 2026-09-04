@@ -128,6 +128,24 @@
       }),
       buildOpacity: '.55',
       privacyOpacity: '.66'
+    }),
+    h: Object.freeze({
+      short: 'H',
+      name: 'Hybrid Candidate',
+      vars: vars({
+        '--bg': '#F8F5EE',
+        '--surface': '#FFFDF9',
+        '--ink': '#202522',
+        '--text': '#3D4541',
+        '--muted': '#6F746F',
+        '--accent': '#7B8D7B',
+        '--accent-text': '#617260',
+        '--accent-soft': '#E9EEE8',
+        '--line': '#E5E1D8',
+        '--shadow': 'none'
+      }),
+      buildOpacity: '.46',
+      privacyOpacity: '.56'
     })
   });
 
@@ -223,6 +241,49 @@
     html[data-pw-design="g"] .five-byline,
     html[data-pw-design="g"] .brand-name,
     html[data-pw-design="g"] .kicker{color:#4F6F5A}
+
+    /* H · Hybrid Candidate — A/B calm, a little C, a little E, and F-style restraint. */
+    html[data-pw-design="h"] .five-word{
+      font-family:${EDITORIAL_SERIF}!important;
+      font-size:1.2rem;
+      font-style:italic;
+      font-weight:500!important;
+      letter-spacing:.005em;
+    }
+    html[data-pw-design="h"] .five-byline{opacity:.88;letter-spacing:.175em}
+    html[data-pw-design="h"] .primary{
+      background:#202522;
+      box-shadow:0 10px 24px rgba(32,37,34,.075)
+    }
+    html[data-pw-design="h"] .home-install-area{margin-top:5px}
+    html[data-pw-design="h"] .home-install-cta{
+      width:auto;min-height:40px;padding:0 14px;border:0;border-radius:0;background:transparent;
+      color:var(--muted);font-weight:500;box-shadow:none!important;text-decoration:underline;
+      text-decoration-style:dotted;text-decoration-color:rgba(111,116,111,.45);text-underline-offset:5px
+    }
+    html[data-pw-design="h"] .home-install-cta:hover{background:transparent;color:var(--text);box-shadow:none}
+    html[data-pw-design="h"] .home-install-area + .howto{margin-top:3px}
+    html[data-pw-design="h"] .howto{
+      width:min(100%,370px);background:transparent;border:0;border-radius:0;box-shadow:none
+    }
+    html[data-pw-design="h"] .howto summary{
+      padding:10px 30px 10px 18px;color:var(--muted);font-weight:560
+    }
+    html[data-pw-design="h"] .howto summary::after{right:10px}
+    html[data-pw-design="h"] .howto[open] summary{border-bottom:1px solid var(--line)}
+    html[data-pw-design="h"] .howto-body{padding-left:14px;padding-right:14px}
+    html[data-pw-design="h"] .practice-card,
+    html[data-pw-design="h"] .practice-card.is-prep,
+    html[data-pw-design="h"] .practice-card.is-practice{
+      background:rgba(255,253,249,.62)!important;border-color:rgba(229,225,216,.72)!important;
+      box-shadow:none!important;border-radius:26px
+    }
+    html[data-pw-design="h"] .round-btn,
+    html[data-pw-design="h"] .secondary,
+    html[data-pw-design="h"] .done-mark{box-shadow:none!important}
+    html[data-pw-design="h"] .done-mark{background:rgba(255,253,249,.7)}
+    html[data-pw-design="h"] .feedback-text,
+    html[data-pw-design="h"] .feedback-email{box-shadow:none;background:rgba(255,253,249,.78)}
 
     .pw-design-lab{
       position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));
