@@ -9,8 +9,8 @@
     "standalone",
     "minimal-ui"
   ],
-  "background_color": "#FAFAF7",
-  "theme_color": "#FAFAF7",
+  "background_color": "#F9F8F4",
+  "theme_color": "#F9F8F4",
   "categories": [
     "education",
     "lifestyle"
