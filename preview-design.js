@@ -15,27 +15,15 @@
     a: Object.freeze({
       short: 'A',
       name: 'Original',
-      vars: Object.freeze({
-        '--muted': '#6B716D',
-        '--muted-quiet': '#6B716D',
-        '--accent-text': '#677667',
-        '--line': '#E7E9E4',
-        '--pw-preview-font': SYSTEM_FONT
-      }),
-      markFilter: 'brightness(0)',
+      vars: Object.freeze({ '--pw-preview-font': SYSTEM_FONT }),
+      markFilter: 'none',
       buildOpacity: '.7',
       privacyOpacity: '.78'
     }),
     b: Object.freeze({
       short: 'B',
-      name: 'Warm polish',
-      vars: Object.freeze({
-        '--muted': '#656D69',
-        '--muted-quiet': '#6B746F',
-        '--accent-text': '#59665A',
-        '--line': '#E3E5E1',
-        '--pw-preview-font': SYSTEM_FONT
-      }),
+      name: 'Text contrast',
+      vars: Object.freeze({ '--pw-preview-font': SYSTEM_FONT }),
       markFilter: 'none',
       buildOpacity: '1',
       privacyOpacity: '1'
