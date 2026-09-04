@@ -1,5 +1,5 @@
 /* 5 by Peaceful World — service worker */
-const VERSION = 'v0.18.51-alpha-i18n1';
+const VERSION = 'v0.18.51-alpha-preview-palette1';
 const CORE = 'pw-core-' + VERSION;
 const NETWORK_TIMEOUT_MS = 1800;
 const IOS_GUIDE_PART_COUNT = 6;
