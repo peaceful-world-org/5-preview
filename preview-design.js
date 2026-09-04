@@ -6,6 +6,18 @@
   if (window.__PW_PREVIEW_DESIGN_LAB__) return;
   window.__PW_PREVIEW_DESIGN_LAB__ = true;
 
+  /* Preview is for rapid QA/design review. Reuse the app's built-in demo timing
+     (2 s preparation + 5 s practice) and demo session semantics so test runs do
+     not increment the normal completed-practice rotation. Add ?timing=full to
+     temporarily inspect real 5+60 second timing. */
+  const bootParams = new URLSearchParams(location.search);
+  if (bootParams.get('timing') !== 'full' && !bootParams.has('demo')) {
+    bootParams.set('demo', '1');
+    const next = `${location.pathname}?${bootParams.toString()}${location.hash}`;
+    location.replace(next);
+    return;
+  }
+
   const STORAGE_KEY = 'pw-preview-design-variant';
   const PARAM_KEY = 'design';
   const SYSTEM_FONT = 'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif';
