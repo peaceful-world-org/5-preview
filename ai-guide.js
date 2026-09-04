@@ -123,19 +123,10 @@
   window.PW_I18N?.ready?.then(syncWidget).catch(() => {});
 })();
 
-/* Permanent preview environment: load the design lab without touching production. */
+/* Permanent preview environment: test language/theme utilities without touching production. */
 if (location.hostname === 'preview-5.peaceful-world.org') {
-  const loadDesignLab = () => {
-    const designLab = document.createElement('script');
-    designLab.src = 'preview-design.js?v=2';
-    designLab.async = true;
-    document.head.appendChild(designLab);
-  };
-
-  const productionCandidate = document.createElement('script');
-  productionCandidate.src = 'preview-l.js?v=1';
-  productionCandidate.async = true;
-  productionCandidate.addEventListener('load', loadDesignLab, { once:true });
-  productionCandidate.addEventListener('error', loadDesignLab, { once:true });
-  document.head.appendChild(productionCandidate);
+  const utilities = document.createElement('script');
+  utilities.src = 'preview-utilities.js?v=1';
+  utilities.async = true;
+  document.head.appendChild(utilities);
 }
