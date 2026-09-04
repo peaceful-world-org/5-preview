@@ -125,6 +125,11 @@
 
 /* Permanent preview environment: test language/theme utilities without touching production. */
 if (location.hostname === 'preview-5.peaceful-world.org') {
+  const darkPolish = document.createElement('link');
+  darkPolish.rel = 'stylesheet';
+  darkPolish.href = 'preview-dark-polish.css?v=1';
+  document.head.appendChild(darkPolish);
+
   const utilities = document.createElement('script');
   utilities.src = 'preview-utilities.js?v=2';
   utilities.async = true;
