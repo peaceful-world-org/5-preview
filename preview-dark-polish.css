@@ -1,0 +1,11 @@
+/* 5-preview — subtle dark-mode legibility polish. Preview environment only. */
+
+/* Keep the large step numeral atmospheric, but prevent it disappearing on darker displays. */
+html[data-pw-theme="dark"] .step-number{
+  color:rgba(156,177,156,.24);
+}
+
+/* The countdown is functional information, so give it a touch more presence in dark mode. */
+html[data-pw-theme="dark"] .timer-shell.is-practice:not(.ending):not(.paused) .timer-center{
+  opacity:.64;
+}
