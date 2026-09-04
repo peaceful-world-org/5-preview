@@ -33,21 +33,15 @@
   const STRINGS = {
     ru: {
       language: 'Язык',
-      theme: 'Тема',
-      system: 'Системная',
-      light: 'Светлая',
-      dark: 'Тёмная',
       chooseLanguage: 'Выбрать язык',
-      chooseTheme: 'Выбрать тему'
+      switchToLight: 'Переключить на светлый режим',
+      switchToDark: 'Переключить на тёмный режим'
     },
     en: {
       language: 'Language',
-      theme: 'Theme',
-      system: 'System',
-      light: 'Light',
-      dark: 'Dark',
       chooseLanguage: 'Choose language',
-      chooseTheme: 'Choose theme'
+      switchToLight: 'Switch to light mode',
+      switchToDark: 'Switch to dark mode'
     }
   };
 
@@ -68,54 +62,57 @@
     return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
   }
 
+  /* No visible System choice: it is only the silent initial default. */
   let themePreference = validTheme(safeGet(THEME_KEY) || 'system');
-  let openPanel = '';
+  let languagePanelOpen = false;
 
   const style = document.createElement('style');
   style.id = 'pw-preview-utilities-style';
   style.textContent = `
-    /* The old footer switcher remains in app code for production comparison, but preview tests the scalable utility menu. */
+    /* Preview tests a scalable top utility layer; retire the footer language switcher here. */
     #localeSwitcher{display:none!important}
 
     .pw-preview-utilities{
       position:fixed;
-      top:max(12px,env(safe-area-inset-top));
-      right:max(12px,env(safe-area-inset-right));
+      inset:0;
       z-index:9000;
-      display:flex;
-      align-items:center;
-      gap:7px;
+      pointer-events:none;
       font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
     }
     .pw-preview-utilities[hidden]{display:none!important}
     .pw-preview-utility-button{
+      position:fixed;
+      top:max(12px,env(safe-area-inset-top));
       width:42px;
       height:42px;
       padding:0;
-      border:1px solid var(--line);
+      border:1px solid rgba(107,113,109,.22);
       border-radius:50%;
-      background:rgba(255,255,255,.72);
+      background:rgba(255,255,255,.60);
       color:var(--muted);
       display:grid;
       place-items:center;
       cursor:pointer;
+      pointer-events:auto;
       box-shadow:none;
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
       transition:color .16s ease,background .16s ease,border-color .16s ease,transform .12s ease;
     }
-    .pw-preview-utility-button:hover{color:var(--text);background:rgba(255,255,255,.94)}
+    .pw-preview-language-button{left:max(10px,calc(50vw - 268px),env(safe-area-inset-left))}
+    .pw-preview-theme-button{right:max(10px,calc(50vw - 268px),env(safe-area-inset-right))}
+    .pw-preview-utility-button:hover{color:var(--text);background:rgba(255,255,255,.88);border-color:rgba(107,113,109,.34)}
     .pw-preview-utility-button:active{transform:scale(.96)}
-    .pw-preview-utility-button[aria-expanded="true"]{color:var(--text);border-color:#C9CEC9;background:rgba(255,255,255,.96)}
+    .pw-preview-language-button[aria-expanded="true"]{color:var(--text);background:rgba(255,255,255,.92);border-color:rgba(107,113,109,.36)}
     .pw-preview-utility-button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
 
     .pw-preview-utility-panel{
       position:fixed;
       top:max(62px,calc(env(safe-area-inset-top) + 62px));
-      right:max(12px,env(safe-area-inset-right));
+      left:max(10px,calc(50vw - 268px),env(safe-area-inset-left));
       z-index:8999;
       min-width:184px;
-      max-width:min(280px,calc(100vw - 24px));
+      max-width:min(280px,calc(100vw - 20px));
       padding:7px;
       border:1px solid var(--line);
       border-radius:16px;
@@ -192,14 +189,14 @@
     html[data-pw-theme="dark"] .ios-install-guide-image{background:#212622!important}
     html[data-pw-theme="dark"] .ios-install-guide-done{background:#E8EAE5!important;color:#171A18!important}
     html[data-pw-theme="dark"] .pw-preview-utility-button{
-      background:rgba(29,33,30,.82);
-      border-color:#3B423C;
+      background:rgba(29,33,30,.70);
+      border-color:rgba(168,176,170,.18);
       color:#AAB2AC;
     }
     html[data-pw-theme="dark"] .pw-preview-utility-button:hover,
-    html[data-pw-theme="dark"] .pw-preview-utility-button[aria-expanded="true"]{
+    html[data-pw-theme="dark"] .pw-preview-language-button[aria-expanded="true"]{
       background:#252A26;
-      border-color:#505951;
+      border-color:rgba(168,176,170,.30);
       color:#ECEDE8;
     }
     html[data-pw-theme="dark"] .pw-preview-utility-panel{
@@ -210,9 +207,10 @@
     html[data-pw-theme="dark"] .pw-preview-utility-option:hover{background:rgba(143,166,143,.10)}
 
     @media(max-width:520px){
-      .pw-preview-utilities{top:max(9px,env(safe-area-inset-top));right:max(9px,env(safe-area-inset-right));gap:6px}
-      .pw-preview-utility-button{width:40px;height:40px}
-      .pw-preview-utility-panel{top:max(58px,calc(env(safe-area-inset-top) + 58px));right:max(9px,env(safe-area-inset-right))}
+      .pw-preview-utility-button{top:max(9px,env(safe-area-inset-top));width:40px;height:40px}
+      .pw-preview-language-button{left:max(9px,env(safe-area-inset-left))}
+      .pw-preview-theme-button{right:max(9px,env(safe-area-inset-right))}
+      .pw-preview-utility-panel{top:max(58px,calc(env(safe-area-inset-top) + 58px));left:max(9px,env(safe-area-inset-left))}
     }
     @media(prefers-reduced-motion:reduce){
       .pw-preview-utility-button{transition:none}
@@ -220,13 +218,13 @@
   `;
   document.head.appendChild(style);
 
-  const cluster = document.createElement('div');
-  cluster.className = 'pw-preview-utilities';
-  cluster.setAttribute('aria-label', 'Preview utilities');
+  const utilities = document.createElement('div');
+  utilities.className = 'pw-preview-utilities';
+  utilities.setAttribute('aria-label', 'Preview utilities');
 
   const languageButton = document.createElement('button');
   languageButton.type = 'button';
-  languageButton.className = 'pw-preview-utility-button';
+  languageButton.className = 'pw-preview-utility-button pw-preview-language-button';
   languageButton.dataset.utility = 'language';
   languageButton.setAttribute('aria-haspopup', 'menu');
   languageButton.setAttribute('aria-expanded', 'false');
@@ -234,18 +232,16 @@
 
   const themeButton = document.createElement('button');
   themeButton.type = 'button';
-  themeButton.className = 'pw-preview-utility-button';
+  themeButton.className = 'pw-preview-utility-button pw-preview-theme-button';
   themeButton.dataset.utility = 'theme';
-  themeButton.setAttribute('aria-haspopup', 'menu');
-  themeButton.setAttribute('aria-expanded', 'false');
 
   const panel = document.createElement('div');
   panel.className = 'pw-preview-utility-panel';
   panel.setAttribute('role', 'menu');
   panel.hidden = true;
 
-  cluster.append(languageButton, themeButton);
-  document.body.append(cluster, panel);
+  utilities.append(languageButton, themeButton);
+  document.body.append(utilities, panel);
 
   const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.25 5.25l1.45 1.45M17.3 17.3l1.45 1.45M18.75 5.25 17.3 6.7M6.7 17.3l-1.45 1.45"></path></svg>';
   const moonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.2 15.15A7.7 7.7 0 0 1 8.85 4.8 7.9 7.9 0 1 0 19.2 15.15Z"></path></svg>';
@@ -291,15 +287,21 @@
     root.style.colorScheme = theme;
     setThemeVariables(theme);
     syncThemeColor(theme);
+    /* The icon describes the action: moon means switch dark, sun means switch light. */
     themeButton.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
     syncLabels();
-    if (openPanel === 'theme') renderThemePanel();
   }
 
   function chooseTheme(value) {
     themePreference = validTheme(value);
     safeSet(THEME_KEY, themePreference);
     applyTheme();
+  }
+
+  function toggleTheme() {
+    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    closeLanguagePanel();
+    chooseTheme(next);
   }
 
   function availableLocales() {
@@ -340,7 +342,7 @@
     availableLocales().forEach(([code, config]) => {
       fragment.appendChild(option(config.label || code, code === window.PW_I18N?.locale, async () => {
         if (!window.PW_I18N || code === window.PW_I18N.locale) {
-          closePanel();
+          closeLanguagePanel();
           return;
         }
         try {
@@ -351,76 +353,59 @@
         } catch (error) {
           console.warn('[5-preview] locale switch failed', error);
         }
-        closePanel();
+        closeLanguagePanel();
         syncLabels();
       }));
     });
     panel.replaceChildren(fragment);
   }
 
-  function renderThemePanel() {
-    const strings = localeStrings();
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(panelTitle(strings.theme));
-    fragment.appendChild(option(strings.system, themePreference === 'system', () => chooseThemeAndClose('system')));
-    fragment.appendChild(option(strings.light, themePreference === 'light', () => chooseThemeAndClose('light')));
-    fragment.appendChild(option(strings.dark, themePreference === 'dark', () => chooseThemeAndClose('dark')));
-    panel.replaceChildren(fragment);
-  }
-
-  function chooseThemeAndClose(value) {
-    chooseTheme(value);
-    closePanel();
-  }
-
   function syncLabels() {
     const strings = localeStrings();
     languageButton.setAttribute('aria-label', strings.chooseLanguage);
     languageButton.title = strings.language;
-    themeButton.setAttribute('aria-label', strings.chooseTheme);
-    themeButton.title = `${strings.theme}: ${strings[effectiveTheme()]}`;
+    const current = effectiveTheme();
+    const themeLabel = current === 'dark' ? strings.switchToLight : strings.switchToDark;
+    themeButton.setAttribute('aria-label', themeLabel);
+    themeButton.title = themeLabel;
   }
 
-  function closePanel() {
-    openPanel = '';
+  function closeLanguagePanel() {
+    languagePanelOpen = false;
     panel.hidden = true;
     languageButton.setAttribute('aria-expanded', 'false');
-    themeButton.setAttribute('aria-expanded', 'false');
   }
 
-  function togglePanel(kind) {
-    if (openPanel === kind) {
-      closePanel();
+  function toggleLanguagePanel() {
+    if (languagePanelOpen) {
+      closeLanguagePanel();
       return;
     }
-    openPanel = kind;
-    languageButton.setAttribute('aria-expanded', String(kind === 'language'));
-    themeButton.setAttribute('aria-expanded', String(kind === 'theme'));
-    if (kind === 'language') renderLanguagePanel();
-    else renderThemePanel();
+    languagePanelOpen = true;
+    languageButton.setAttribute('aria-expanded', 'true');
+    renderLanguagePanel();
     panel.hidden = false;
     window.setTimeout(() => panel.querySelector('.pw-preview-utility-option')?.focus({ preventScroll:true }), 0);
   }
 
   function syncVisibility() {
     const visible = Boolean(home?.classList.contains('active') || done?.classList.contains('active'));
-    cluster.hidden = !visible;
-    if (!visible) closePanel();
+    utilities.hidden = !visible;
+    if (!visible) closeLanguagePanel();
   }
 
-  languageButton.addEventListener('click', () => togglePanel('language'));
-  themeButton.addEventListener('click', () => togglePanel('theme'));
+  languageButton.addEventListener('click', toggleLanguagePanel);
+  themeButton.addEventListener('click', toggleTheme);
 
   document.addEventListener('click', event => {
-    if (!openPanel) return;
-    if (cluster.contains(event.target) || panel.contains(event.target)) return;
-    closePanel();
+    if (!languagePanelOpen) return;
+    if (languageButton.contains(event.target) || panel.contains(event.target)) return;
+    closeLanguagePanel();
   });
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || !openPanel) return;
-    const returnTarget = openPanel === 'language' ? languageButton : themeButton;
-    closePanel();
-    returnTarget.focus({ preventScroll:true });
+    if (event.key !== 'Escape' || !languagePanelOpen) return;
+    closeLanguagePanel();
+    languageButton.focus({ preventScroll:true });
   });
 
   [home, practice, done, feedback].filter(Boolean).forEach(screen => {
@@ -435,8 +420,7 @@
     syncLabels();
     document.addEventListener('pw:locale-changed', () => {
       syncLabels();
-      if (openPanel === 'language') renderLanguagePanel();
-      if (openPanel === 'theme') renderThemePanel();
+      if (languagePanelOpen) renderLanguagePanel();
     });
   }).catch(() => {});
 
@@ -446,6 +430,7 @@
   window.PW_PREVIEW_UTILITIES = Object.freeze({
     get themePreference() { return themePreference; },
     get effectiveTheme() { return effectiveTheme(); },
-    setTheme: chooseTheme
+    setTheme: chooseTheme,
+    toggleTheme
   });
 })();
