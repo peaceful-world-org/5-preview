@@ -73,14 +73,24 @@ jobs:
         run: |
           set -euo pipefail
           test -s preview-design.js
+          test -s preview-l.js
           cat >> ai-guide.js <<'EOF'
 
-          /* Permanent preview environment: load the tiny design A/B lab without touching production. */
+          /* Permanent preview environment: load the design lab without touching production. */
           if (location.hostname === 'preview-5.peaceful-world.org') {
-            const designLab = document.createElement('script');
-            designLab.src = 'preview-design.js?v=1';
-            designLab.async = true;
-            document.head.appendChild(designLab);
+            const loadDesignLab = () => {
+              const designLab = document.createElement('script');
+              designLab.src = 'preview-design.js?v=2';
+              designLab.async = true;
+              document.head.appendChild(designLab);
+            };
+
+            const productionCandidate = document.createElement('script');
+            productionCandidate.src = 'preview-l.js?v=1';
+            productionCandidate.async = true;
+            productionCandidate.addEventListener('load', loadDesignLab, { once:true });
+            productionCandidate.addEventListener('error', loadDesignLab, { once:true });
+            document.head.appendChild(productionCandidate);
           }
           EOF
 
