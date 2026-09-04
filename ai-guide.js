@@ -122,3 +122,11 @@
 
   window.PW_I18N?.ready?.then(syncWidget).catch(() => {});
 })();
+
+/* Permanent preview environment: load the tiny design A/B lab without touching production. */
+if (location.hostname === 'preview-5.peaceful-world.org') {
+  const designLab = document.createElement('script');
+  designLab.src = 'preview-design.js?v=1';
+  designLab.async = true;
+  document.head.appendChild(designLab);
+}
