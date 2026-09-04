@@ -78,7 +78,7 @@ jobs:
           /* Permanent preview environment: test language/theme utilities without touching production. */
           if (location.hostname === 'preview-5.peaceful-world.org') {
             const utilities = document.createElement('script');
-            utilities.src = 'preview-utilities.js?v=1';
+            utilities.src = 'preview-utilities.js?v=2';
             utilities.async = true;
             document.head.appendChild(utilities);
           }
