@@ -127,7 +127,7 @@
 if (location.hostname === 'preview-5.peaceful-world.org') {
   const darkPolish = document.createElement('link');
   darkPolish.rel = 'stylesheet';
-  darkPolish.href = 'preview-dark-polish.css?v=1';
+  darkPolish.href = 'preview-dark-polish.css?v=2';
   document.head.appendChild(darkPolish);
 
   const utilities = document.createElement('script');
