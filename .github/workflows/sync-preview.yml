@@ -68,16 +68,15 @@ jobs:
             test -s "$file"
           done
 
-      - name: Preserve preview-only experiments
+      - name: Preserve preview-only utility experiments
         shell: bash
         run: |
           set -euo pipefail
           test -s preview-utilities.js
           test -s preview-dark-polish.css
-          test -s preview-roadmap.js
           cat >> ai-guide.js <<'EOF'
 
-          /* Permanent preview environment: test language/theme utilities and roadmap without touching production. */
+          /* Permanent preview environment: test language/theme utilities without touching production. */
           if (location.hostname === 'preview-5.peaceful-world.org') {
             const darkPolish = document.createElement('link');
             darkPolish.rel = 'stylesheet';
@@ -88,11 +87,6 @@ jobs:
             utilities.src = 'preview-utilities.js?v=2';
             utilities.async = true;
             document.head.appendChild(utilities);
-
-            const roadmap = document.createElement('script');
-            roadmap.src = 'preview-roadmap.js?v=2';
-            roadmap.async = true;
-            document.head.appendChild(roadmap);
           }
           EOF
 
