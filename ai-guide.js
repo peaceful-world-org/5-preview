@@ -123,7 +123,7 @@
   window.PW_I18N?.ready?.then(syncWidget).catch(() => {});
 })();
 
-/* Permanent preview environment: test language/theme utilities without touching production. */
+/* Permanent preview environment: test language/theme utilities and roadmap without touching production. */
 if (location.hostname === 'preview-5.peaceful-world.org') {
   const darkPolish = document.createElement('link');
   darkPolish.rel = 'stylesheet';
@@ -134,4 +134,9 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   utilities.src = 'preview-utilities.js?v=2';
   utilities.async = true;
   document.head.appendChild(utilities);
+
+  const roadmap = document.createElement('script');
+  roadmap.src = 'preview-roadmap.js?v=1';
+  roadmap.async = true;
+  document.head.appendChild(roadmap);
 }
