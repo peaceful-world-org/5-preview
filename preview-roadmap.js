@@ -26,7 +26,6 @@
         'Прощение',
         'Восстановление'
       ],
-      path: 'FULL BODY → FOCUS → CYCLES → САМОСТОЯТЕЛЬНО',
       link: 'Посмотреть планы развития →'
     },
     en: {
@@ -41,7 +40,6 @@
         'Forgiveness',
         'Repair'
       ],
-      path: 'FULL BODY → FOCUS → CYCLES → INDEPENDENT PRACTICE',
       link: 'See the development roadmap →'
     }
   };
@@ -67,10 +65,36 @@
   const style = document.createElement('style');
   style.id = 'pw-preview-roadmap-style';
   style.textContent = `
+    /* The completion screen used to be a vertically centered short poster.
+       The roadmap makes it a real document column: start at the top and scroll. */
+    #done.done-screen{
+      justify-content:flex-start!important;
+      overflow-y:auto!important;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+      scroll-padding-bottom:180px;
+    }
+    #done.done-screen .done-stack{
+      min-height:100%;
+      justify-content:flex-start!important;
+      padding-top:68px!important;
+      padding-bottom:72px!important;
+    }
+    #done.done-screen .done-kicker{
+      margin-bottom:18px;
+    }
+    #done.done-screen .done-title{
+      flex:0 0 auto;
+    }
+    #done.done-screen .done-subtitle{
+      flex:0 0 auto;
+    }
+
     .pw-preview-roadmap{
       width:min(100%,390px);
-      margin:25px auto 1px;
-      padding:18px 16px 17px;
+      flex:0 0 auto;
+      margin:22px auto 0;
+      padding:16px 14px 14px;
       border-top:1px solid var(--line);
       border-bottom:1px solid var(--line);
       text-align:center;
@@ -100,7 +124,7 @@
       line-height:1.48;
     }
     .pw-preview-roadmap-items{
-      margin:13px auto 0;
+      margin:12px auto 0;
       display:flex;
       flex-wrap:wrap;
       justify-content:center;
@@ -120,20 +144,12 @@
       line-height:1.2;
       white-space:nowrap;
     }
-    .pw-preview-roadmap-path{
-      margin:13px 0 0;
-      color:var(--muted);
-      font-size:.59rem;
-      font-weight:700;
-      line-height:1.45;
-      letter-spacing:.055em;
-    }
     .pw-preview-roadmap-link{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:40px;
-      margin-top:7px;
+      min-height:38px;
+      margin-top:8px;
       padding:0 8px;
       color:var(--accent-text);
       font-size:.79rem;
@@ -153,27 +169,42 @@
       background:#1D211E;
       border-color:var(--line);
     }
+
+    /* The first action follows the roadmap as a separate layer. */
     .pw-preview-roadmap + .done-action{
-      margin-top:17px!important;
+      margin-top:18px!important;
+    }
+
+    /* The AI Guide floats above the bottom edge. Give the last action enough
+       scroll runway to clear it instead of being covered by the guide button. */
+    @media(max-width:640px){
+      #done.done-screen .done-stack{
+        padding-top:62px!important;
+        padding-bottom:max(188px,calc(168px + env(safe-area-inset-bottom)))!important;
+      }
     }
     @media(max-width:420px){
       .pw-preview-roadmap{width:100%;padding-left:8px;padding-right:8px}
       .pw-preview-roadmap-chip{font-size:.69rem;padding-left:8px;padding-right:8px}
     }
     @media(max-height:720px){
-      .pw-preview-roadmap{margin-top:18px;padding-top:13px;padding-bottom:12px}
-      .pw-preview-roadmap-items{margin-top:10px;gap:5px}
-      .pw-preview-roadmap-path{margin-top:10px}
-      .pw-preview-roadmap-link{min-height:36px;margin-top:3px}
+      #done.done-screen .done-stack{padding-top:52px!important}
+      #done.done-screen .done-kicker{margin-bottom:14px}
+      #done.done-screen .done-title{font-size:clamp(2.35rem,10vw,3.75rem)}
+      #done.done-screen .done-subtitle{margin-top:15px}
+      .pw-preview-roadmap{margin-top:16px;padding-top:12px;padding-bottom:11px}
+      .pw-preview-roadmap-items{margin-top:9px;gap:5px}
+      .pw-preview-roadmap-link{min-height:34px;margin-top:5px}
       .pw-preview-roadmap + .done-action{margin-top:13px!important}
     }
     @media(orientation:landscape) and (max-height:520px){
+      #done.done-screen .done-stack{padding-top:42px!important}
+      #done.done-screen .done-title{font-size:2.2rem}
       .pw-preview-roadmap{margin-top:11px;padding-top:9px;padding-bottom:8px}
       .pw-preview-roadmap-body{font-size:.76rem}
       .pw-preview-roadmap-items{margin-top:7px}
       .pw-preview-roadmap-chip{min-height:24px;font-size:.65rem}
-      .pw-preview-roadmap-path{margin-top:7px}
-      .pw-preview-roadmap-link{min-height:30px;font-size:.72rem}
+      .pw-preview-roadmap-link{min-height:30px;font-size:.72rem;margin-top:3px}
     }
   `;
   document.head.appendChild(style);
@@ -195,15 +226,12 @@
   items.className = 'pw-preview-roadmap-items';
   items.setAttribute('aria-label', 'Planned focused practices');
 
-  const path = document.createElement('p');
-  path.className = 'pw-preview-roadmap-path';
-
   const link = document.createElement('a');
   link.className = 'pw-preview-roadmap-link';
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
 
-  roadmap.append(kicker, title, body, items, path, link);
+  roadmap.append(kicker, title, body, items, link);
   subtitle.insertAdjacentElement('afterend', roadmap);
 
   function render() {
@@ -211,7 +239,6 @@
     kicker.textContent = s.kicker;
     title.textContent = s.title;
     body.textContent = s.body;
-    path.textContent = s.path;
     link.textContent = s.link;
     link.href = articleUrl();
     roadmap.setAttribute('aria-label', localeCode() === 'ru' ? 'Планы развития практики' : 'Practice roadmap');
@@ -224,7 +251,18 @@
     }));
   }
 
+  function keepCompletionAtTop() {
+    if (!done.classList.contains('active')) return;
+    requestAnimationFrame(() => { done.scrollTop = 0; });
+  }
+
+  new MutationObserver(keepCompletionAtTop).observe(done, {
+    attributes:true,
+    attributeFilter:['class']
+  });
+
   render();
+  keepCompletionAtTop();
   window.PW_I18N?.ready?.then(render).catch(() => {});
   document.addEventListener('pw:locale-changed', render);
 })();
