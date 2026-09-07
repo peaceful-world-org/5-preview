@@ -136,7 +136,7 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   document.head.appendChild(utilities);
 
   const roadmap = document.createElement('script');
-  roadmap.src = 'preview-roadmap.js?v=1';
+  roadmap.src = 'preview-roadmap.js?v=2';
   roadmap.async = true;
   document.head.appendChild(roadmap);
 }
