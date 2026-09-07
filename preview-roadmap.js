@@ -30,17 +30,17 @@
     },
     en: {
       kicker: 'NEXT',
-      title: 'The practice will grow',
-      body: 'The foundation practice is available now. More focused five-minute practices are planned.',
+      title: 'More practices are planned',
+      body: 'This is the foundation practice. We plan to add focused five-minute practices.',
       items: [
         'Loving-kindness',
         'Compassion',
         'Working with anger',
         'Non-hostility',
         'Forgiveness',
-        'Repair'
+        'Repairing harm'
       ],
-      link: 'See the development roadmap →'
+      link: 'Read about future practices →'
     }
   };
 
@@ -65,30 +65,22 @@
   const style = document.createElement('style');
   style.id = 'pw-preview-roadmap-style';
   style.textContent = `
-    /* The completion screen used to be a vertically centered short poster.
-       The roadmap makes it a real document column: start at the top and scroll. */
     #done.done-screen{
       justify-content:flex-start!important;
       overflow-y:auto!important;
       -webkit-overflow-scrolling:touch;
       overscroll-behavior:contain;
-      scroll-padding-bottom:180px;
+      scroll-padding-bottom:240px;
     }
     #done.done-screen .done-stack{
       min-height:100%;
       justify-content:flex-start!important;
       padding-top:68px!important;
-      padding-bottom:72px!important;
+      padding-bottom:76px!important;
     }
-    #done.done-screen .done-kicker{
-      margin-bottom:18px;
-    }
-    #done.done-screen .done-title{
-      flex:0 0 auto;
-    }
-    #done.done-screen .done-subtitle{
-      flex:0 0 auto;
-    }
+    #done.done-screen .done-kicker{margin-bottom:18px}
+    #done.done-screen .done-title{flex:0 0 auto}
+    #done.done-screen .done-subtitle{flex:0 0 auto}
 
     .pw-preview-roadmap{
       width:min(100%,390px);
@@ -169,18 +161,12 @@
       background:#1D211E;
       border-color:var(--line);
     }
+    .pw-preview-roadmap + .done-action{margin-top:18px!important}
 
-    /* The first action follows the roadmap as a separate layer. */
-    .pw-preview-roadmap + .done-action{
-      margin-top:18px!important;
-    }
-
-    /* The AI Guide floats above the bottom edge. Give the last action enough
-       scroll runway to clear it instead of being covered by the guide button. */
     @media(max-width:640px){
       #done.done-screen .done-stack{
         padding-top:62px!important;
-        padding-bottom:max(188px,calc(168px + env(safe-area-inset-bottom)))!important;
+        padding-bottom:max(240px,calc(220px + env(safe-area-inset-bottom)))!important;
       }
     }
     @media(max-width:420px){
@@ -241,7 +227,7 @@
     body.textContent = s.body;
     link.textContent = s.link;
     link.href = articleUrl();
-    roadmap.setAttribute('aria-label', localeCode() === 'ru' ? 'Планы развития практики' : 'Practice roadmap');
+    roadmap.setAttribute('aria-label', localeCode() === 'ru' ? 'Планы развития практики' : 'Future practices');
     items.setAttribute('aria-label', localeCode() === 'ru' ? 'Планируемые отдельные практики' : 'Planned focused practices');
     items.replaceChildren(...s.items.map(label => {
       const chip = document.createElement('span');
