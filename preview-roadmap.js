@@ -70,13 +70,13 @@
       overflow-y:auto!important;
       -webkit-overflow-scrolling:touch;
       overscroll-behavior:contain;
-      scroll-padding-bottom:320px;
+      scroll-padding-bottom:132px;
     }
     #done.done-screen .done-stack{
-      min-height:100%;
+      min-height:calc(100% + 132px)!important;
       justify-content:flex-start!important;
       padding-top:68px!important;
-      padding-bottom:76px!important;
+      padding-bottom:132px!important;
     }
     #done.done-screen .done-kicker{margin-bottom:18px}
     #done.done-screen .done-title{flex:0 0 auto}
@@ -165,8 +165,9 @@
 
     @media(max-width:640px){
       #done.done-screen .done-stack{
+        min-height:calc(100% + 132px + env(safe-area-inset-bottom))!important;
         padding-top:62px!important;
-        padding-bottom:max(320px,calc(300px + env(safe-area-inset-bottom)))!important;
+        padding-bottom:max(132px,calc(112px + env(safe-area-inset-bottom)))!important;
       }
     }
     @media(max-width:420px){
