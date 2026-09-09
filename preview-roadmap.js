@@ -10,8 +10,9 @@
   if (query.get('roadmap') === 'off') return;
 
   const done = document.getElementById('done');
+  const doneStack = done?.querySelector('.done-stack');
   const subtitle = done?.querySelector('.done-subtitle');
-  if (!done || !subtitle) return;
+  if (!done || !doneStack || !subtitle) return;
 
   const STRINGS = {
     ru: {
@@ -70,13 +71,12 @@
       overflow-y:auto!important;
       -webkit-overflow-scrolling:touch;
       overscroll-behavior:contain;
-      scroll-padding-bottom:132px;
     }
     #done.done-screen .done-stack{
-      min-height:calc(100% + 132px)!important;
+      min-height:100%!important;
       justify-content:flex-start!important;
       padding-top:68px!important;
-      padding-bottom:132px!important;
+      padding-bottom:24px!important;
     }
     #done.done-screen .done-kicker{margin-bottom:18px}
     #done.done-screen .done-title{flex:0 0 auto}
@@ -163,11 +163,26 @@
     }
     .pw-preview-roadmap + .done-action{margin-top:18px!important}
 
+    /* A real flex child creates actual scrollable space. Padding/min-height alone
+       can be absorbed by sizing of the completion flex container on mobile. */
+    .pw-preview-scroll-runway{
+      display:block;
+      width:100%;
+      height:148px;
+      min-height:148px;
+      flex:0 0 148px;
+      pointer-events:none;
+    }
+
     @media(max-width:640px){
       #done.done-screen .done-stack{
-        min-height:calc(100% + 132px + env(safe-area-inset-bottom))!important;
         padding-top:62px!important;
-        padding-bottom:max(132px,calc(112px + env(safe-area-inset-bottom)))!important;
+        padding-bottom:24px!important;
+      }
+      .pw-preview-scroll-runway{
+        height:max(148px,calc(128px + env(safe-area-inset-bottom)));
+        min-height:max(148px,calc(128px + env(safe-area-inset-bottom)));
+        flex-basis:max(148px,calc(128px + env(safe-area-inset-bottom)));
       }
     }
     @media(max-width:420px){
@@ -220,6 +235,11 @@
 
   roadmap.append(kicker, title, body, items, link);
   subtitle.insertAdjacentElement('afterend', roadmap);
+
+  const scrollRunway = document.createElement('div');
+  scrollRunway.className = 'pw-preview-scroll-runway';
+  scrollRunway.setAttribute('aria-hidden', 'true');
+  doneStack.appendChild(scrollRunway);
 
   function render() {
     const s = strings();
