@@ -3,6 +3,7 @@
 
 (() => {
   const WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+  const WIDGET_DELAY_MS = 10 * 1000;
 
   const home = document.getElementById('home');
   const practice = document.getElementById('practice');
@@ -13,6 +14,9 @@
   let widgetLocale = '';
   let widgetScriptReady = Boolean(customElements.get('elevenlabs-convai'));
   let widgetScriptLoading = false;
+  let widgetRevealTimer = null;
+  let widgetSurface = '';
+  let widgetRevealReady = false;
 
   function localeConfig() {
     return window.PW_I18N?.config || null;
@@ -26,6 +30,12 @@
     return { ok:true, target:'same-tab' };
   }
 
+  function clearWidgetRevealTimer() {
+    if (widgetRevealTimer === null) return;
+    clearTimeout(widgetRevealTimer);
+    widgetRevealTimer = null;
+  }
+
   function unmountWidget() {
     if (!widget) return;
     try { widget.remove(); } catch (_) {}
@@ -35,6 +45,12 @@
 
   function shouldShowWidget() {
     return Boolean(home?.classList.contains('active') || done?.classList.contains('active'));
+  }
+
+  function activeWidgetSurface() {
+    if (home?.classList.contains('active')) return 'home';
+    if (done?.classList.contains('active')) return 'done';
+    return '';
   }
 
   function currentAgentId() {
@@ -65,7 +81,8 @@
     const agentId = currentAgentId();
     const activeLocale = window.PW_I18N?.locale || document.documentElement.lang || 'ru';
 
-    if (!agentId || !widgetScriptReady || !shouldShowWidget()) return;
+    if (!agentId || !widgetScriptReady || !widgetRevealReady || !shouldShowWidget()) return;
+    if (activeWidgetSurface() !== widgetSurface) return;
     if (widget && widgetLocale === activeLocale) return;
     if (widget) unmountWidget();
 
@@ -75,6 +92,7 @@
     widget = document.createElement('elevenlabs-convai');
     widgetLocale = activeLocale;
     widget.setAttribute('agent-id', agentId);
+    widget.setAttribute('language', activeLocale);
     widget.setAttribute('data-pw-ai-guide', '1');
     widget.setAttribute('data-pw-locale', activeLocale);
 
@@ -95,15 +113,38 @@
     document.body.appendChild(widget);
   }
 
+  function beginWidgetSurface(nextSurface) {
+    clearWidgetRevealTimer();
+    unmountWidget();
+    widgetSurface = nextSurface;
+    widgetRevealReady = false;
+
+    if (!nextSurface) return;
+
+    ensureWidgetScript();
+    widgetRevealTimer = setTimeout(() => {
+      widgetRevealTimer = null;
+      if (activeWidgetSurface() !== nextSurface) return;
+      widgetRevealReady = true;
+      syncWidget();
+    }, WIDGET_DELAY_MS);
+  }
+
   function syncWidget() {
-    if (practice?.classList.contains('active') || !shouldShowWidget() || !currentAgentId()) {
+    const nextSurface = practice?.classList.contains('active') ? '' : activeWidgetSurface();
+
+    if (nextSurface !== widgetSurface) {
+      beginWidgetSurface(nextSurface);
+      return;
+    }
+
+    if (!nextSurface || !currentAgentId()) {
       unmountWidget();
       return;
     }
-    if (!widgetScriptReady) {
-      ensureWidgetScript();
-      return;
-    }
+
+    ensureWidgetScript();
+    if (!widgetRevealReady || !widgetScriptReady) return;
     mountWidget();
   }
 
