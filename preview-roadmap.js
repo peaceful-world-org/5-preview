@@ -70,7 +70,7 @@
       overflow-y:auto!important;
       -webkit-overflow-scrolling:touch;
       overscroll-behavior:contain;
-      scroll-padding-bottom:240px;
+      scroll-padding-bottom:320px;
     }
     #done.done-screen .done-stack{
       min-height:100%;
@@ -166,7 +166,7 @@
     @media(max-width:640px){
       #done.done-screen .done-stack{
         padding-top:62px!important;
-        padding-bottom:max(240px,calc(220px + env(safe-area-inset-bottom)))!important;
+        padding-bottom:max(320px,calc(300px + env(safe-area-inset-bottom)))!important;
       }
     }
     @media(max-width:420px){
