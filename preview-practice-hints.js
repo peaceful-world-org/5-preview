@@ -135,6 +135,7 @@
   const hintText = overlay.querySelector('.pw-practice-hint-text');
   const continueBtn = overlay.querySelector('.pw-practice-hint-continue');
   let openStep = 0;
+  let pausedByHint = false;
 
   function currentLocale() {
     const code = String(window.PW_I18N?.locale || document.documentElement.lang || 'ru').toLowerCase().split('-')[0];
@@ -179,14 +180,20 @@
   }
 
   function pauseForHint() {
+    pausedByHint = false;
     if (isPausedNow()) return;
     try {
-      if (typeof pausePractice === 'function') pausePractice();
+      if (typeof pausePractice === 'function') {
+        pausePractice();
+        pausedByHint = isPausedNow();
+      }
     } catch (_) {}
   }
 
   function resumeAfterHint() {
-    if (!isPausedNow()) return;
+    const shouldResume = pausedByHint;
+    pausedByHint = false;
+    if (!shouldResume || !isPausedNow()) return;
     try {
       if (typeof pausePractice === 'function') pausePractice();
     } catch (_) {}
@@ -208,6 +215,7 @@
     overlay.hidden = true;
     openStep = 0;
     if (resume) resumeAfterHint();
+    else pausedByHint = false;
     if (practiceScreen.classList.contains('active')) {
       window.setTimeout(() => trigger.focus({ preventScroll:true }), 0);
     }
@@ -220,7 +228,13 @@
     continueBtn.focus({ preventScroll:true });
   });
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || overlay.hidden) return;
+    if (overlay.hidden) return;
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      continueBtn.focus({ preventScroll:true });
+      return;
+    }
+    if (event.key !== 'Escape') return;
     event.preventDefault();
     event.stopImmediatePropagation();
     closeHint(true);
