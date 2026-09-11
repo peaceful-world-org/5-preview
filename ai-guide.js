@@ -180,4 +180,9 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   roadmap.src = 'preview-roadmap.js?v=2';
   roadmap.async = true;
   document.head.appendChild(roadmap);
+
+  const practiceHints = document.createElement('script');
+  practiceHints.src = 'preview-practice-hints.js?v=1';
+  practiceHints.async = true;
+  document.head.appendChild(practiceHints);
 }
