@@ -185,4 +185,9 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   practiceHints.src = 'preview-practice-hints.js?v=1';
   practiceHints.async = true;
   document.head.appendChild(practiceHints);
+
+  const aiReportPreview = document.createElement('script');
+  aiReportPreview.src = 'preview-ai-report.js?v=1';
+  aiReportPreview.async = true;
+  document.head.appendChild(aiReportPreview);
 }
