@@ -186,8 +186,76 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   practiceHints.async = true;
   document.head.appendChild(practiceHints);
 
-  const aiReportPreview = document.createElement('script');
-  aiReportPreview.src = 'preview-ai-report.js?v=1';
-  aiReportPreview.async = true;
-  document.head.appendChild(aiReportPreview);
+  (() => {
+    const report = document.createElement('button');
+    report.type = 'button';
+    report.hidden = true;
+    report.style.cssText = 'position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(88px,calc(74px + env(safe-area-inset-bottom)));z-index:9999;border:0;background:transparent;padding:5px 7px;color:#68706b;font:500 11px/1.25 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.82';
+    document.body.appendChild(report);
+
+    const isRu = () => String(window.PW_I18N?.locale || document.documentElement.lang || 'ru').toLowerCase().startsWith('ru');
+
+    function updateCopy() {
+      report.textContent = isRu() ? 'Пожаловаться на ответ AI' : 'Report AI response';
+      report.setAttribute('aria-label', report.textContent);
+      const badge = document.querySelector('.build-version');
+      if (badge) {
+        badge.textContent = 'v0.18.52';
+        badge.setAttribute('aria-label', isRu() ? 'Версия 0.18.52' : 'Version 0.18.52');
+      }
+    }
+
+    function syncVisibility() {
+      const feedback = document.getElementById('feedback');
+      const practice = document.getElementById('practice');
+      report.hidden = !document.querySelector('elevenlabs-convai') || feedback?.classList.contains('active') || practice?.classList.contains('active');
+    }
+
+    function setReportMode() {
+      const kicker = document.querySelector('#feedbackHeader .feedback-kicker');
+      const title = document.getElementById('feedbackTitle');
+      const intro = document.querySelector('#feedbackHeader .feedback-intro');
+      const label = document.querySelector('label[for="feedbackText"]');
+      const textarea = document.getElementById('feedbackText');
+      const submit = document.getElementById('feedbackSubmit');
+      const optIn = document.getElementById('researchOptin')?.closest('label');
+      const optInNote = optIn?.nextElementSibling;
+
+      for (const node of [kicker,title,intro,label,submit]) node?.removeAttribute('data-i18n');
+      textarea?.removeAttribute('data-i18n-placeholder');
+
+      if (isRu()) {
+        if (kicker) kicker.textContent = 'ЖАЛОБА НА AI-ОТВЕТ';
+        if (title) title.textContent = 'Что было не так?';
+        if (intro) intro.textContent = 'Опиши проблемный или оскорбительный ответ AI. Сообщение получит Peaceful World и сможет проверить работу проводника.';
+        if (label) label.textContent = 'Что произошло';
+        if (textarea) textarea.placeholder = 'Кратко опиши ответ и почему он был проблемным…';
+        if (submit) submit.textContent = 'Отправить жалобу';
+      } else {
+        if (kicker) kicker.textContent = 'REPORT AI RESPONSE';
+        if (title) title.textContent = 'What went wrong?';
+        if (intro) intro.textContent = 'Describe a problematic or offensive AI response. Your report will be sent to Peaceful World for review.';
+        if (label) label.textContent = 'What happened';
+        if (textarea) textarea.placeholder = 'Briefly describe the response and why it was problematic…';
+        if (submit) submit.textContent = 'Send report';
+      }
+
+      if (optIn) optIn.hidden = true;
+      if (optInNote?.classList.contains('feedback-consent-copy')) optInNote.hidden = true;
+      document.getElementById('emailWrap')?.setAttribute('hidden', '');
+    }
+
+    report.addEventListener('click', () => {
+      document.getElementById('feedbackBtn')?.click();
+      requestAnimationFrame(() => {
+        setReportMode();
+        document.getElementById('feedbackTitle')?.focus({ preventScroll:true });
+      });
+    });
+
+    new MutationObserver(syncVisibility).observe(document.body, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
+    document.addEventListener('pw:locale-changed', updateCopy);
+    updateCopy();
+    syncVisibility();
+  })();
 }
