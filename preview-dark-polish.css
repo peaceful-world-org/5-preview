@@ -24,3 +24,35 @@ html[data-pw-theme="dark"] .dot.done::before{
 html[data-pw-theme="dark"] .dot.done::after{
   background:#566158;
 }
+
+/* Feedback voice card must stay in the same graphite palette as the rest of the form. */
+html[data-pw-theme="dark"] .feedback-audio,
+html[data-pw-theme="dark"] .audio-player-row,
+html[data-pw-theme="dark"] .audio-record-btn,
+html[data-pw-theme="dark"] .feedback-success-mark{
+  background:#1D211E!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+  box-shadow:none!important;
+}
+html[data-pw-theme="dark"] .feedback-audio.recorded{
+  background:#1D211E!important;
+}
+html[data-pw-theme="dark"] .feedback-audio.recording{
+  background:#241F1E!important;
+  border-color:#55413F!important;
+}
+html[data-pw-theme="dark"] .audio-record-btn.recording{
+  background:#302524!important;
+  border-color:#624845!important;
+  color:#D7AAA5!important;
+}
+html[data-pw-theme="dark"] .audio-record-btn[disabled]{
+  opacity:.72!important;
+  color:var(--muted)!important;
+}
+html[data-pw-theme="dark"] .audio-status,
+html[data-pw-theme="dark"] .audio-player-meta,
+html[data-pw-theme="dark"] .feedback-success p{
+  color:var(--muted)!important;
+}
