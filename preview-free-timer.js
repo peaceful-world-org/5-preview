@@ -13,6 +13,7 @@
 
   const COMPLETED_KEY = 'pw-completed-practices';
   const FREE_SECONDS_KEY = 'pw-free-practice-seconds-v1';
+  const FREE_SESSIONS_KEY = 'pw-free-practice-sessions-v1';
   const SESSION_KEY = 'pw-free-practice-session-v1';
   const TICKING_KEY = 'pw-ticking';
 
@@ -103,6 +104,18 @@
 
   function setFreeSeconds(value) {
     safeSet(FREE_SECONDS_KEY, Math.max(0, Math.floor(value)));
+  }
+
+  function freeSessions() {
+    return safeInt(safeGet(FREE_SESSIONS_KEY, '0'));
+  }
+
+  function setFreeSessions(value) {
+    safeSet(FREE_SESSIONS_KEY, Math.max(0, Math.floor(value)));
+  }
+
+  function totalTrainingCount() {
+    return completedPractices() + freeSessions();
   }
 
   function totalSeconds() {
@@ -323,7 +336,7 @@
 
   function renderOdometer() {
     const copy = s();
-    const count = completedPractices();
+    const count = totalTrainingCount();
     odometer.querySelector('.pw-time-odometer-label').textContent = copy.totalLabel;
     odometer.querySelector('.pw-time-odometer-value').textContent = formatTotal(totalSeconds());
     odometer.querySelector('.pw-time-odometer-count').textContent = '· ' + count + ' ' + practiceWord(count);
@@ -383,6 +396,7 @@
   function finishTimer() {
     if (running) pauseTimer();
     creditElapsedSeconds(elapsedMs);
+    if (elapsedMs > 0) setFreeSessions(freeSessions() + 1);
     elapsedMs = 0;
     creditedSeconds = 0;
     lastSoundSecond = 0;
