@@ -451,6 +451,7 @@
     if (running) pauseTimer();
     else saveSession();
   });
+  document.addEventListener('pw:progress-restored', renderOdometer);
   document.addEventListener('pw:locale-changed', renderCopy);
   document.addEventListener('pw:locale-ready', renderCopy);
   new MutationObserver(() => {
