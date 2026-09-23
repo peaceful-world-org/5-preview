@@ -80,7 +80,8 @@
 
   function completedPracticeMeta() {
     const rotation = window.PW_COPY_ROTATION;
-    const practiceNumber = rotation?.lastCompletedPracticeNumber;
+    const freeCompletion = window.PW_LAST_COMPLETION?.mode === 'free';
+    const practiceNumber = freeCompletion ? null : rotation?.lastCompletedPracticeNumber;
     return {
       version: rotation?.lastCompletedCopyVersion || rotation?.copyVersion || currentCopyVersion(),
       key: rotation?.lastCompletedSetId || rotation?.currentSetId || '',
