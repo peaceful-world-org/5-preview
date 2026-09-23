@@ -59,7 +59,9 @@
   };
 
   function localeCode() {
-    return String(window.PW_I18N?.locale || document.documentElement.lang || 'en')
+    // The document language reflects the locale that has actually been applied.
+    // Prefer it over PW_I18N's bootstrap default to avoid a mixed RU/EN first paint.
+    return String(document.documentElement.lang || window.PW_I18N?.locale || 'en')
       .toLowerCase().split('-')[0];
   }
 
@@ -451,6 +453,10 @@
   });
   document.addEventListener('pw:locale-changed', renderCopy);
   document.addEventListener('pw:locale-ready', renderCopy);
+  new MutationObserver(() => {
+    renderCopy();
+    renderTimer(elapsedMs);
+  }).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
   window.PW_I18N?.ready?.then(() => {
     renderCopy();
     renderTimer(elapsedMs);
