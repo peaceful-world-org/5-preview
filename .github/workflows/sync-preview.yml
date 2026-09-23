@@ -75,6 +75,7 @@ jobs:
           test -s preview-utilities.js
           test -s preview-dark-polish.css
           test -s preview-free-timer.js
+          test -s preview-progress-sync.js
           cat >> ai-guide.js <<'EOF'
 
           /* Permanent preview environment: test language/theme utilities without touching production. */
@@ -99,6 +100,17 @@ jobs:
             };
             if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadFreeTimer, loadFreeTimer);
             else loadFreeTimer();
+
+            const loadProgressSync = () => {
+              if (document.querySelector('script[data-pw-progress-sync-preview]')) return;
+              const progressSync = document.createElement('script');
+              progressSync.src = 'preview-progress-sync.js?v=1';
+              progressSync.async = true;
+              progressSync.dataset.pwProgressSyncPreview = '1';
+              document.head.appendChild(progressSync);
+            };
+            if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadProgressSync, loadProgressSync);
+            else loadProgressSync();
           }
           EOF
 
