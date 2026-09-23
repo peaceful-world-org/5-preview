@@ -8,7 +8,7 @@
 
   const SUPABASE_URL = 'https://iugzwpsjtciyetlomkjo.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable__HgsczIUlztttrf8O7m4Qg__ppii5Uc';
-  const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0';
+  const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
 
   const GUIDED_KEY = 'pw-completed-practices';
   const FREE_PRACTICES_KEY = 'pw-free-practice-sessions-v1';
@@ -111,49 +111,6 @@
     safeSet(FREE_SECONDS_KEY, safeInt(progress.free_seconds));
     document.dispatchEvent(new CustomEvent('pw:progress-restored', { detail:{ ...progress } }));
   }
-  function readSyncState() {
-    try {
-      const parsed = JSON.parse(safeGet(SYNC_STATE_KEY, '{}') || '{}');
-      return parsed && typeof parsed === 'object' ? parsed : {};
-    } catch (_) { return {}; }
-  }
-  function syncedFor(userId) {
-    return readSyncState().users?.[userId]?.synced || null;
-  }
-  function setSyncedFor(userId, progress) {
-    const state = readSyncState();
-    if (!state.users || typeof state.users !== 'object') state.users = {};
-    state.users[userId] = {
-      synced:{
-        guided_practices:safeInt(progress.guided_practices),
-        free_practices:safeInt(progress.free_practices),
-        guided_seconds:safeInt(progress.guided_seconds),
-        free_seconds:safeInt(progress.free_seconds)
-      },
-      updated_at:new Date().toISOString()
-    };
-    safeSet(SYNC_STATE_KEY, JSON.stringify(state));
-  }
-  function normalizeRow(row) {
-    const value = Array.isArray(row) ? row[0] : row;
-    return {
-      guided_practices:safeInt(value?.guided_practices),
-      free_practices:safeInt(value?.free_practices),
-      guided_seconds:safeInt(value?.guided_seconds),
-      free_seconds:safeInt(value?.free_seconds)
-    };
-  }
-  function deltaFrom(local, synced) {
-    const base = synced || { guided_practices:0, free_practices:0, guided_seconds:0, free_seconds:0 };
-    return {
-      guided_practices:Math.max(0, local.guided_practices - safeInt(base.guided_practices)),
-      free_practices:Math.max(0, local.free_practices - safeInt(base.free_practices)),
-      guided_seconds:Math.max(0, local.guided_seconds - safeInt(base.guided_seconds)),
-      free_seconds:Math.max(0, local.free_seconds - safeInt(base.free_seconds))
-    };
-  }
-  function anyDelta(delta) { return Object.values(delta).some(value => value > 0); }
-
   let client = null;
   let session = null;
   let pendingEmail = '';
@@ -202,33 +159,19 @@
       const supabaseClient = await ensureClient();
       const sessionResult = await supabaseClient.auth.getSession();
       session = sessionResult.data?.session || null;
-      const userId = session?.user?.id;
-      if (!userId) return null;
+      if (!session?.user?.id) return null;
 
       const local = localProgress();
-      const previous = syncedFor(userId);
-      const delta = deltaFrom(local, previous);
+      const merged = await supabaseClient.rpc('merge_practice_progress', {
+        p_guided_practices:local.guided_practices,
+        p_free_practices:local.free_practices,
+        p_guided_seconds:local.guided_seconds,
+        p_free_seconds:local.free_seconds
+      });
+      if (merged.error) throw merged.error;
 
-      const read = await supabaseClient.from('practice_progress')
-        .select('guided_practices,free_practices,guided_seconds,free_seconds')
-        .maybeSingle();
-      if (read.error) throw read.error;
-      let cloud = read.data ? normalizeRow(read.data) : null;
-
-      if (!cloud || anyDelta(delta)) {
-        const updated = await supabaseClient.rpc('apply_practice_progress_delta', {
-          p_guided_practices:delta.guided_practices,
-          p_free_practices:delta.free_practices,
-          p_guided_seconds:delta.guided_seconds,
-          p_free_seconds:delta.free_seconds
-        });
-        if (updated.error) throw updated.error;
-        cloud = normalizeRow(updated.data);
-      }
-
-      if (!cloud) cloud = local;
+      const cloud = normalizeRow(merged.data);
       writeLocalProgress(cloud);
-      setSyncedFor(userId, cloud);
       renderCard();
       return cloud;
     })().finally(() => { syncPromise = null; });
