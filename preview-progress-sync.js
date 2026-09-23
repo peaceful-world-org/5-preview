@@ -34,7 +34,7 @@
       emailPlaceholder:'name@example.com',
       sendCode:'Отправить код',
       codeTitle:'Проверь почту',
-      codeBody:'Введи 6-значный код из письма.',
+      codeBody:'Введи код из письма.',
       codeLabel:'Код',
       verify:'Подтвердить и сохранить',
       resend:'Отправить код ещё раз',
@@ -43,6 +43,7 @@
       syncing:'Сохраняем прогресс…',
       success:'Готово. Прогресс сохранён.',
       sendError:'Не удалось отправить код. Попробуй ещё раз.',
+      rateLimitError:'Подожди несколько секунд перед повторной отправкой кода.',
       verifyError:'Код не подошёл или истёк. Проверь его и попробуй ещё раз.',
       offline:'Для сохранения прогресса нужен интернет.',
       privacy:'Email используется только для входа и восстановления прогресса.',
@@ -62,7 +63,7 @@
       emailPlaceholder:'name@example.com',
       sendCode:'Send code',
       codeTitle:'Check your email',
-      codeBody:'Enter the 6-digit code from the email.',
+      codeBody:'Enter the code from the email.',
       codeLabel:'Code',
       verify:'Verify and save',
       resend:'Send code again',
@@ -71,6 +72,7 @@
       syncing:'Saving progress…',
       success:'Done. Your progress is saved.',
       sendError:'We could not send the code. Please try again.',
+      rateLimitError:'Please wait a few seconds before requesting another code.',
       verifyError:'That code is invalid or expired. Check it and try again.',
       offline:'An internet connection is required to save progress.',
       privacy:'Your email is used only for sign-in and progress recovery.',
@@ -110,6 +112,16 @@
     safeSet(FREE_PRACTICES_KEY, safeInt(progress.free_practices));
     safeSet(FREE_SECONDS_KEY, safeInt(progress.free_seconds));
     document.dispatchEvent(new CustomEvent('pw:progress-restored', { detail:{ ...progress } }));
+  }
+
+  function normalizeRow(row) {
+    const value = Array.isArray(row) ? row[0] : row;
+    return {
+      guided_practices:safeInt(value?.guided_practices),
+      free_practices:safeInt(value?.free_practices),
+      guided_seconds:safeInt(value?.guided_seconds),
+      free_seconds:safeInt(value?.free_seconds)
+    };
   }
   let client = null;
   let session = null;
@@ -210,7 +222,7 @@
   const modal = document.createElement('div');
   modal.className = 'pw-progress-modal';
   modal.hidden = true;
-  modal.innerHTML = '<section class="pw-progress-sheet" role="dialog" aria-modal="true" aria-labelledby="pwProgressTitle"><div class="pw-progress-sheet-head"><h2 id="pwProgressTitle" class="pw-progress-sheet-title"></h2><button type="button" class="pw-progress-close" aria-label="Close">×</button></div><p class="pw-progress-sheet-copy"></p><div class="pw-progress-email-step"><label class="pw-progress-field-label" for="pwProgressEmail"></label><input id="pwProgressEmail" class="pw-progress-input" type="email" inputmode="email" autocomplete="email" maxlength="320" /><button type="button" class="pw-progress-primary pw-progress-send"></button></div><div class="pw-progress-code-step" hidden><label class="pw-progress-field-label" for="pwProgressCode"></label><input id="pwProgressCode" class="pw-progress-input pw-progress-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" /><button type="button" class="pw-progress-primary pw-progress-verify"></button><button type="button" class="pw-progress-secondary pw-progress-resend"></button></div><p class="pw-progress-status" role="status" aria-live="polite"></p><p class="pw-progress-note"></p></section>';
+  modal.innerHTML = '<section class="pw-progress-sheet" role="dialog" aria-modal="true" aria-labelledby="pwProgressTitle"><div class="pw-progress-sheet-head"><h2 id="pwProgressTitle" class="pw-progress-sheet-title"></h2><button type="button" class="pw-progress-close" aria-label="Close">×</button></div><p class="pw-progress-sheet-copy"></p><div class="pw-progress-email-step"><label class="pw-progress-field-label" for="pwProgressEmail"></label><input id="pwProgressEmail" class="pw-progress-input" type="email" inputmode="email" autocomplete="email" maxlength="320" /><button type="button" class="pw-progress-primary pw-progress-send"></button></div><div class="pw-progress-code-step" hidden><label class="pw-progress-field-label" for="pwProgressCode"></label><input id="pwProgressCode" class="pw-progress-input pw-progress-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" pattern="[0-9]{6,10}" /><button type="button" class="pw-progress-primary pw-progress-verify"></button><button type="button" class="pw-progress-secondary pw-progress-resend"></button></div><p class="pw-progress-status" role="status" aria-live="polite"></p><p class="pw-progress-note"></p></section>';
   document.body.appendChild(modal);
 
   const saveBtn = card.querySelector('.pw-progress-save-btn');
@@ -284,7 +296,8 @@
       requestAnimationFrame(() => codeInput.focus({ preventScroll:true }));
     } catch (error) {
       console.warn('[5-preview] progress OTP send failed', error);
-      setStatus(s().sendError, true);
+      const isRateLimited = error?.status === 429 || error?.code === 'over_email_send_rate_limit';
+      setStatus(isRateLimited ? s().rateLimitError : s().sendError, true);
     } finally {
       sendBtn.disabled = false;
       sendBtn.textContent = s().sendCode;
@@ -292,8 +305,8 @@
   }
 
   async function verifyCode() {
-    const token = codeInput.value.replace(/\D/g, '').slice(0, 6);
-    if (token.length !== 6 || !pendingEmail) { setStatus(s().verifyError, true); return; }
+    const token = codeInput.value.replace(/\D/g, '').slice(0, 10);
+    if (token.length < 6 || token.length > 10 || !pendingEmail) { setStatus(s().verifyError, true); return; }
     verifyBtn.disabled = true;
     verifyBtn.textContent = s().verifying;
     setStatus();
@@ -329,7 +342,7 @@
     renderModal();
     requestAnimationFrame(() => emailInput.focus({ preventScroll:true }));
   });
-  codeInput.addEventListener('input', () => { codeInput.value = codeInput.value.replace(/\D/g, '').slice(0, 6); });
+  codeInput.addEventListener('input', () => { codeInput.value = codeInput.value.replace(/\D/g, '').slice(0, 10); });
 
   document.addEventListener('pw:locale-changed', () => { renderCard(); renderModal(); });
   document.addEventListener('pw:locale-ready', () => { renderCard(); renderModal(); });
