@@ -98,6 +98,7 @@
 
     widget.addEventListener('elevenlabs-convai:call', event => {
       if (!event?.detail?.config) return;
+      document.dispatchEvent(new CustomEvent('pw:ai-conversation-started'));
       event.detail.config.clientTools = {
         openPracticeArticle: () => openExternal(articleUrl),
         openPracticeNotebook: () => openExternal(notebookUrl),
@@ -199,6 +200,7 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
     document.body.appendChild(report);
 
     const isRu = () => String(window.PW_I18N?.locale || document.documentElement.lang || 'ru').toLowerCase().startsWith('ru');
+    let aiConversationStarted = false;
 
     function updateCopy() {
       report.textContent = isRu() ? 'Пожаловаться на ответ AI' : 'Report AI response';
@@ -213,7 +215,7 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
     function syncVisibility() {
       const feedback = document.getElementById('feedback');
       const practice = document.getElementById('practice');
-      report.hidden = !document.querySelector('elevenlabs-convai') || feedback?.classList.contains('active') || practice?.classList.contains('active');
+      report.hidden = !aiConversationStarted || !document.querySelector('elevenlabs-convai') || feedback?.classList.contains('active') || practice?.classList.contains('active');
     }
 
     function setReportMode() {
@@ -259,6 +261,10 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
     });
 
     new MutationObserver(syncVisibility).observe(document.body, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
+    document.addEventListener('pw:ai-conversation-started', () => {
+      aiConversationStarted = true;
+      syncVisibility();
+    });
     document.addEventListener('pw:locale-changed', updateCopy);
     updateCopy();
     syncVisibility();
