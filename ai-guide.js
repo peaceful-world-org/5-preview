@@ -187,10 +187,16 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   practiceHints.async = true;
   document.head.appendChild(practiceHints);
 
-  const freeTimer = document.createElement('script');
-  freeTimer.src = 'preview-free-timer.js?v=2';
-  freeTimer.async = true;
-  document.head.appendChild(freeTimer);
+  const loadFreeTimer = () => {
+    if (document.querySelector('script[data-pw-free-timer-preview]')) return;
+    const freeTimer = document.createElement('script');
+    freeTimer.src = 'preview-free-timer.js?v=3';
+    freeTimer.async = true;
+    freeTimer.dataset.pwFreeTimerPreview = '1';
+    document.head.appendChild(freeTimer);
+  };
+  if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadFreeTimer, loadFreeTimer);
+  else loadFreeTimer();
 
   (() => {
     const report = document.createElement('button');
