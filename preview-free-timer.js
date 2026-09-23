@@ -421,6 +421,11 @@
     creditElapsedSeconds(elapsedMs);
     if (elapsedMs > 0) {
       setFreeSessions(freeSessions() + 1);
+      window.PW_LAST_COMPLETION = {
+        mode: 'free',
+        durationSeconds: Math.floor(elapsedMs / 1000),
+        freePracticeNumber: freeSessions()
+      };
       playBoundarySignal();
     }
     elapsedMs = 0;
@@ -445,6 +450,9 @@
     else saveSession();
   });
   document.addEventListener('pw:locale-changed', renderCopy);
+  document.addEventListener('pw:practice-started', () => {
+    window.PW_LAST_COMPLETION = null;
+  });
 
   // The existing guided-practice counter changes only after a completed practice.
   // Re-render whenever the user comes back to Home or Done.
