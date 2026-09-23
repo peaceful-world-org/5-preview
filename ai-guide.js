@@ -186,6 +186,11 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   practiceHints.async = true;
   document.head.appendChild(practiceHints);
 
+  const freeTimer = document.createElement('script');
+  freeTimer.src = 'preview-free-timer.js?v=1';
+  freeTimer.async = true;
+  document.head.appendChild(freeTimer);
+
   (() => {
     const report = document.createElement('button');
     report.type = 'button';
