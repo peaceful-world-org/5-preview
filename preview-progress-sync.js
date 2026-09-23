@@ -47,7 +47,8 @@
       verifyError:'Код не подошёл или истёк. Проверь его и попробуй ещё раз.',
       offline:'Для сохранения прогресса нужен интернет.',
       privacy:'Email используется только для входа и восстановления прогресса.',
-      localNote:'Без входа прогресс продолжит храниться только на этом устройстве.'
+      localNote:'Без входа прогресс продолжит храниться только на этом устройстве.',
+      restore:'Восстановить прогресс'
     },
     en: {
       saveTitle:'Save progress',
@@ -76,7 +77,8 @@
       verifyError:'That code is invalid or expired. Check it and try again.',
       offline:'An internet connection is required to save progress.',
       privacy:'Your email is used only for sign-in and progress recovery.',
-      localNote:'Without sign-in, progress continues to be stored only on this device.'
+      localNote:'Without sign-in, progress continues to be stored only on this device.',
+      restore:'Restore progress'
     }
   };
 
@@ -219,6 +221,16 @@
   card.innerHTML = '<p class="pw-progress-save-title"></p><p class="pw-progress-save-body"></p><button type="button" class="pw-progress-save-btn"></button>';
   feedbackBtn.insertAdjacentElement('beforebegin', card);
 
+  const homeRestoreWrap = document.createElement('p');
+  homeRestoreWrap.className = 'pw-progress-home';
+  const homeRestoreBtn = document.createElement('button');
+  homeRestoreBtn.type = 'button';
+  homeRestoreBtn.className = 'pw-progress-home-btn';
+  homeRestoreWrap.appendChild(homeRestoreBtn);
+  const homePrivacyRow = document.querySelector('#home .home-privacy-row');
+  if (homePrivacyRow) homePrivacyRow.insertAdjacentElement('beforebegin', homeRestoreWrap);
+  else homeRestoreWrap.hidden = true;
+
   const modal = document.createElement('div');
   modal.className = 'pw-progress-modal';
   modal.hidden = true;
@@ -253,6 +265,8 @@
     card.querySelector('.pw-progress-save-body').textContent = signedIn ? copyText.savedBody : copyText.saveBody;
     saveBtn.textContent = copyText.saveButton;
     saveBtn.setAttribute('aria-label', copyText.open);
+    homeRestoreBtn.textContent = copyText.restore;
+    homeRestoreBtn.hidden = signedIn;
   }
   function renderModal() {
     const copyText = s();
@@ -330,6 +344,7 @@
   }
 
   saveBtn.addEventListener('click', openModal);
+  homeRestoreBtn.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !modal.hidden) closeModal(); });
