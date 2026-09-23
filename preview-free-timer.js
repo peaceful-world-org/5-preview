@@ -450,6 +450,11 @@
     else saveSession();
   });
   document.addEventListener('pw:locale-changed', renderCopy);
+  document.addEventListener('pw:locale-ready', renderCopy);
+  window.PW_I18N?.ready?.then(() => {
+    renderCopy();
+    renderTimer(elapsedMs);
+  }).catch(() => {});
   document.addEventListener('pw:practice-started', () => {
     window.PW_LAST_COMPLETION = null;
   });
