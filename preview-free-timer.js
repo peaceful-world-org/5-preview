@@ -128,9 +128,13 @@
     const total = Math.max(0, Math.floor(seconds));
     const hours = Math.floor(total / 3600);
     const minutes = Math.floor((total % 3600) / 60);
-    if (hours > 0) return hours + ' ч ' + String(minutes).padStart(2, '0') + ' мин';
-    if (minutes > 0) return minutes + ' мин';
-    return total + ' сек';
+    const ru = localeCode() === 'ru';
+    const hourLabel = ru ? 'ч' : 'h';
+    const minuteLabel = ru ? 'мин' : 'min';
+    const secondLabel = ru ? 'сек' : 'sec';
+    if (hours > 0) return hours + ' ' + hourLabel + ' ' + String(minutes).padStart(2, '0') + ' ' + minuteLabel;
+    if (minutes > 0) return minutes + ' ' + minuteLabel;
+    return total + ' ' + secondLabel;
   }
 
   function formatStopwatch(seconds) {
@@ -311,6 +315,11 @@
     soundBtn.setAttribute('aria-label', on ? copy.tickingOn : copy.tickingOff);
   }
 
+  function playBoundarySignal() {
+    try { window.PW_HAPTIC_TEST?.single?.(); } catch (_) {}
+    try { void window.PW_SOUND_TEST?.boundaryCue?.(); } catch (_) {}
+  }
+
   function maybeTick(second) {
     if (!running || !isTicking() || second <= lastSoundSecond || second <= 0) return;
     lastSoundSecond = second;
@@ -372,10 +381,12 @@
 
   function startTimer() {
     if (running) return;
+    const firstStart = elapsedMs <= 0;
     running = true;
     runStartedAt = performance.now();
     lastSoundSecond = Math.floor(elapsedMs / 1000);
     primaryBtn.textContent = s().pause;
+    if (firstStart) playBoundarySignal();
     void acquireWakeLock();
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(loop);
@@ -393,16 +404,31 @@
     primaryBtn.textContent = elapsedMs > 0 ? s().resume : s().start;
   }
 
+  function showCompletion() {
+    const doneScreen = document.getElementById('done');
+    if (!doneScreen) {
+      showHome();
+      return;
+    }
+    document.querySelectorAll('.screen.active').forEach(node => node.classList.remove('active'));
+    doneScreen.classList.add('active');
+    doneScreen.scrollTop = 0;
+    requestAnimationFrame(() => document.getElementById('doneTitle')?.focus({ preventScroll:true }));
+  }
+
   function finishTimer() {
     if (running) pauseTimer();
     creditElapsedSeconds(elapsedMs);
-    if (elapsedMs > 0) setFreeSessions(freeSessions() + 1);
+    if (elapsedMs > 0) {
+      setFreeSessions(freeSessions() + 1);
+      playBoundarySignal();
+    }
     elapsedMs = 0;
     creditedSeconds = 0;
     lastSoundSecond = 0;
     safeRemove(SESSION_KEY);
     renderOdometer();
-    showHome();
+    showCompletion();
   }
 
   entry.addEventListener('click', showFreeTimer);
