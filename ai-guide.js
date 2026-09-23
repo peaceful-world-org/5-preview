@@ -188,7 +188,7 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   document.head.appendChild(practiceHints);
 
   const freeTimer = document.createElement('script');
-  freeTimer.src = 'preview-free-timer.js?v=1';
+  freeTimer.src = 'preview-free-timer.js?v=2';
   freeTimer.async = true;
   document.head.appendChild(freeTimer);
 
