@@ -198,6 +198,17 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadFreeTimer, loadFreeTimer);
   else loadFreeTimer();
 
+  const loadProgressSync = () => {
+    if (document.querySelector('script[data-pw-progress-sync-preview]')) return;
+    const progressSync = document.createElement('script');
+    progressSync.src = 'preview-progress-sync.js?v=1';
+    progressSync.async = true;
+    progressSync.dataset.pwProgressSyncPreview = '1';
+    document.head.appendChild(progressSync);
+  };
+  if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadProgressSync, loadProgressSync);
+  else loadProgressSync();
+
   (() => {
     const report = document.createElement('button');
     report.type = 'button';
