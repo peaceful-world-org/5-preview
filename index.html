@@ -10,6 +10,25 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="5" />
+  <script>
+    (() => {
+      const syncViewportHeight = () => {
+        const height = window.visualViewport?.height || window.innerHeight;
+        if (!Number.isFinite(height) || height <= 0) return;
+        document.documentElement.style.setProperty('--pw-viewport-height', `${Math.round(height)}px`);
+      };
+      syncViewportHeight();
+      requestAnimationFrame(syncViewportHeight);
+      setTimeout(syncViewportHeight, 120);
+      window.addEventListener('pageshow', syncViewportHeight, { passive:true });
+      window.addEventListener('resize', syncViewportHeight, { passive:true });
+      window.addEventListener('orientationchange', () => setTimeout(syncViewportHeight, 120), { passive:true });
+      window.visualViewport?.addEventListener('resize', syncViewportHeight, { passive:true });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) requestAnimationFrame(syncViewportHeight);
+      });
+    })();
+  </script>
   <link rel="manifest" href="manifest.webmanifest?v=0.18.51&_ship=tut5d23" />
   <link rel="icon" href="icon.svg?v=0.18.51&_ship=tut5d23" type="image/svg+xml" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png?_ship=tut5d23" />
