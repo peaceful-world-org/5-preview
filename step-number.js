@@ -1,7 +1,7 @@
 /* 5 by Peaceful World — small UI enhancements */
 'use strict';
 
-window.PW_BUILD_VERSION = 'v0.18.51-alpha';
+window.PW_BUILD_VERSION = 'v0.18.55';
 
 var i18nText = (key, fallback, vars) =>
   window.PW_I18N?.text?.(key, fallback, vars) ?? fallback;
@@ -9,95 +9,232 @@ var i18nText = (key, fallback, vars) =>
 (() => {
   const badge = document.querySelector('.build-version');
   if (!badge) return;
-  badge.textContent = 'ALPHA · v0.18.51';
-  const sync = () => badge.setAttribute('aria-label', i18nText('build.aria', 'Альфа-версия 0.18.51'));
+  badge.textContent = 'v0.18.55';
+  const sync = () => badge.setAttribute('aria-label', i18nText('build.aria', 'Версия 0.18.55'));
   sync();
   document.addEventListener('pw:locale-changed', sync);
 })();
 
 (() => {
+  const THEME_KEY = 'pw-theme';
+  const LIGHT_BG = '#F9F8F4';
+  const DARK_BG = '#171A18';
+  const root = document.documentElement;
   const home = document.getElementById('home');
-  const host = home?.querySelector('.home-stack');
-  if (!home || !host || !window.PW_I18N) return;
+  const practice = document.getElementById('practice');
+  const done = document.getElementById('done');
+  const feedback = document.getElementById('feedback');
+  const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)');
+  if (!home || !practice || !done || !window.PW_I18N) return;
 
-  const switcher = document.createElement('nav');
-  switcher.id = 'localeSwitcher';
-  switcher.className = 'locale-switcher';
-  switcher.hidden = true;
+  function safeGet(key) {
+    try { return localStorage.getItem(key); } catch (_) { return null; }
+  }
 
-  const style = document.createElement('style');
-  style.textContent = `
-    .locale-switcher{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:3px;color:var(--muted)}
-    .locale-switcher[hidden]{display:none!important}
-    .locale-switcher button{border:0;background:transparent;color:var(--muted);padding:4px 6px;font:inherit;font-size:.76rem;line-height:1.2;cursor:pointer;text-decoration:none;transition:color .18s ease,opacity .18s ease}
-    .locale-switcher button:hover{color:var(--text)}
-    .locale-switcher button[aria-pressed="true"]{color:var(--text);font-weight:650}
-    .locale-switcher button:disabled{cursor:default;opacity:.55}
-    .locale-switcher .locale-separator{font-size:.72rem;opacity:.55;user-select:none}
-    .locale-switcher button:focus-visible{outline:2px solid #67766A;outline-offset:2px;border-radius:7px}
-  `;
-  document.head.appendChild(style);
+  function safeSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (_) {}
+  }
 
-  const privacyRow = host.querySelector('.home-privacy-row');
-  if (privacyRow) privacyRow.before(switcher);
-  else host.appendChild(switcher);
+  function validTheme(value) {
+    return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
+  }
+
+  let themePreference = validTheme(safeGet(THEME_KEY) || root.dataset.pwThemePreference || 'system');
+  let languagePanelOpen = false;
+
+  const utilities = document.createElement('div');
+  utilities.className = 'pw-utilities';
+
+  const languageButton = document.createElement('button');
+  languageButton.type = 'button';
+  languageButton.className = 'pw-utility-button pw-language-button';
+  languageButton.setAttribute('aria-haspopup', 'menu');
+  languageButton.setAttribute('aria-expanded', 'false');
+  languageButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.8 12h16.4M12 3.5c2.15 2.35 3.25 5.18 3.25 8.5S14.15 18.15 12 20.5M12 3.5C9.85 5.85 8.75 8.68 8.75 12s1.1 6.15 3.25 8.5"></path></svg>';
+
+  const themeButton = document.createElement('button');
+  themeButton.type = 'button';
+  themeButton.className = 'pw-utility-button pw-theme-button';
+
+  const panel = document.createElement('div');
+  panel.className = 'pw-language-panel';
+  panel.setAttribute('role', 'menu');
+  panel.hidden = true;
+
+  utilities.append(languageButton, themeButton);
+  document.body.append(utilities, panel);
+
+  const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.25 5.25l1.45 1.45M17.3 17.3l1.45 1.45M18.75 5.25 17.3 6.7M6.7 17.3l-1.45 1.45"></path></svg>';
+  const moonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.2 15.15A7.7 7.7 0 0 1 8.85 4.8 7.9 7.9 0 1 0 19.2 15.15Z"></path></svg>';
+
+  function effectiveTheme() {
+    if (themePreference === 'system') return systemDark?.matches ? 'dark' : 'light';
+    return themePreference;
+  }
+
+  function syncThemeColor(theme) {
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    meta.content = theme === 'dark' ? DARK_BG : LIGHT_BG;
+  }
 
   function availableLocales() {
     const registry = window.PW_I18N.registry;
-    const preview = window.PW_I18N.isPreview;
     return Object.entries(registry?.locales || {})
-      .filter(([, config]) => Boolean(config?.released || preview));
+      .filter(([, config]) => config?.released === true);
   }
 
-  function render() {
-    const available = availableLocales();
-    switcher.hidden = available.length < 2;
-    if (switcher.hidden) {
-      switcher.replaceChildren();
-      return;
+  function syncLabels() {
+    const current = effectiveTheme();
+    const languageLabel = i18nText('locale.switcher.aria', 'Выбрать язык');
+    const themeLabel = current === 'dark'
+      ? i18nText('theme.switch.light.aria', 'Переключить на светлый режим')
+      : i18nText('theme.switch.dark.aria', 'Переключить на тёмный режим');
+    languageButton.setAttribute('aria-label', languageLabel);
+    languageButton.title = languageLabel;
+    themeButton.setAttribute('aria-label', themeLabel);
+    themeButton.title = themeLabel;
+    languageButton.hidden = availableLocales().length < 2;
+  }
+
+  function applyTheme() {
+    const theme = effectiveTheme();
+    root.dataset.pwTheme = theme;
+    root.dataset.pwThemePreference = themePreference;
+    root.style.colorScheme = theme;
+    syncThemeColor(theme);
+    themeButton.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+    syncLabels();
+  }
+
+  function chooseTheme(value) {
+    themePreference = validTheme(value);
+    if (themePreference === 'system') {
+      try { localStorage.removeItem(THEME_KEY); } catch (_) {}
+    } else {
+      safeSet(THEME_KEY, themePreference);
     }
+    applyTheme();
+  }
 
-    switcher.setAttribute('aria-label', i18nText('locale.switcher.aria', 'Выбрать язык'));
+  function toggleTheme() {
+    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    closeLanguagePanel();
+    chooseTheme(next);
+  }
+
+  function languageOption(label, selected, onClick) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pw-language-option';
+    button.setAttribute('role', 'menuitemradio');
+    button.setAttribute('aria-checked', String(selected));
+    const text = document.createElement('span');
+    text.textContent = label;
+    const check = document.createElement('span');
+    check.className = 'pw-language-check';
+    check.setAttribute('aria-hidden', 'true');
+    check.textContent = selected ? '✓' : '';
+    button.append(text, check);
+    button.addEventListener('click', onClick);
+    return button;
+  }
+
+  function renderLanguagePanel() {
     const fragment = document.createDocumentFragment();
+    const title = document.createElement('p');
+    title.className = 'pw-language-title';
+    title.textContent = i18nText('locale.switcher.aria', 'Выбрать язык');
+    fragment.appendChild(title);
 
-    available.forEach(([code, config], index) => {
-      if (index) {
-        const separator = document.createElement('span');
-        separator.className = 'locale-separator';
-        separator.setAttribute('aria-hidden', 'true');
-        separator.textContent = '·';
-        fragment.appendChild(separator);
-      }
-
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.dataset.locale = code;
-      button.textContent = config.label || code;
-      button.setAttribute('aria-pressed', String(code === window.PW_I18N.locale));
-      button.addEventListener('click', async () => {
-        if (code === window.PW_I18N.locale || switcher.dataset.busy === '1') return;
-        switcher.dataset.busy = '1';
-        switcher.querySelectorAll('button').forEach(item => { item.disabled = true; });
+    availableLocales().forEach(([code, config]) => {
+      fragment.appendChild(languageOption(config.label || code, code === window.PW_I18N.locale, async () => {
+        if (code === window.PW_I18N.locale) {
+          closeLanguagePanel();
+          return;
+        }
         try {
           await window.PW_I18N.setLocale(code, {
-            source: config.released ? 'explicit' : 'preview',
-            allowUnreleased: !config.released
+            source: 'explicit',
+            allowUnreleased: false
           });
         } catch (error) {
           console.warn('[5][i18n] locale switch failed', error);
-        } finally {
-          delete switcher.dataset.busy;
-          render();
         }
-      });
-      fragment.appendChild(button);
+        closeLanguagePanel();
+        syncLabels();
+      }));
     });
-
-    switcher.replaceChildren(fragment);
+    panel.replaceChildren(fragment);
   }
 
-  window.PW_I18N.ready.then(render).catch(() => {});
-  document.addEventListener('pw:locale-changed', render);
+  function closeLanguagePanel() {
+    languagePanelOpen = false;
+    panel.hidden = true;
+    languageButton.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleLanguagePanel() {
+    if (languagePanelOpen) {
+      closeLanguagePanel();
+      return;
+    }
+    languagePanelOpen = true;
+    languageButton.setAttribute('aria-expanded', 'true');
+    renderLanguagePanel();
+    panel.hidden = false;
+    window.setTimeout(() => panel.querySelector('.pw-language-option')?.focus({ preventScroll:true }), 0);
+  }
+
+  function syncVisibility() {
+    const visible = Boolean(home.classList.contains('active') || done.classList.contains('active'));
+    utilities.hidden = !visible;
+    if (!visible) closeLanguagePanel();
+  }
+
+  languageButton.addEventListener('click', toggleLanguagePanel);
+  themeButton.addEventListener('click', toggleTheme);
+
+  document.addEventListener('click', event => {
+    if (!languagePanelOpen) return;
+    if (languageButton.contains(event.target) || panel.contains(event.target)) return;
+    closeLanguagePanel();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !languagePanelOpen) return;
+    closeLanguagePanel();
+    languageButton.focus({ preventScroll:true });
+  });
+
+  [home, practice, done, feedback].filter(Boolean).forEach(screen => {
+    new MutationObserver(syncVisibility).observe(screen, { attributes:true, attributeFilter:['class'] });
+  });
+
+  systemDark?.addEventListener?.('change', () => {
+    if (themePreference === 'system') applyTheme();
+  });
+
+  window.PW_I18N.ready.then(() => {
+    syncLabels();
+    document.addEventListener('pw:locale-changed', () => {
+      syncLabels();
+      if (languagePanelOpen) renderLanguagePanel();
+    });
+  }).catch(() => {});
+
+  applyTheme();
+  syncVisibility();
+
+  window.PW_THEME = Object.freeze({
+    get preference() { return themePreference; },
+    get effective() { return effectiveTheme(); },
+    set: chooseTheme,
+    toggle: toggleTheme
+  });
 })();
 
 (() => {
