@@ -428,7 +428,7 @@
     hintOverlay.hidden = true;
     const shouldResume = resume && hintPausedTimer;
     hintPausedTimer = false;
-    if (shouldResume && !running) startTimer();
+    if (shouldResume && !running) startTimer({ resumed:true });
     else if (screen.classList.contains('active')) {
       window.setTimeout(() => hintBtn.focus({ preventScroll:true }), 0);
     }
@@ -462,9 +462,9 @@
     renderOdometer();
   }
 
-  function startTimer() {
+  function startTimer({ resumed = false } = {}) {
     if (running) return;
-    const firstStart = elapsedMs <= 0;
+    const firstStart = !resumed && elapsedMs <= 0;
     running = true;
     runStartedAt = performance.now();
     lastSoundSecond = Math.floor(elapsedMs / 1000);
