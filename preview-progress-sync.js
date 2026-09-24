@@ -1,4 +1,4 @@
-/* 5-preview — optional email backup for practice progress. Preview only. */
+/* 5-preview — optional passwordless progress backup and restore. */
 'use strict';
 
 (() => {
@@ -8,12 +8,12 @@
 
   const SUPABASE_URL = 'https://iugzwpsjtciyetlomkjo.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable__HgsczIUlztttrf8O7m4Qg__ppii5Uc';
-  const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1';
 
   const GUIDED_KEY = 'pw-completed-practices';
   const FREE_PRACTICES_KEY = 'pw-free-practice-sessions-v1';
   const FREE_SECONDS_KEY = 'pw-free-practice-seconds-v1';
-  const SYNC_STATE_KEY = 'pw-progress-sync-state-v1';
+  const AUTH_STORAGE_KEY = 'pw-progress-auth-v1';
 
   const done = document.getElementById('done');
   const feedbackBtn = document.getElementById('feedbackBtn');
@@ -48,7 +48,16 @@
       offline:'Для сохранения прогресса нужен интернет.',
       privacy:'Email используется только для входа и восстановления прогресса.',
       localNote:'Без входа прогресс продолжит храниться только на этом устройстве.',
-      restore:'Восстановить прогресс'
+      restore:'Восстановить прогресс',
+      manage:'Управление прогрессом',
+      manageTitle:'Сохранённый прогресс',
+      manageBody:'Облачная копия привязана к {email}. Прогресс на этом устройстве продолжает храниться локально.',
+      deleteAccount:'Удалить облачный прогресс и аккаунт',
+      deleteConfirm:'Удалить облачную копию прогресса и аккаунт входа? Локальный прогресс на этом устройстве останется.',
+      deleting:'Удаляем…',
+      deleted:'Облачный прогресс и аккаунт удалены. Локальный прогресс остался на устройстве.',
+      deleteError:'Не удалось удалить аккаунт. Попробуй ещё раз.',
+      manageNote:'Удаление касается только облачной копии и аккаунта входа. Локальные данные можно удалить отдельно, очистив данные приложения.'
     },
     en: {
       saveTitle:'Save progress',
@@ -78,7 +87,16 @@
       offline:'An internet connection is required to save progress.',
       privacy:'Your email is used only for sign-in and progress recovery.',
       localNote:'Without sign-in, progress continues to be stored only on this device.',
-      restore:'Restore progress'
+      restore:'Restore progress',
+      manage:'Manage progress',
+      manageTitle:'Saved progress',
+      manageBody:'The cloud copy is linked to {email}. Progress on this device continues to be stored locally.',
+      deleteAccount:'Delete cloud progress and account',
+      deleteConfirm:'Delete the cloud copy of your progress and the sign-in account? Local progress on this device will remain.',
+      deleting:'Deleting…',
+      deleted:'Cloud progress and account deleted. Local progress remains on this device.',
+      deleteError:'We could not delete the account. Please try again.',
+      manageNote:'Deletion affects only the cloud copy and sign-in account. You can remove local data separately by clearing the app data.'
     }
   };
 
@@ -94,6 +112,10 @@
   }
   function safeSet(key, value) {
     try { localStorage.setItem(key, String(value)); return true; }
+    catch (_) { return false; }
+  }
+  function safeRemove(key) {
+    try { localStorage.removeItem(key); return true; }
     catch (_) { return false; }
   }
   function safeInt(value) {
@@ -154,7 +176,7 @@
         persistSession:true,
         autoRefreshToken:true,
         detectSessionInUrl:false,
-        storageKey:'pw-progress-auth-v1'
+        storageKey:AUTH_STORAGE_KEY
       }
     });
     const current = await client.auth.getSession();
@@ -199,7 +221,7 @@
     '.pw-progress-save-title{margin:0;font-size:.91rem;font-weight:700;color:var(--ink)}',
     '.pw-progress-save-body{margin:6px auto 0;max-width:340px;font-size:.76rem;line-height:1.48;color:var(--muted)}',
     '.pw-progress-save-btn{min-height:40px;margin-top:10px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);font-size:.79rem;font-weight:650;cursor:pointer}',
-    '.pw-progress-save.is-saved{background:transparent}.pw-progress-save.is-saved .pw-progress-save-title{color:var(--accent-text)}.pw-progress-save.is-saved .pw-progress-save-btn{display:none}',
+    '.pw-progress-save.is-saved{background:transparent}.pw-progress-save.is-saved .pw-progress-save-title{color:var(--accent-text)}',
     '.pw-progress-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:18px;background:rgba(17,20,18,.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
     '.pw-progress-modal[hidden]{display:none!important}',
     '.pw-progress-sheet{width:min(100%,430px);max-height:min(680px,calc(100dvh - 36px));overflow:auto;padding:22px;border:1px solid var(--line);border-radius:24px;background:var(--bg);color:var(--text);box-shadow:0 24px 70px rgba(0,0,0,.18);text-align:left}',
@@ -212,6 +234,7 @@
     '.pw-progress-primary{width:100%;min-height:52px;margin-top:14px;border:0;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;font-size:.95rem;cursor:pointer}',
     '.pw-progress-secondary{width:100%;min-height:40px;margin-top:7px;border:0;background:transparent;color:var(--muted);font-size:.82rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}',
     '.pw-progress-note{margin:14px 2px 0;color:var(--muted);font-size:.73rem;line-height:1.5;text-align:center}.pw-progress-status{min-height:20px;margin:11px 2px 0;color:var(--muted);font-size:.78rem;line-height:1.4;text-align:center}.pw-progress-status.error{color:#9A4F49}',
+    '.pw-progress-account{margin-top:18px}.pw-progress-account-email{margin:0 0 14px;color:var(--muted);font-size:.78rem;line-height:1.45;overflow-wrap:anywhere}.pw-progress-danger{width:100%;min-height:46px;border:1px solid rgba(154,79,73,.35);border-radius:999px;background:transparent;color:#8A4843;font-size:.82rem;font-weight:650;cursor:pointer}.pw-progress-danger:disabled{opacity:.55;cursor:default}',
     'html[data-pw-theme="dark"] .pw-progress-save{background:rgba(29,33,30,.62)}html[data-pw-theme="dark"] .pw-progress-sheet{background:#171A18}html[data-pw-theme="dark"] .pw-progress-primary{background:#E8EAE5;color:#171A18}'
   ].join('\n');
   document.head.appendChild(style);
@@ -234,7 +257,7 @@
   const modal = document.createElement('div');
   modal.className = 'pw-progress-modal';
   modal.hidden = true;
-  modal.innerHTML = '<section class="pw-progress-sheet" role="dialog" aria-modal="true" aria-labelledby="pwProgressTitle"><div class="pw-progress-sheet-head"><h2 id="pwProgressTitle" class="pw-progress-sheet-title"></h2><button type="button" class="pw-progress-close" aria-label="Close">×</button></div><p class="pw-progress-sheet-copy"></p><div class="pw-progress-email-step"><label class="pw-progress-field-label" for="pwProgressEmail"></label><input id="pwProgressEmail" class="pw-progress-input" type="email" inputmode="email" autocomplete="email" maxlength="320" /><button type="button" class="pw-progress-primary pw-progress-send"></button></div><div class="pw-progress-code-step" hidden><label class="pw-progress-field-label" for="pwProgressCode"></label><input id="pwProgressCode" class="pw-progress-input pw-progress-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" pattern="[0-9]{6,10}" /><button type="button" class="pw-progress-primary pw-progress-verify"></button><button type="button" class="pw-progress-secondary pw-progress-resend"></button></div><p class="pw-progress-status" role="status" aria-live="polite"></p><p class="pw-progress-note"></p></section>';
+  modal.innerHTML = '<section class="pw-progress-sheet" role="dialog" aria-modal="true" aria-labelledby="pwProgressTitle"><div class="pw-progress-sheet-head"><h2 id="pwProgressTitle" class="pw-progress-sheet-title"></h2><button type="button" class="pw-progress-close" aria-label="Close">×</button></div><p class="pw-progress-sheet-copy"></p><div class="pw-progress-email-step"><label class="pw-progress-field-label" for="pwProgressEmail"></label><input id="pwProgressEmail" class="pw-progress-input" type="email" inputmode="email" autocomplete="email" maxlength="320" /><button type="button" class="pw-progress-primary pw-progress-send"></button></div><div class="pw-progress-code-step" hidden><label class="pw-progress-field-label" for="pwProgressCode"></label><input id="pwProgressCode" class="pw-progress-input pw-progress-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" pattern="[0-9]{6,10}" /><button type="button" class="pw-progress-primary pw-progress-verify"></button><button type="button" class="pw-progress-secondary pw-progress-resend"></button></div><div class="pw-progress-account" hidden><p class="pw-progress-account-email"></p><button type="button" class="pw-progress-danger pw-progress-delete"></button></div><p class="pw-progress-status" role="status" aria-live="polite"></p><p class="pw-progress-note"></p></section>';
   document.body.appendChild(modal);
 
   const saveBtn = card.querySelector('.pw-progress-save-btn');
@@ -243,6 +266,9 @@
   const copy = modal.querySelector('.pw-progress-sheet-copy');
   const emailStep = modal.querySelector('.pw-progress-email-step');
   const codeStep = modal.querySelector('.pw-progress-code-step');
+  const accountStep = modal.querySelector('.pw-progress-account');
+  const accountEmail = modal.querySelector('.pw-progress-account-email');
+  const deleteBtn = modal.querySelector('.pw-progress-delete');
   const emailLabel = modal.querySelector('label[for="pwProgressEmail"]');
   const emailInput = modal.querySelector('#pwProgressEmail');
   const codeLabel = modal.querySelector('label[for="pwProgressCode"]');
@@ -263,31 +289,42 @@
     card.classList.toggle('is-saved', signedIn);
     card.querySelector('.pw-progress-save-title').textContent = signedIn ? copyText.savedTitle : copyText.saveTitle;
     card.querySelector('.pw-progress-save-body').textContent = signedIn ? copyText.savedBody : copyText.saveBody;
-    saveBtn.textContent = copyText.saveButton;
-    saveBtn.setAttribute('aria-label', copyText.open);
-    homeRestoreBtn.textContent = copyText.restore;
-    homeRestoreBtn.hidden = signedIn;
+    saveBtn.textContent = signedIn ? copyText.manage : copyText.saveButton;
+    saveBtn.setAttribute('aria-label', signedIn ? copyText.manage : copyText.open);
+    homeRestoreBtn.textContent = signedIn ? copyText.manage : copyText.restore;
+    homeRestoreBtn.hidden = false;
   }
   function renderModal() {
     const copyText = s();
-    title.textContent = codeStep.hidden ? copyText.dialogTitle : copyText.codeTitle;
-    copy.textContent = codeStep.hidden ? copyText.dialogBody : copyText.codeBody;
+    const managing = !accountStep.hidden;
+    if (managing) {
+      title.textContent = copyText.manageTitle;
+      copy.textContent = copyText.manageBody.replace('{email}', session?.user?.email || '');
+      accountEmail.textContent = session?.user?.email || '';
+      deleteBtn.textContent = copyText.deleteAccount;
+      note.textContent = copyText.manageNote;
+    } else {
+      title.textContent = codeStep.hidden ? copyText.dialogTitle : copyText.codeTitle;
+      copy.textContent = codeStep.hidden ? copyText.dialogBody : copyText.codeBody;
+      note.textContent = copyText.privacy + ' ' + copyText.localNote;
+    }
     emailLabel.textContent = copyText.emailLabel;
     emailInput.placeholder = copyText.emailPlaceholder;
     codeLabel.textContent = copyText.codeLabel;
     sendBtn.textContent = copyText.sendCode;
     verifyBtn.textContent = copyText.verify;
     resendBtn.textContent = copyText.resend;
-    note.textContent = copyText.privacy + ' ' + copyText.localNote;
     closeBtn.setAttribute('aria-label', copyText.close);
   }
   function openModal() {
-    emailStep.hidden = false;
+    const managing = Boolean(session?.user?.id);
+    emailStep.hidden = managing;
     codeStep.hidden = true;
+    accountStep.hidden = !managing;
     setStatus();
     renderModal();
     modal.hidden = false;
-    requestAnimationFrame(() => emailInput.focus({ preventScroll:true }));
+    requestAnimationFrame(() => (managing ? deleteBtn : emailInput).focus({ preventScroll:true }));
   }
   function closeModal() { modal.hidden = true; setStatus(); }
 
@@ -305,6 +342,7 @@
       pendingEmail = email;
       emailStep.hidden = true;
       codeStep.hidden = false;
+      accountStep.hidden = true;
       codeInput.value = '';
       renderModal();
       requestAnimationFrame(() => codeInput.focus({ preventScroll:true }));
@@ -343,6 +381,41 @@
     }
   }
 
+  async function deleteAccount() {
+    if (!session?.user?.id) return;
+    const copyText = s();
+    if (!window.confirm(copyText.deleteConfirm)) return;
+    if (!navigator.onLine) { setStatus(copyText.offline, true); return; }
+
+    deleteBtn.disabled = true;
+    deleteBtn.textContent = copyText.deleting;
+    setStatus();
+
+    try {
+      const supabaseClient = await ensureClient();
+      const result = await supabaseClient.functions.invoke('delete-progress-account', {
+        body:{ confirm:'DELETE' }
+      });
+      if (result.error || result.data?.deleted !== true) {
+        throw result.error || new Error('Account deletion was not confirmed');
+      }
+
+      try { await supabaseClient.auth.signOut(); } catch (_) {}
+      safeRemove(AUTH_STORAGE_KEY);
+      session = null;
+      pendingEmail = '';
+      renderCard();
+      setStatus(copyText.deleted);
+      setTimeout(closeModal, 1100);
+    } catch (error) {
+      console.warn('[5-preview] progress account deletion failed', error);
+      setStatus(copyText.deleteError, true);
+    } finally {
+      deleteBtn.disabled = false;
+      deleteBtn.textContent = s().deleteAccount;
+    }
+  }
+
   saveBtn.addEventListener('click', openModal);
   homeRestoreBtn.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
@@ -350,9 +423,11 @@
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !modal.hidden) closeModal(); });
   sendBtn.addEventListener('click', sendCode);
   verifyBtn.addEventListener('click', verifyCode);
+  deleteBtn.addEventListener('click', deleteAccount);
   resendBtn.addEventListener('click', () => {
     emailStep.hidden = false;
     codeStep.hidden = true;
+    accountStep.hidden = true;
     emailInput.value = pendingEmail || emailInput.value;
     renderModal();
     requestAnimationFrame(() => emailInput.focus({ preventScroll:true }));
@@ -361,6 +436,9 @@
 
   document.addEventListener('pw:locale-changed', () => { renderCard(); renderModal(); });
   document.addEventListener('pw:locale-ready', () => { renderCard(); renderModal(); });
+  document.addEventListener('pw:progress-changed', () => {
+    if (session?.user?.id) void syncProgress().catch(error => console.warn('[5-preview] progress sync failed', error));
+  });
 
   new MutationObserver(() => {
     if (!done.classList.contains('active')) return;
@@ -375,6 +453,12 @@
   window.PW_I18N?.ready?.then(async () => {
     renderCard();
     renderModal();
+
+    // Preserve the local-first promise: people who never opt into backup do not
+    // load the Supabase client at app startup. Returning signed-in users still
+    // reconnect automatically so completed progress can sync.
+    if (safeGet(AUTH_STORAGE_KEY, null) === null) return;
+
     try {
       await ensureClient();
       renderCard();
