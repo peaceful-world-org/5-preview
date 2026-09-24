@@ -221,6 +221,7 @@
     '.pw-progress-save-title{margin:0;font-size:.91rem;font-weight:700;color:var(--ink)}',
     '.pw-progress-save-body{margin:6px auto 0;max-width:340px;font-size:.76rem;line-height:1.48;color:var(--muted)}',
     '.pw-progress-save-btn{min-height:40px;margin-top:10px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);font-size:.79rem;font-weight:650;cursor:pointer}',
+    '.pw-progress-home{margin:14px auto 0;text-align:center}.pw-progress-home .pw-progress-save-btn{margin-top:0}',
     '.pw-progress-save.is-saved{background:transparent}.pw-progress-save.is-saved .pw-progress-save-title{color:var(--accent-text)}',
     '.pw-progress-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:18px;background:rgba(17,20,18,.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
     '.pw-progress-modal[hidden]{display:none!important}',
@@ -248,7 +249,7 @@
   homeRestoreWrap.className = 'pw-progress-home';
   const homeRestoreBtn = document.createElement('button');
   homeRestoreBtn.type = 'button';
-  homeRestoreBtn.className = 'pw-progress-home-btn';
+  homeRestoreBtn.className = 'pw-progress-save-btn pw-progress-home-btn';
   homeRestoreWrap.appendChild(homeRestoreBtn);
   const homePrivacyRow = document.querySelector('#home .home-privacy-row');
   if (homePrivacyRow) homePrivacyRow.insertAdjacentElement('beforebegin', homeRestoreWrap);
