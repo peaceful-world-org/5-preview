@@ -34,7 +34,13 @@
       back: 'Назад',
       tickingOn: 'Тиканье включено',
       tickingOff: 'Тиканье выключено',
-      currentLabel: 'ТЕКУЩАЯ ПРАКТИКА'
+      currentLabel: 'ТЕКУЩАЯ ПРАКТИКА',
+      hintTrigger: 'Подсказка',
+      hintAria: 'Что можно делать в свободной практике',
+      hintTitle: 'Что здесь делать?',
+      hintBody1: 'Используй это время для любой практики, которая помогает тренировать более мирный ум — религиозной, светской или терапевтической. Можно наблюдать за дыханием, возвращаться к доброжелательности или прощению, молиться, медитировать или делать знакомое тебе упражнение.',
+      hintBody2: 'Правильной длительности нет. Даже короткое время, которое ты сознательно отдаёшь практике, имеет значение — поэтому таймер считает каждую секунду.',
+      hintContinue: 'Продолжить'
     },
     en: {
       totalLabel: 'In practice',
@@ -53,7 +59,13 @@
       back: 'Back',
       tickingOn: 'Ticking sound on',
       tickingOff: 'Ticking sound off',
-      currentLabel: 'CURRENT PRACTICE'
+      currentLabel: 'CURRENT PRACTICE',
+      hintTrigger: 'Hint',
+      hintAria: 'What you can do in Free practice',
+      hintTitle: 'What can I do here?',
+      hintBody1: 'Use this time for any practice that helps train a more peaceful mind — religious, secular, or therapeutic. You might follow your breathing, return to goodwill or forgiveness, pray, meditate, or use an exercise you already know.',
+      hintBody2: 'There is no right duration. Even a short period you consciously give to practice matters — that is why the timer counts every second.',
+      hintContinue: 'Continue'
     }
   };
 
@@ -184,6 +196,9 @@
     '.pw-free-time{margin-top:28px;font-size:clamp(3.1rem,14vw,4.6rem);font-weight:700;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1}',
     '.pw-free-idea{margin:21px 0 0;font-size:1.05rem;line-height:1.45;font-weight:620;color:var(--text)}',
     '.pw-free-note{max-width:360px;margin:9px auto 0;font-size:.84rem;line-height:1.52;color:var(--muted)}',
+    '.pw-free-hint-trigger{margin-top:11px}',
+    '.pw-free-hint-title{margin:0 0 12px;color:var(--ink);font-size:1.12rem;font-weight:720;line-height:1.25;letter-spacing:-.01em}',
+    '.pw-free-hint-card .pw-practice-hint-text+.pw-practice-hint-text{margin-top:12px}',
     '.pw-free-timer-actions{width:100%;display:flex;flex-direction:column;align-items:center;padding-bottom:4px}',
     '.pw-free-timer-actions .primary{margin-top:0}',
     '.pw-free-finish{margin-top:9px;border:0;background:transparent;color:var(--muted);font-size:.86rem;text-decoration:underline;text-decoration-color:rgba(107,113,109,.34);text-underline-offset:4px;cursor:pointer;min-height:36px;padding:4px 12px}',
@@ -192,8 +207,8 @@
     'html[data-pw-theme="dark"] .pw-free-entry{background:transparent;border-color:var(--line)}',
     'html[data-pw-theme="dark"] .pw-free-entry:hover{background:#202521}',
     'html[data-pw-theme="dark"] .pw-free-clock{background:#1D211E;border-color:var(--line)}',
-    '@media(max-height:720px){.pw-time-odometer{margin-top:12px}.pw-free-entry{min-height:44px}.pw-free-clock{width:148px;height:148px}.pw-free-clock-hand{height:54px}.pw-free-time{margin-top:19px}.pw-free-idea{margin-top:15px}.pw-free-note{margin-top:6px}}',
-    '@media(orientation:landscape) and (max-height:520px){.pw-free-timer-main{padding:4px 0}.pw-free-clock{width:94px;height:94px}.pw-free-clock-hand{height:33px}.pw-free-clock-hand::after{bottom:-11px;height:11px}.pw-free-time{margin-top:7px;font-size:2rem}.pw-free-idea{margin-top:6px;font-size:.88rem}.pw-free-note{display:none}.pw-free-entry{min-height:38px}.pw-time-odometer{margin-top:5px}}'
+    '@media(max-height:720px){.pw-time-odometer{margin-top:12px}.pw-free-entry{min-height:44px}.pw-free-clock{width:148px;height:148px}.pw-free-clock-hand{height:54px}.pw-free-time{margin-top:19px}.pw-free-idea{margin-top:15px}.pw-free-note{margin-top:6px}.pw-free-hint-trigger{margin-top:7px}}',
+    '@media(orientation:landscape) and (max-height:520px){.pw-free-timer-main{padding:4px 0}.pw-free-clock{width:94px;height:94px}.pw-free-clock-hand{height:33px}.pw-free-clock-hand::after{bottom:-11px;height:11px}.pw-free-time{margin-top:7px;font-size:2rem}.pw-free-idea{margin-top:6px;font-size:.88rem}.pw-free-note{display:none}.pw-free-hint-trigger{min-height:30px;margin-top:5px}.pw-free-entry{min-height:38px}.pw-time-odometer{margin-top:5px}}'
   ].join('\n');
   document.head.appendChild(style);
 
@@ -228,6 +243,7 @@
       '<div id="pwFreeTime" class="pw-free-time">00:00</div>',
       '<p class="pw-free-idea"></p>',
       '<p class="pw-free-note"></p>',
+      '<button id="pwFreeHint" type="button" class="pw-practice-hint-trigger pw-free-hint-trigger"></button>',
     '</div>',
     '<div class="pw-free-timer-actions">',
       '<button id="pwFreePrimary" type="button" class="primary"></button>',
@@ -242,6 +258,29 @@
   const finishBtn = screen.querySelector('#pwFreeFinish');
   const timeEl = screen.querySelector('#pwFreeTime');
   const hand = screen.querySelector('.pw-free-clock-hand');
+  const hintBtn = screen.querySelector('#pwFreeHint');
+
+  const hintOverlay = document.createElement('div');
+  hintOverlay.className = 'pw-practice-hint-overlay';
+  hintOverlay.hidden = true;
+  hintOverlay.setAttribute('role', 'dialog');
+  hintOverlay.setAttribute('aria-modal', 'true');
+  hintOverlay.setAttribute('aria-labelledby', 'pwFreeHintTitle');
+  hintOverlay.setAttribute('aria-describedby', 'pwFreeHintBody1 pwFreeHintBody2');
+  hintOverlay.innerHTML = [
+    '<div class="pw-practice-hint-card pw-free-hint-card">',
+      '<h2 id="pwFreeHintTitle" class="pw-free-hint-title"></h2>',
+      '<p id="pwFreeHintBody1" class="pw-practice-hint-text"></p>',
+      '<p id="pwFreeHintBody2" class="pw-practice-hint-text"></p>',
+      '<button type="button" class="pw-practice-hint-continue"></button>',
+    '</div>'
+  ].join('');
+  document.body.appendChild(hintOverlay);
+
+  const hintTitle = hintOverlay.querySelector('#pwFreeHintTitle');
+  const hintBody1 = hintOverlay.querySelector('#pwFreeHintBody1');
+  const hintBody2 = hintOverlay.querySelector('#pwFreeHintBody2');
+  const hintContinueBtn = hintOverlay.querySelector('.pw-practice-hint-continue');
 
   let running = false;
   let elapsedMs = 0;
@@ -250,6 +289,7 @@
   let frame = 0;
   let lastSoundSecond = 0;
   let wakeLock = null;
+  let hintPausedTimer = false;
 
   function loadSession() {
     try {
@@ -361,11 +401,37 @@
     screen.querySelector('.pw-free-current-label').textContent = copy.currentLabel;
     screen.querySelector('.pw-free-idea').textContent = copy.idea;
     screen.querySelector('.pw-free-note').textContent = copy.note;
+    hintBtn.textContent = copy.hintTrigger;
+    hintBtn.setAttribute('aria-label', copy.hintAria);
+    hintOverlay.setAttribute('aria-label', copy.hintTitle);
+    hintTitle.textContent = copy.hintTitle;
+    hintBody1.textContent = copy.hintBody1;
+    hintBody2.textContent = copy.hintBody2;
+    hintContinueBtn.textContent = copy.hintContinue;
     finishBtn.textContent = copy.finish;
     backBtn.setAttribute('aria-label', copy.back);
     primaryBtn.textContent = running ? copy.pause : (currentMs() > 0 ? copy.resume : copy.start);
     renderSound();
     renderOdometer();
+  }
+
+  function openFreeHint() {
+    hintPausedTimer = running;
+    if (hintPausedTimer) pauseTimer();
+    hintOverlay.hidden = false;
+    window.PW_ANALYTICS?.event?.('practice_hint_open', { practice_mode:'free' });
+    window.setTimeout(() => hintContinueBtn.focus({ preventScroll:true }), 0);
+  }
+
+  function closeFreeHint(resume = true) {
+    if (hintOverlay.hidden) return;
+    hintOverlay.hidden = true;
+    const shouldResume = resume && hintPausedTimer;
+    hintPausedTimer = false;
+    if (shouldResume && !running) startTimer();
+    else if (screen.classList.contains('active')) {
+      window.setTimeout(() => hintBtn.focus({ preventScroll:true }), 0);
+    }
   }
 
   function nativeHistoryPush(screenId) {
@@ -388,6 +454,7 @@
   }
 
   function showHome() {
+    if (!hintOverlay.hidden) closeFreeHint(false);
     if (running) pauseTimer();
     screen.classList.remove('active');
     home.classList.add('active');
@@ -459,10 +526,29 @@
   }
 
   entry.addEventListener('click', showFreeTimer);
+  hintBtn.addEventListener('click', openFreeHint);
+  hintContinueBtn.addEventListener('click', () => closeFreeHint(true));
+  hintOverlay.addEventListener('click', event => {
+    if (event.target !== hintOverlay) return;
+    hintContinueBtn.focus({ preventScroll:true });
+  });
   backBtn.addEventListener('click', showHome);
   primaryBtn.addEventListener('click', () => running ? pauseTimer() : startTimer());
   finishBtn.addEventListener('click', finishTimer);
   soundBtn.addEventListener('click', () => setTicking(!isTicking()));
+
+  document.addEventListener('keydown', event => {
+    if (hintOverlay.hidden) return;
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      hintContinueBtn.focus({ preventScroll:true });
+      return;
+    }
+    if (event.key !== 'Escape') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeFreeHint(true);
+  }, true);
 
   window.addEventListener('popstate', () => {
     if (!window.PW_NATIVE_ANDROID || !screen.classList.contains('active')) return;

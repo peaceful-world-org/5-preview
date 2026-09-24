@@ -23,7 +23,7 @@ const CORE_ASSETS = [
   '/ai-guide.js',
   '/analytics.js',
   '/feedback.js',
-  '/free-practice.js?v=2',
+  '/free-practice.js?v=3',
   '/progress-sync.js?v=2',
   '/i18n.js',
   '/locales/index.json',
