@@ -1,8 +1,7 @@
-/* 5-preview fallback — optional passwordless progress backup and restore. */
+/* 5 by Peaceful World — optional passwordless progress backup and restore. */
 'use strict';
 
 (() => {
-  if (location.hostname !== 'preview-5.peaceful-world.org') return;
   if (window.__PW_PROGRESS_SYNC__) return;
   window.__PW_PROGRESS_SYNC__ = true;
 

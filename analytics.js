@@ -10,29 +10,35 @@
 
   const params = new URLSearchParams(location.search);
   const isProduction = location.hostname === PRODUCTION_HOST;
+  const isNativeAndroid = window.PW_NATIVE_ANDROID === true || window.Capacitor?.getPlatform?.() === 'android';
   const isQaMode = params.has('debug') || params.has('demo') || location.pathname.endsWith('/demo.html');
 
-  if (!isProduction || isQaMode) return;
+  if ((!isProduction && !isNativeAndroid) || isQaMode) return;
 
   let consent = readConsent();
   let tagLoaded = false;
+  let nativeAnalytics = null;
+  let nativeConsentReady = null;
   let practiceInProgress = false;
+  let practiceMode = 'guided';
   let completionSent = false;
   let feedbackSuccessWasVisible = false;
   let appOpenSent = false;
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+  if (!isNativeAndroid) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
 
-  // Consent Mode defaults remain denied. In Basic Consent Mode the Google tag
-  // itself is not loaded until the user explicitly grants analytics consent.
-  window.gtag('consent', 'default', {
-    analytics_storage: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    wait_for_update: 500
-  });
+    // Consent Mode defaults remain denied. In Basic Consent Mode the Google tag
+    // itself is not loaded until the user explicitly grants analytics consent.
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      wait_for_update: 500
+    });
+  }
 
   function text(key, fallback, vars) {
     return window.PW_I18N?.text?.(key, fallback, vars) ?? fallback;
@@ -58,9 +64,9 @@
 
   function commonParams(extra = {}) {
     return {
-      app_version: window.PW_BUILD_VERSION || 'v0.18.51-alpha',
+      app_version: window.PW_BUILD_VERSION || (isNativeAndroid ? 'v0.18.54' : 'v0.18.51-alpha'),
       app_locale: currentLocale(),
-      app_surface: isStandalone() ? 'pwa' : 'browser',
+      app_surface: isNativeAndroid ? 'android' : (isStandalone() ? 'pwa' : 'browser'),
       ...extra
     };
   }
@@ -69,8 +75,69 @@
     return Boolean(window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true);
   }
 
-  function loadTag() {
-    if (tagLoaded || consent !== CONSENT_GRANTED) return;
+  function getNativeAnalytics() {
+    if (!isNativeAndroid) return null;
+    if (nativeAnalytics) return nativeAnalytics;
+    const capacitor = window.Capacitor;
+    if (!capacitor?.registerPlugin || !capacitor?.isPluginAvailable?.('FirebaseAnalytics')) return null;
+    nativeAnalytics = capacitor.registerPlugin('FirebaseAnalytics');
+    return nativeAnalytics;
+  }
+
+  async function configureNativeAnalytics(granted) {
+    const plugin = getNativeAnalytics();
+    if (!plugin) throw new Error('FirebaseAnalytics native plugin is unavailable');
+
+    const analyticsStatus = granted ? 'GRANTED' : 'DENIED';
+    await plugin.setConsent({ type:'ANALYTICS_STORAGE', status:analyticsStatus });
+    await plugin.setConsent({ type:'AD_STORAGE', status:'DENIED' });
+    await plugin.setConsent({ type:'AD_USER_DATA', status:'DENIED' });
+    await plugin.setConsent({ type:'AD_PERSONALIZATION', status:'DENIED' });
+    await plugin.setEnabled({ enabled:granted });
+    return plugin;
+  }
+
+  function ensureNativeAnalyticsGranted() {
+    if (!isNativeAndroid) return Promise.resolve(null);
+    if (!nativeConsentReady) {
+      nativeConsentReady = configureNativeAnalytics(true).catch(error => {
+        console.warn('Native analytics could not be enabled.', error);
+        nativeConsentReady = null;
+        return null;
+      });
+    }
+    return nativeConsentReady;
+  }
+
+  async function disableNativeAnalytics({ reset = false } = {}) {
+    if (!isNativeAndroid) return;
+    nativeConsentReady = null;
+    try {
+      const plugin = await configureNativeAnalytics(false);
+      if (reset) await plugin.resetAnalyticsData();
+    } catch (error) {
+      console.warn('Native analytics could not be disabled cleanly.', error);
+    }
+  }
+
+  function grantGoogleConsent() {
+    window.gtag('consent', 'update', {
+      analytics_storage: 'granted',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+  }
+
+  function loadTag({ refreshConsent = false } = {}) {
+    if (isNativeAndroid || consent !== CONSENT_GRANTED) return;
+
+    // The script only needs to be inserted once, but Consent Mode may need to
+    // be updated again if a user changes Deny -> Allow without reloading.
+    if (tagLoaded) {
+      if (refreshConsent) grantGoogleConsent();
+      return;
+    }
     tagLoaded = true;
 
     const script = document.createElement('script');
@@ -81,12 +148,7 @@
 
     // Match Google's supported gtag.js initialization order before config/events.
     window.gtag('js', new Date());
-    window.gtag('consent', 'update', {
-      analytics_storage: 'granted',
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied'
-    });
+    grantGoogleConsent();
     window.gtag('set', {
       allow_google_signals: false,
       allow_ad_personalization_signals: false
@@ -100,6 +162,15 @@
 
   function send(name, extra = {}) {
     if (consent !== CONSENT_GRANTED) return;
+
+    if (isNativeAndroid) {
+      void ensureNativeAnalyticsGranted().then(plugin => {
+        if (!plugin) return;
+        return plugin.logEvent({ name, params:commonParams(extra) });
+      }).catch(error => console.warn(`Native analytics event failed: ${name}`, error));
+      return;
+    }
+
     loadTag();
     window.gtag('event', name, commonParams(extra));
   }
@@ -124,13 +195,31 @@
   function grantConsent() {
     writeConsent(CONSENT_GRANTED);
     hideNotice();
-    loadTag();
+
+    if (isNativeAndroid) {
+      nativeConsentReady = null;
+      void ensureNativeAnalyticsGranted().then(() => {
+        send('analytics_consent_granted');
+        sendAppOpen();
+      });
+      return;
+    }
+
+    loadTag({ refreshConsent:true });
     send('analytics_consent_granted');
     sendAppOpen();
   }
 
   function denyConsent() {
+    const wasGranted = consent === CONSENT_GRANTED;
     writeConsent(CONSENT_DENIED);
+
+    if (isNativeAndroid) {
+      void disableNativeAnalytics({ reset:wasGranted });
+      hideNotice();
+      return;
+    }
+
     window.gtag('consent', 'update', {
       analytics_storage: 'denied',
       ad_storage: 'denied',
@@ -235,6 +324,18 @@
     });
   }
 
+  function practiceNumberBucket(value) {
+    const n = Number(value);
+    if (!Number.isSafeInteger(n) || n <= 0) return null;
+    if (n === 1) return '1';
+    if (n <= 3) return '2-3';
+    if (n <= 5) return '4-5';
+    if (n <= 10) return '6-10';
+    if (n <= 20) return '11-20';
+    if (n <= 50) return '21-50';
+    return '51+';
+  }
+
   function watchPracticeCompletion() {
     const done = document.getElementById('done');
     if (!done) return;
@@ -243,7 +344,22 @@
       if (active && practiceInProgress && !completionSent) {
         completionSent = true;
         practiceInProgress = false;
-        send('practice_complete');
+        const lastCompletion = window.PW_LAST_COMPLETION;
+        const isFree = practiceMode === 'free' || lastCompletion?.mode === 'free';
+        const practiceNumber = isFree
+          ? lastCompletion?.freePracticeNumber
+          : window.PW_COPY_ROTATION?.lastCompletedPracticeNumber;
+        const extra = {
+          practice_mode:isFree ? 'free' : 'guided'
+        };
+        const numberBucket = practiceNumberBucket(practiceNumber);
+        if (numberBucket) {
+          extra.practice_number_bucket = numberBucket;
+        }
+        if (isFree && Number.isSafeInteger(lastCompletion?.durationSeconds) && lastCompletion.durationSeconds > 0) {
+          extra.practice_duration_seconds = lastCompletion.durationSeconds;
+        }
+        send('practice_complete', extra);
       }
     };
     new MutationObserver(check).observe(done, { attributes:true, attributeFilter:['class'] });
@@ -280,17 +396,26 @@
   async function init() {
     try { await window.PW_I18N?.ready; } catch (_) {}
 
-    document.addEventListener('pw:practice-started', () => {
+    document.addEventListener('pw:practice-started', event => {
       practiceInProgress = true;
+      practiceMode = event?.detail?.mode === 'free' ? 'free' : 'guided';
       completionSent = false;
-      send('practice_start');
+      send('practice_start', { practice_mode:practiceMode });
     });
+
+    document.addEventListener('pw:progress-backup-open', () => send('progress_backup_open'));
+    document.addEventListener('pw:progress-backup-complete', () => send('progress_backup_complete'));
+    document.addEventListener('pw:progress-restore-complete', () => send('progress_restore_complete'));
+    document.addEventListener('pw:progress-account-deleted', () => send('progress_account_delete'));
 
     document.getElementById('feedbackBtn')?.addEventListener('click', () => send('feedback_open'));
     document.getElementById('shareBtn')?.addEventListener('click', () => send('share'));
-    document.getElementById('installBtn')?.addEventListener('click', () => send('install_click', { surface:'completion' }));
-    document.getElementById('homeInstallBtn')?.addEventListener('click', () => send('install_click', { surface:'home' }));
-    window.addEventListener('appinstalled', () => send('install_complete'));
+
+    if (!isNativeAndroid) {
+      document.getElementById('installBtn')?.addEventListener('click', () => send('install_click', { surface:'completion' }));
+      document.getElementById('homeInstallBtn')?.addEventListener('click', () => send('install_click', { surface:'home' }));
+      window.addEventListener('appinstalled', () => send('install_complete'));
+    }
 
     watchPracticeCompletion();
     watchFeedbackSuccess();
@@ -303,8 +428,12 @@
     });
 
     if (consent === CONSENT_GRANTED) {
-      loadTag();
-      sendAppOpen();
+      if (isNativeAndroid) {
+        void ensureNativeAnalyticsGranted().then(sendAppOpen);
+      } else {
+        loadTag();
+        sendAppOpen();
+      }
     } else if (!consent) {
       showNotice();
     }
@@ -312,7 +441,8 @@
     window.PW_ANALYTICS = Object.freeze({
       event: send,
       showSettings: showNotice,
-      consent: () => consent
+      consent: () => consent,
+      surface: () => isNativeAndroid ? 'android' : (isStandalone() ? 'pwa' : 'browser')
     });
   }
 

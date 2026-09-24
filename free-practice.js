@@ -2,7 +2,6 @@
 'use strict';
 
 (() => {
-  if (location.hostname !== 'preview-5.peaceful-world.org') return;
   if (window.__PW_FREE_PRACTICE__) return;
   window.__PW_FREE_PRACTICE__ = true;
 

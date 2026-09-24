@@ -363,7 +363,7 @@
     data.append('copy_version', copyMeta.version);
     if (copyMeta.key) data.append('copy_key', copyMeta.key);
     if (copyMeta.practiceNumber) data.append('practice_number', String(copyMeta.practiceNumber));
-    data.append('feedback_type', 'general');
+    data.append('feedback_type', document.getElementById('feedback')?.dataset?.pwAiReportMode === '1' ? 'bug' : 'general');
     data.append('research_opt_in', wantsResearch ? 'true' : 'false');
     data.append('email', wantsResearch ? emailValue : '');
     data.append('session_id', sessionId());

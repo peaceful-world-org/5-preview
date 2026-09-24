@@ -9,7 +9,7 @@
       "copyVersion": "ru-v0.18.50-stable",
       "rotationVersion": "ru-rotation-v1",
       "privacy": "/privacy.html",
-      "privacyVersion": "1.6",
+      "privacyVersion": "2.1",
       "shareHint": "ru",
       "links": {
         "site": "https://peaceful-world.org/ru/",
@@ -31,16 +31,16 @@
       "copyVersion": "en-v1",
       "rotationVersion": null,
       "privacy": "/privacy.en.html",
-      "privacyVersion": "1.6",
+      "privacyVersion": "2.1",
       "shareHint": "en",
       "links": {
         "site": "https://peaceful-world.org/",
         "support": "https://peaceful-world.org/help",
-        "article": null,
-        "notebook": null
+        "article": "https://peaceful-world.org/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
       },
       "ai": {
-        "agentId": null
+        "agentId": "agent_4701m19eebbhe8zr9vq8afq0r51k"
       },
       "iosGuide": {
         "assetLocale": "en"

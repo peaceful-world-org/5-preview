@@ -668,6 +668,9 @@ function pausePractice() {
 
 function completionLabel() {
   if (IS_DEMO) return i18nText('done.demo', 'Демо-тренировка');
+  if (window.PW_LAST_COMPLETION?.mode === 'free') {
+    return i18nText('done.kicker', 'Тренировка завершена');
+  }
   const practiceNumber = window.PW_COPY_ROTATION?.lastCompletedPracticeNumber;
   if (Number.isSafeInteger(practiceNumber) && practiceNumber > 0) {
     return i18nText(
@@ -730,9 +733,21 @@ function backToDone() {
   focusQuietly(doneTitle);
 }
 
-if (feedbackBackBtn) feedbackBackBtn.addEventListener('click', backToDone);
-if (feedbackDoneBtn) feedbackDoneBtn.addEventListener('click', backToDone);
-document.addEventListener('pw:feedback-complete', backToDone);
+function backFromFeedback() {
+  const target = feedback?.dataset?.pwReturn || 'done';
+  if (feedback?.dataset) delete feedback.dataset.pwReturn;
+  if (target === 'home') {
+    show(home);
+    focusQuietly(startBtn);
+    return;
+  }
+  backToDone();
+}
+
+if (feedbackBackBtn) feedbackBackBtn.addEventListener('click', backFromFeedback);
+if (feedbackDoneBtn) feedbackDoneBtn.addEventListener('click', backFromFeedback);
+document.addEventListener('pw:feedback-complete', backFromFeedback);
+document.addEventListener('pw:completion-changed', updateDoneMeta);
 
 if (researchOptin && emailWrap) {
   researchOptin.addEventListener('change', () => {
@@ -751,7 +766,7 @@ soundToggle.addEventListener('click', () => {
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
   if (practice.classList.contains('active')) exit();
-  else if (feedback && feedback.classList.contains('active')) backToDone();
+  else if (feedback && feedback.classList.contains('active')) backFromFeedback();
 });
 
 document.addEventListener('visibilitychange', () => {

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#FAFAF7" />
-  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#F9F8F4" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="description" content="5 — пятиминутный тренажёр мирного ума от Peaceful World." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -29,15 +29,32 @@
       });
     })();
   </script>
-  <link rel="manifest" href="manifest.webmanifest?v=0.18.51&_ship=tut5d23" />
-  <link rel="icon" href="icon.svg?v=0.18.51&_ship=tut5d23" type="image/svg+xml" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png?_ship=tut5d23" />
-  <link rel="stylesheet" href="styles.css?_ship=tut5d23" />
-  <link rel="stylesheet" href="feedback.css?_ship=tut5d23" />
-  <link rel="stylesheet" href="brand.css?_ship=tut5d23" />
-  <link rel="stylesheet" href="install.css?_ship=tut5d23" />
-  <link rel="stylesheet" href="step-number.css?_ship=tut5d23" />
-  <link rel="stylesheet" href="completion-polish.css?_ship=tut5d23" />
+  <script>
+    (() => {
+      const THEME_KEY = 'pw-theme';
+      let preference = 'system';
+      try {
+        const saved = localStorage.getItem(THEME_KEY);
+        if (saved === 'light' || saved === 'dark') preference = saved;
+      } catch (_) {}
+      const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
+      const theme = preference === 'dark' || (preference === 'system' && systemDark) ? 'dark' : 'light';
+      document.documentElement.dataset.pwTheme = theme;
+      document.documentElement.dataset.pwThemePreference = preference;
+      document.documentElement.style.colorScheme = theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = theme === 'dark' ? '#171A18' : '#F9F8F4';
+    })();
+  </script>
+  <link rel="manifest" href="manifest.webmanifest?v=0.18.51" />
+  <link rel="icon" href="icon.svg?v=0.18.51" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="feedback.css" />
+  <link rel="stylesheet" href="brand.css" />
+  <link rel="stylesheet" href="install.css" />
+  <link rel="stylesheet" href="step-number.css" />
+  <link rel="stylesheet" href="completion-polish.css" />
   <title>5 — Peace Practice by Peaceful World</title>
 </head>
 <body>
@@ -45,7 +62,7 @@
     <section id="home" class="screen active home-screen">
       <div class="home-stack">
         <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
-          <img src="peaceful-world-logo.png?_ship=tut5d23" alt="" width="128" height="128" decoding="async" />
+          <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
         </a>
 
         <div class="five-brand" aria-label="5, пять" data-i18n-aria-label="brand.aria">
@@ -116,7 +133,7 @@
     <section id="done" class="screen done-screen">
       <div class="done-stack">
         <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
-          <img src="peaceful-world-logo.png?_ship=tut5d23" alt="" width="128" height="128" decoding="async" />
+          <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
         </a>
         <p id="doneKicker" class="brand-name done-kicker" data-i18n="done.kicker">Тренировка завершена</p>
         <h1 id="doneTitle" class="done-title" tabindex="-1" data-i18n="done.title">Теперь просто действуй.</h1>
@@ -202,13 +219,279 @@
 
     <p id="srStatus" class="sr-only" aria-live="polite"></p>
   </main>
-  <script src="i18n.js?_ship=tut5d23"></script>
-  <script src="copy-rotation.js?_ship=tut5d23"></script>
-  <script src="app.js?_ship=tut5d23"></script>
-  <script src="sound-v1.js?_ship=tut5d23"></script>
-  <script src="step-number.js?_ship=tut5d23"></script>
-  <script src="analytics.js?_ship=tut5d23"></script>
-  <script src="feedback.js?_ship=tut5d23"></script>
+  <script src="i18n.js"></script>
+  <script src="copy-rotation.js"></script>
+  <script src="app.js"></script>
+  <script src="sound-v1.js"></script>
+  <script src="step-number.js"></script>
+  <script src="analytics.js"></script>
+  <script src="feedback.js"></script>
+  <script>
+    /* Free practice and optional backup depend on the resolved locale. Waiting
+       for i18n avoids a mixed-language first paint for returning users. */
+    (() => {
+      const loadPracticeExtras = () => {
+        for (const src of ['free-practice.js?v=2', 'progress-sync.js?v=2']) {
+          if (document.querySelector(`script[src="${src}"]`)) continue;
+          const script = document.createElement('script');
+          script.src = src;
+          script.async = false;
+          document.head.appendChild(script);
+        }
+      };
+      if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadPracticeExtras, loadPracticeExtras);
+      else loadPracticeExtras();
+    })();
+  </script>
+  <script>
+    /* Optional examples for all five Foundation steps.
+       Reviewed Russian and English copy. Opening pauses the timer;
+       Continue resumes only when this dialog initiated the pause. */
+    (() => {
+      const practiceScreen = document.getElementById('practice');
+      const stepGuideEl = document.getElementById('stepGuide');
+      const stepCountEl = document.getElementById('stepCount');
+      if (!practiceScreen || !stepGuideEl || !stepCountEl) return;
+
+      const COPY = {
+        ru: {
+          trigger: 'Пример',
+          triggerAria: 'Показать пример для этого шага',
+          continue: 'Продолжить',
+          step1: 'Например: ты вдруг замечаешь, что уже думаешь о других делах. Сам факт замечания — уже часть упражнения.',
+          step2: 'Например: птица за окном легко становится частью пейзажа. Попробуй увидеть не фон, а отдельную жизнь, которая продолжается независимо от тебя.',
+          step3: 'Например: можно мысленно сказать другу или животному: «Пусть у тебя всё будет хорошо». Тёплое чувство может не появиться — это не мешает практике.',
+          step4: 'Например: выкурить на одну сигарету меньше, дать телу отдохнуть или отказаться от чего-то, что вредит тебе или другим.',
+          step5: 'Например: не просто «постараюсь быть добрее», а «когда почувствую, что злюсь, сначала сделаю паузу и не скажу того, что может ранить другого».'
+        },
+        en: {
+          trigger: 'Example',
+          triggerAria: 'Show an example for this step',
+          continue: 'Continue',
+          step1: 'For example, you might notice your mind has wandered. Noticing that is already part of the exercise.',
+          step2: 'For example, a bird outside the window can easily fade into the background. Try to see it instead as a life of its own, independent of you.',
+          step3: 'For example, you might silently say to a friend or an animal, “I hope things go well for you.” A warm feeling may not come. You do not need one for the exercise.',
+          step4: 'For example: smoking one less cigarette, getting a little more rest, or saying no to something that would harm you or someone else.',
+          step5: 'For example: not just “I’ll try to be kinder,” but “When I notice I’m getting angry, I’ll pause before I speak so I don’t say something hurtful.”'
+        }
+      };
+
+      const style = document.createElement('style');
+      style.id = 'pwPracticeHintStyles';
+      style.textContent = `
+        .pw-practice-hint-trigger{
+          appearance:none;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          min-height:34px;
+          margin:15px auto 0;
+          padding:4px 11px;
+          border:1px solid var(--line);
+          border-radius:999px;
+          background:transparent;
+          color:var(--muted);
+          font:600 .78rem/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          cursor:pointer;
+          opacity:.9;
+          transition:opacity .18s ease,background .18s ease,border-color .18s ease,transform .15s ease;
+        }
+        .pw-practice-hint-trigger[hidden]{display:none!important}
+        .pw-practice-hint-trigger:hover{
+          opacity:1;
+          background:rgba(123,141,123,.07);
+          border-color:rgba(123,141,123,.28);
+        }
+        .pw-practice-hint-trigger:active{transform:scale(.98)}
+        .pw-practice-hint-trigger:focus-visible{outline:2px solid #67766A;outline-offset:2px}
+        .pw-practice-hint-overlay{
+          position:fixed;
+          inset:0;
+          z-index:1600;
+          display:grid;
+          place-items:center;
+          padding:22px;
+          background:rgba(18,22,20,.28);
+          backdrop-filter:blur(2px);
+          -webkit-backdrop-filter:blur(2px);
+        }
+        .pw-practice-hint-overlay[hidden]{display:none!important}
+        .pw-practice-hint-card{
+          width:min(100%,390px);
+          padding:24px 22px 20px;
+          border:1px solid var(--line);
+          border-radius:24px;
+          background:var(--surface);
+          color:var(--ink);
+          box-shadow:0 22px 70px rgba(18,22,20,.18);
+          text-align:center;
+        }
+        .pw-practice-hint-text{
+          margin:0 auto;
+          max-width:340px;
+          color:var(--text);
+          font-size:.98rem;
+          line-height:1.62;
+        }
+        .pw-practice-hint-continue{
+          appearance:none;
+          min-width:160px;
+          min-height:46px;
+          margin-top:20px;
+          padding:0 24px;
+          border:1px solid var(--line);
+          border-radius:999px;
+          background:var(--ink);
+          color:var(--surface);
+          font:700 .92rem/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          cursor:pointer;
+        }
+        .pw-practice-hint-continue:focus-visible{outline:2px solid #67766A;outline-offset:3px}
+        @media(max-width:420px){
+          .pw-practice-hint-overlay{padding:18px}
+          .pw-practice-hint-card{padding:22px 19px 18px;border-radius:22px}
+          .pw-practice-hint-text{font-size:.94rem;line-height:1.58}
+        }
+      `;
+      document.head.appendChild(style);
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'pw-practice-hint-trigger';
+      trigger.hidden = true;
+      stepGuideEl.insertAdjacentElement('afterend', trigger);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'pw-practice-hint-overlay';
+      overlay.hidden = true;
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-describedby', 'pwPracticeHintText');
+      overlay.innerHTML = `
+        <div class="pw-practice-hint-card">
+          <p id="pwPracticeHintText" class="pw-practice-hint-text"></p>
+          <button type="button" class="pw-practice-hint-continue"></button>
+        </div>`;
+      document.body.appendChild(overlay);
+
+      const hintText = overlay.querySelector('.pw-practice-hint-text');
+      const continueBtn = overlay.querySelector('.pw-practice-hint-continue');
+      let openStep = 0;
+      let pausedByHint = false;
+
+      function currentLocale() {
+        const code = String(window.PW_I18N?.locale || document.documentElement.lang || 'ru').toLowerCase().split('-')[0];
+        return code === 'en' ? 'en' : 'ru';
+      }
+
+      function localeCopy() {
+        return COPY[currentLocale()];
+      }
+
+      function currentStep() {
+        try {
+          if (typeof stepIndex !== 'undefined' && Number.isInteger(stepIndex)) return stepIndex + 1;
+        } catch (_) {}
+        const match = String(stepCountEl.textContent || '').match(/\d+/);
+        return match ? Number(match[0]) : 0;
+      }
+
+      function isPausedNow() {
+        try { return typeof paused !== 'undefined' && paused === true; }
+        catch (_) { return false; }
+      }
+
+      function syncCopy() {
+        const copy = localeCopy();
+        trigger.textContent = copy.trigger;
+        trigger.setAttribute('aria-label', copy.triggerAria);
+        overlay.setAttribute('aria-label', copy.trigger);
+        continueBtn.textContent = copy.continue;
+      }
+
+      function syncTrigger() {
+        syncCopy();
+        const step = currentStep();
+        const available = practiceScreen.classList.contains('active') && step >= 1 && step <= 5;
+        trigger.hidden = !available;
+        if (!available && !overlay.hidden) closeHint(practiceScreen.classList.contains('active'));
+      }
+
+      function renderHint(step) {
+        hintText.textContent = localeCopy()[`step${step}`] || '';
+      }
+
+      function pauseForHint() {
+        pausedByHint = false;
+        if (isPausedNow()) return;
+        try {
+          if (typeof pausePractice === 'function') {
+            pausePractice();
+            pausedByHint = isPausedNow();
+          }
+        } catch (_) {}
+      }
+
+      function resumeAfterHint() {
+        const shouldResume = pausedByHint;
+        pausedByHint = false;
+        if (!shouldResume || !isPausedNow()) return;
+        try {
+          if (typeof pausePractice === 'function') pausePractice();
+        } catch (_) {}
+      }
+
+      function openHint() {
+        const step = currentStep();
+        if (step < 1 || step > 5) return;
+        openStep = step;
+        pauseForHint();
+        renderHint(step);
+        overlay.hidden = false;
+        window.PW_ANALYTICS?.event?.('practice_hint_open', { practice_step: step });
+        window.setTimeout(() => continueBtn.focus({ preventScroll:true }), 0);
+      }
+
+      function closeHint(resume = true) {
+        if (overlay.hidden) return;
+        overlay.hidden = true;
+        openStep = 0;
+        if (resume) resumeAfterHint();
+        else pausedByHint = false;
+        if (practiceScreen.classList.contains('active')) {
+          window.setTimeout(() => trigger.focus({ preventScroll:true }), 0);
+        }
+      }
+
+      trigger.addEventListener('click', openHint);
+      continueBtn.addEventListener('click', () => closeHint(true));
+      overlay.addEventListener('click', event => {
+        if (event.target !== overlay) return;
+        continueBtn.focus({ preventScroll:true });
+      });
+      document.addEventListener('keydown', event => {
+        if (overlay.hidden) return;
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          continueBtn.focus({ preventScroll:true });
+          return;
+        }
+        if (event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeHint(true);
+      }, true);
+
+      new MutationObserver(syncTrigger).observe(stepCountEl, { childList:true, characterData:true, subtree:true });
+      new MutationObserver(syncTrigger).observe(practiceScreen, { attributes:true, attributeFilter:['class'] });
+      document.addEventListener('pw:locale-changed', () => {
+        syncTrigger();
+        if (!overlay.hidden && openStep) renderHint(openStep);
+      });
+
+      syncTrigger();
+    })();
+  </script>
   <script>
     (() => {
       const preview = new URLSearchParams(location.search).get('feedback');

@@ -1,5 +1,5 @@
 /* 5 by Peaceful World — service worker */
-const VERSION = 'v0.18.51-alpha-preview-palette1';
+const VERSION = 'v0.18.51-alpha-i18n1';
 const CORE = 'pw-core-' + VERSION;
 const NETWORK_TIMEOUT_MS = 1800;
 const IOS_GUIDE_PART_COUNT = 6;
@@ -23,6 +23,8 @@ const CORE_ASSETS = [
   '/ai-guide.js',
   '/analytics.js',
   '/feedback.js',
+  '/free-practice.js?v=2',
+  '/progress-sync.js?v=2',
   '/i18n.js',
   '/locales/index.json',
   '/locales/ru.json',
