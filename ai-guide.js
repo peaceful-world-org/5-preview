@@ -201,7 +201,7 @@ if (location.hostname === 'preview-5.peaceful-world.org') {
   const loadProgressSync = () => {
     if (document.querySelector('script[data-pw-progress-sync-preview]')) return;
     const progressSync = document.createElement('script');
-    progressSync.src = 'preview-progress-sync.js?v=3';
+    progressSync.src = 'preview-progress-sync.js?v=4';
     progressSync.async = true;
     progressSync.dataset.pwProgressSyncPreview = '1';
     document.head.appendChild(progressSync);
