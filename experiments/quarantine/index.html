@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F9F8F4">
+  <title>5 — Карантин реакции · эксперимент</title>
+  <style>
+    :root{
+      --bg:#F9F8F4;--surface:#FFFFFF;--ink:#202522;--text:#3D4541;--muted:#6B716D;
+      --accent:#7B8D7B;--accent-text:#677667;--accent-soft:#E9EEE8;--line:#E7E9E4;
+      --warn:#9B7659;--warn-soft:#F2EAE3;--shadow:0 18px 48px rgba(33,41,36,.055)
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink)}
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px}
+    .app{width:min(100%,560px);min-height:100dvh;margin:auto;padding:max(18px,env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}
+    .screen{display:none;min-height:calc(100dvh - 40px);flex-direction:column;animation:fade .35s ease both}
+    .screen.active{display:flex}
+    @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .topbar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;min-height:48px}
+    .round{width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.82);color:var(--muted);display:grid;place-items:center}
+    .round svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .meta{text-align:center;display:grid;gap:2px}
+    .meta strong{font-size:.92rem}
+    .meta small{font-size:.63rem;letter-spacing:.14em;color:var(--muted)}
+    .home{justify-content:center;text-align:center}
+    .origin{width:38px;height:38px;object-fit:contain;margin:0 auto 28px}
+    .brand{display:flex;flex-direction:column;align-items:center}
+    .five{font-size:clamp(7.6rem,35vw,11.4rem);font-weight:680;letter-spacing:-.075em;line-height:.76}
+    .module{margin-top:22px;font-size:1.04rem;font-weight:700}
+    .byline{margin-top:10px;color:var(--accent-text);font-size:.63rem;font-weight:700;letter-spacing:.16em}
+    .hero{max-width:430px;margin:30px auto 0}
+    .hero h1{margin:0;font-size:clamp(2rem,8.5vw,3rem);line-height:1.08;letter-spacing:-.025em}
+    .hero p{margin:16px auto 0;color:var(--muted);font-size:1rem;line-height:1.58;max-width:400px}
+    .primary{width:min(100%,340px);min-height:58px;margin:28px auto 0;border:0;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:12px}
+    .secondary{min-height:46px;padding:0 22px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.78);color:var(--text);font-weight:650}
+    .text-btn{border:0;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:4px;margin-top:16px}
+    .note{width:min(100%,420px);margin:24px auto 0;padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.66);color:var(--muted);font-size:.86rem;line-height:1.5;text-align:left}
+    .step{justify-content:space-between}
+    .dots{display:flex;justify-content:center;align-items:center;margin-top:16px}
+    .dot{position:relative;width:34px;height:16px;display:grid;place-items:center}
+    .dot::before{content:"";width:7px;height:7px;border-radius:50%;background:#E1E4DF}
+    .dot:not(:last-child)::after{content:"";position:absolute;left:21px;width:26px;height:1px;background:#E6E8E3;z-index:-1}
+    .dot.active::before{background:var(--accent);transform:scale(1.25);box-shadow:0 0 0 5px rgba(123,141,123,.09)}
+    .dot.done::before{background:#AAB7AA}.dot.done::after{background:#D6DDD4}
+    .card{width:100%;margin:18px auto 14px;padding:30px 24px;background:rgba(255,255,255,.84);border:1px solid rgba(231,233,228,.78);border-radius:28px;box-shadow:var(--shadow);text-align:left}
+    .kicker{margin:0 0 12px;color:var(--accent-text);font-size:.67rem;font-weight:750;letter-spacing:.15em}
+    .card h2{margin:0;font-size:clamp(2rem,8vw,3rem);line-height:1.05;letter-spacing:-.025em}
+    .guide{margin:16px 0 0;color:var(--muted);font-size:.98rem;line-height:1.58}
+    .field{margin-top:22px}
+    .label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 8px;color:var(--text);font-size:.84rem;font-weight:700}
+    textarea,.input{width:100%;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);padding:14px 15px;line-height:1.52;box-shadow:0 7px 22px rgba(33,41,36,.02)}
+    textarea{min-height:112px;resize:vertical}
+    textarea::placeholder{color:#9A9F9B}
+    .tiny{margin:8px 3px 0;color:var(--muted);font-size:.78rem;line-height:1.45}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{min-height:38px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--text);font-size:.88rem}
+    .chip.selected{background:var(--accent-soft);border-color:#CBD5CB;color:var(--accent-text);font-weight:700}
+    .scale{display:grid;gap:10px;margin-top:12px}
+    .scale-head{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem}
+    input[type="range"]{width:100%;accent-color:var(--accent)}
+    .charge{font-size:1.55rem;font-weight:750;color:var(--ink);font-variant-numeric:tabular-nums}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini-card{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.7)}
+    .mini-card h3{margin:0 0 8px;font-size:.84rem}
+    .mini-card textarea{min-height:130px;border-radius:14px;box-shadow:none}
+    .anti{margin-top:18px;padding:14px 15px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 14px 14px 0;color:var(--text);font-size:.88rem;line-height:1.5}
+    .footer{display:flex;gap:10px;align-items:center;justify-content:space-between;padding-bottom:4px}
+    .footer .secondary{min-width:104px}
+    .footer .primary{width:auto;min-width:150px;min-height:48px;margin:0;padding:0 22px}
+    .summary{justify-content:center}
+    .summary-card{width:100%;margin:auto 0;padding:28px 22px;border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.84);box-shadow:var(--shadow)}
+    .status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--warn-soft);color:var(--warn);font-size:.76rem;font-weight:750;letter-spacing:.05em}
+    .status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .summary h2{margin:18px 0 0;font-size:clamp(2.2rem,9vw,3.4rem);line-height:1.02;letter-spacing:-.03em}
+    .summary-lead{margin:16px 0 0;color:var(--muted);line-height:1.58}
+    .summary-grid{display:grid;gap:10px;margin-top:22px;text-align:left}
+    .row{padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+    .row small{display:block;color:var(--muted);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+    .row strong{display:block;margin-top:5px;font-size:.95rem;line-height:1.42}
+    .review-box{margin-top:20px;padding:16px;border-radius:18px;background:var(--accent-soft);text-align:left}
+    .review-box strong{display:block;font-size:.9rem}
+    .review-box p{margin:6px 0 0;color:var(--text);font-size:.86rem;line-height:1.48}
+    .actions{display:grid;gap:10px;margin-top:22px}
+    .actions .primary{margin:0;width:100%}
+    .actions .secondary{width:100%}
+    .review{justify-content:center}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+    .score{padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff;text-align:center}
+    .score small{display:block;color:var(--muted);font-size:.72rem}
+    .score strong{display:block;margin-top:4px;font-size:2rem}
+    .decision{margin-top:18px;padding:16px;border-radius:18px;border:1px solid var(--line);background:#fff;color:var(--text);line-height:1.5}
+    .prototype{margin:22px auto 0;color:var(--muted);font-size:.72rem;letter-spacing:.08em}
+    .theme-dark{--bg:#171A18;--surface:#1D211E;--ink:#ECEDE8;--text:#E2E5E0;--muted:#A8B0AA;--accent:#8FA68F;--accent-text:#9CB19C;--accent-soft:#273129;--line:#3A413B;--warn:#D4B49B;--warn-soft:#332A24;--shadow:none}
+    .theme-dark .round,.theme-dark .secondary,.theme-dark textarea,.theme-dark .input,.theme-dark .chip,.theme-dark .mini-card,.theme-dark .row,.theme-dark .score,.theme-dark .decision{background:#1D211E}
+    .theme-dark .card,.theme-dark .summary-card,.theme-dark .note{background:rgba(29,33,30,.86)}
+    .theme-dark textarea::placeholder{color:#7F8781}
+    @media(max-width:430px){.app{padding-left:18px;padding-right:18px}.card{padding:26px 20px}.split{grid-template-columns:1fr}.footer{gap:8px}.footer .secondary{min-width:94px}.footer .primary{min-width:132px;padding-inline:18px}}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="home" class="screen home active">
+      <img class="origin" src="../../peaceful-world-logo.png" alt="">
+      <div class="brand">
+        <div class="five">5</div>
+        <div class="module">Карантин реакции</div>
+        <div class="byline">PEACEFUL WORLD PRACTICE · LAB</div>
+      </div>
+      <div class="hero">
+        <h1>Не подавляй реакцию.<br>Не отдавай ей руль.</h1>
+        <p>Короткая практика для ситуаций, которые застряли внутри: раздражение, отвращение, обида, страх или желание сорваться.</p>
+      </div>
+      <button id="start" class="primary">Разобрать реакцию <span aria-hidden="true">→</span></button>
+      <button id="example" class="text-btn">Заполнить пример из спортзала</button>
+      <div class="note"><strong>Что значит «карантин»?</strong><br>Мы изолируем не человека и не эмоцию, а автоматическую реакцию: пока она сильная, не даём ей принимать решения вместо нас.</div>
+      <div class="prototype">ПРОТОТИП · ДАННЫЕ НЕ ОТПРАВЛЯЮТСЯ</div>
+    </section>
+
+    <section id="step" class="screen step">
+      <div>
+        <div class="topbar">
+          <button id="close" class="round" aria-label="Закрыть">
+            <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+          <div class="meta"><strong id="stepCount">1 / 5</strong><small>КАРАНТИН</small></div>
+          <button id="theme" class="round" aria-label="Сменить тему">
+            <svg viewBox="0 0 24 24"><path d="M19.2 15.15A7.7 7.7 0 0 1 8.85 4.8 7.9 7.9 0 1 0 19.2 15.15Z"></path></svg>
+          </button>
+        </div>
+        <div id="dots" class="dots"></div>
+      </div>
+      <div id="card" class="card"></div>
+      <div class="footer">
+        <button id="back" class="secondary">Назад</button>
+        <button id="next" class="primary">Дальше <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+
+    <section id="summary" class="screen summary">
+      <div class="summary-card">
+        <span class="status">В КАРАНТИНЕ</span>
+        <h2 id="summaryTitle">Реакция изолирована.</h2>
+        <p class="summary-lead">Ты не обязан сейчас прощать, мириться или менять мнение о человеке. Задача проще: не позволить сильной реакции автоматически выбрать действие.</p>
+        <div class="summary-grid">
+          <div class="row"><small>Ситуация</small><strong id="sumSituation">—</strong></div>
+          <div class="row"><small>Первичный заряд</small><strong id="sumCharge">—</strong></div>
+          <div class="row"><small>Выбранное действие</small><strong id="sumAction">—</strong></div>
+        </div>
+        <div class="review-box">
+          <strong id="reviewDate">Вернуться к кейсу позже</strong>
+          <p>Если заряд снизился, можно выпустить реакцию из карантина. Если нет — оставить её здесь и не форсировать «правильные чувства».</p>
+        </div>
+        <div class="actions">
+          <button id="reviewNow" class="primary">Проверить состояние сейчас</button>
+          <button id="restart" class="secondary">Новый кейс</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="review" class="screen review">
+      <div class="summary-card">
+        <p class="kicker">ПОВТОРНАЯ ПРОВЕРКА</p>
+        <h2>Что изменилось?</h2>
+        <p class="summary-lead">Не ищи правильный ответ. Просто сравни текущую интенсивность с той, что была в начале.</p>
+        <div class="compare">
+          <div class="score"><small>Было</small><strong id="oldCharge">0</strong></div>
+          <div class="score"><small>Сейчас</small><strong id="newChargeLabel">0</strong></div>
+        </div>
+        <div class="scale">
+          <div class="scale-head"><span>0 — спокойно</span><span>10 — захватывает</span></div>
+          <input id="newCharge" type="range" min="0" max="10" step="1" value="0">
+        </div>
+        <div id="decision" class="decision"></div>
+        <div class="actions">
+          <button id="release" class="primary">Сохранить решение</button>
+          <button id="reviewBack" class="secondary">Назад к карточке</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+(() => {
+  'use strict';
+  const state = {
+    step:0,
+    situation:'',
+    emotions:[],
+    charge:6,
+    body:'',
+    facts:'',
+    story:'',
+    unknown:'',
+    alternatives:'',
+    action:'Держать дистанцию',
+    note:''
+  };
+
+  const steps = [
+    {
+      kicker:'1 · ОБНАРУЖИТЬ',
+      title:'Что произошло?',
+      guide:'Опиши одно событие как можно короче. Пока без диагноза человеку, мотивов и большого вывода о нём.',
+      render:() => \`
+        <div class="field">
+          <label class="label" for="situation">Событие</label>
+          <textarea id="situation" placeholder="Например: человек резко ответил мне, когда я попросил поделиться тренажёром.">\${esc(state.situation)}</textarea>
+          <p class="tiny">Проверка: мог бы этот текст увидеть видеорегистратор?</p>
+        </div>\`
+    },
+    {
+      kicker:'2 · ЗАМЕТИТЬ СИГНАЛ',
+      title:'Что делает реакция?',
+      guide:'Сначала не исправляй её. Заметь эмоцию, тело и интенсивность. Это сигнал — не приказ.',
+      render:() => \`
+        <div class="field">
+          <div class="label">Что ближе?</div>
+          <div class="chips" id="emotionChips">
+            \${['злость','отвращение','обида','страх','тревога','стыд'].map(x=>\`<button type="button" class="chip \${state.emotions.includes(x)?'selected':''}" data-emotion="\${x}">\${x}</button>\`).join('')}
+          </div>
+        </div>
+        <div class="field">
+          <div class="label"><span>Насколько захватывает?</span><strong class="charge" id="chargeLabel">\${state.charge}/10</strong></div>
+          <div class="scale">
+            <div class="scale-head"><span>0 — спокойно</span><span>10 — захватывает</span></div>
+            <input id="charge" type="range" min="0" max="10" step="1" value="\${state.charge}">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="body">Что происходит в теле?</label>
+          <textarea id="body" placeholder="Лоб, челюсть, грудь, живот, желание отвернуться…">\${esc(state.body)}</textarea>
+        </div>\`
+    },
+    {
+      kicker:'3 · РАЗДЕЛИТЬ',
+      title:'Факт или история?',
+      guide:'Мозг быстро достраивает намерения и характер. Раздели наблюдаемое и то, что ты уже добавил к нему.',
+      render:() => \`
+        <div class="split">
+          <div class="mini-card">
+            <h3>Что я знаю</h3>
+            <textarea id="facts" placeholder="Наблюдаемые слова и действия…">\${esc(state.facts)}</textarea>
+          </div>
+          <div class="mini-card">
+            <h3>Что я додумал</h3>
+            <textarea id="story" placeholder="Он считает себя…, он всегда…, он специально…">\${esc(state.story)}</textarea>
+          </div>
+        </div>
+        <div class="anti"><strong>Не обесценивай интуицию.</strong> Просто не выдавай интерпретацию за установленный факт.</div>\`
+    },
+    {
+      kicker:'4 · ВЕРНУТЬ ЧЕЛОВЕКА',
+      title:'Что мне неизвестно?',
+      guide:'Не оправдывай человека. Верни неопределённость там, где мозг уже вынес окончательный приговор.',
+      render:() => \`
+        <div class="field">
+          <label class="label" for="unknown">Чего я не знаю?</label>
+          <textarea id="unknown" placeholder="Что он имел в виду, какой у него был день, как он понял меня…">\${esc(state.unknown)}</textarea>
+        </div>
+        <div class="field">
+          <label class="label" for="alternatives">Какие ещё объяснения возможны?</label>
+          <textarea id="alternatives" placeholder="Минимум одно объяснение, которое не требует считать человека чудовищем.">\${esc(state.alternatives)}</textarea>
+          <p class="tiny">Это не отменяет границ и не требует симпатии.</p>
+        </div>\`
+    },
+    {
+      kicker:'5 · ВЫБРАТЬ',
+      title:'Что уменьшит вред?',
+      guide:'Теперь выбери действие. Не самое красивое — самое устойчивое и безопасное для тебя и других.',
+      render:() => \`
+        <div class="field">
+          <div class="label">Сейчас лучше</div>
+          <div class="chips" id="actionChips">
+            \${['Держать дистанцию','Подождать','Спокойно обозначить границу','Поговорить','Отпустить'].map(x=>\`<button type="button" class="chip \${state.action===x?'selected':''}" data-action="\${x}">\${x}</button>\`).join('')}
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="note">Одно конкретное правило для себя</label>
+          <textarea id="note" placeholder="Например: если снова пересечёмся, отвечу коротко и не буду спорить.">\${esc(state.note)}</textarea>
+        </div>
+        <div class="anti"><strong>Карантин ≠ примирение.</strong> Можно сохранить дистанцию и одновременно перестать кормить внутреннюю дегуманизацию.</div>\`
+    }
+  ];
+
+  const screens = ['home','step','summary','review'];
+  const $ = id => document.getElementById(id);
+
+  function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function show(id){
+    screens.forEach(x=>$(x).classList.toggle('active',x===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function renderDots(){
+    $('dots').innerHTML = steps.map((_,i)=>\`<span class="dot \${i===state.step?'active':i<state.step?'done':''}"></span>\`).join('');
+  }
+  function persistVisible(){
+    const map = ['situation','body','facts','story','unknown','alternatives','note'];
+    map.forEach(k=>{ const el=$(k); if(el) state[k]=el.value.trim(); });
+    const charge=$('charge'); if(charge) state.charge=Number(charge.value);
+  }
+  function renderStep(){
+    $('stepCount').textContent = (state.step+1)+' / 5';
+    renderDots();
+    const s=steps[state.step];
+    $('card').innerHTML = \`<p class="kicker">\${s.kicker}</p><h2>\${s.title}</h2><p class="guide">\${s.guide}</p>\${s.render()}\`;
+    $('back').style.visibility = state.step===0 ? 'hidden' : 'visible';
+    $('next').innerHTML = state.step===steps.length-1 ? 'Поместить в карантин →' : 'Дальше →';
+    wireDynamic();
+  }
+  function wireDynamic(){
+    const charge=$('charge');
+    if(charge) charge.addEventListener('input',()=>{state.charge=Number(charge.value);$('chargeLabel').textContent=state.charge+'/10'});
+    document.querySelectorAll('[data-emotion]').forEach(btn=>btn.addEventListener('click',()=>{
+      const e=btn.dataset.emotion;
+      state.emotions = state.emotions.includes(e) ? state.emotions.filter(x=>x!==e) : [...state.emotions,e];
+      btn.classList.toggle('selected');
+    }));
+    document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{
+      state.action=btn.dataset.action;
+      document.querySelectorAll('[data-action]').forEach(x=>x.classList.toggle('selected',x===btn));
+    }));
+  }
+  function start(example=false){
+    Object.assign(state,{step:0,situation:'',emotions:[],charge:6,body:'',facts:'',story:'',unknown:'',alternatives:'',action:'Держать дистанцию',note:''});
+    if(example){
+      Object.assign(state,{
+        situation:'В зале человек резко ответил, когда я спросил, можно ли сделать один подход между его подходами.',
+        emotions:['отвращение','злость'],
+        charge:7,
+        body:'Сморщивается лоб, хочется отвернуться и держаться подальше.',
+        facts:'Он сказал, что я не владею тренажёром, и упомянул, что до этого мы около десяти минут разговаривали.',
+        story:'Он хамоватый, эгоцентричный и пытается показать свой авторитет.',
+        unknown:'Не знаю, как он понял мой вопрос, был ли он раздражён до разговора и считает ли он вообще себя «авторитетом».',
+        alternatives:'Он мог решить, что я тороплю его или критикую его способ тренироваться. Он мог просто неудачно и резко обозначить границу.',
+        action:'Держать дистанцию',
+        note:'Не искать контакта, но и не строить тренировку вокруг избегания. Если нужно взаимодействовать — коротко и по делу.'
+      });
+    }
+    renderStep();show('step');
+  }
+  function finish(){
+    persistVisible();
+    $('sumSituation').textContent=state.situation || 'Ситуация не описана';
+    $('sumCharge').textContent=state.charge+'/10'+(state.emotions.length?' · '+state.emotions.join(', '):'');
+    $('sumAction').textContent=state.action+(state.note?' — '+state.note:'');
+    const d=new Date();d.setDate(d.getDate()+3);
+    $('reviewDate').textContent='Вернуться к кейсу '+new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(d);
+    try{localStorage.setItem('pw-quarantine-lab',JSON.stringify({...state,savedAt:new Date().toISOString()}))}catch(_){}
+    show('summary');
+  }
+  function openReview(){
+    $('oldCharge').textContent=state.charge;
+    $('newCharge').value=state.charge;
+    $('newChargeLabel').textContent=state.charge;
+    updateDecision(state.charge);
+    show('review');
+  }
+  function updateDecision(v){
+    const n=Number(v);
+    const text = n<=2
+      ? 'Заряд низкий. Возможно, реакцию уже можно выпустить из карантина — сохранив любые разумные границы.'
+      : n<state.charge
+        ? 'Заряд снизился. Это уже изменение. Не обязательно форсировать прощение; можно оставить кейс в карантине ещё немного.'
+        : 'Реакция всё ещё сильная. Лучше не заставлять себя «быть выше этого»: сохрани безопасную дистанцию и вернись к кейсу позже.';
+    $('decision').textContent=text;
+  }
+
+  $('start').addEventListener('click',()=>start(false));
+  $('example').addEventListener('click',()=>start(true));
+  $('close').addEventListener('click',()=>show('home'));
+  $('back').addEventListener('click',()=>{persistVisible(); if(state.step>0){state.step--;renderStep()}});
+  $('next').addEventListener('click',()=>{persistVisible(); if(state.step<steps.length-1){state.step++;renderStep()}else finish()});
+  $('restart').addEventListener('click',()=>start(false));
+  $('reviewNow').addEventListener('click',openReview);
+  $('reviewBack').addEventListener('click',()=>show('summary'));
+  $('newCharge').addEventListener('input',e=>{$('newChargeLabel').textContent=e.target.value;updateDecision(e.target.value)});
+  $('release').addEventListener('click',()=>{
+    const n=Number($('newCharge').value);
+    const status=document.querySelector('.status');
+    if(n<=2){status.textContent='ВЫПУЩЕНО';status.style.background='var(--accent-soft)';status.style.color='var(--accent-text)';$('summaryTitle').textContent='Реакция больше не держит руль.'}
+    else{$('summaryTitle').textContent='Кейс остаётся в карантине.'}
+    show('summary');
+  });
+  $('theme').addEventListener('click',()=>{
+    document.documentElement.classList.toggle('theme-dark');
+    const dark=document.documentElement.classList.contains('theme-dark');
+    document.querySelector('meta[name="theme-color"]').content=dark?'#171A18':'#F9F8F4';
+  });
+
+  try{
+    const saved=JSON.parse(localStorage.getItem('pw-quarantine-lab')||'null');
+    if(saved && typeof saved==='object') Object.assign(state,saved);
+  }catch(_){}
+})();
+</script>
+</body>
+</html>
