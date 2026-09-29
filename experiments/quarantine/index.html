@@ -207,84 +207,84 @@
       kicker:'1 · ОБНАРУЖИТЬ',
       title:'Что произошло?',
       guide:'Опиши одно событие как можно короче. Пока без диагноза человеку, мотивов и большого вывода о нём.',
-      render:() => \`
+      render:() => `
         <div class="field">
           <label class="label" for="situation">Событие</label>
-          <textarea id="situation" placeholder="Например: человек резко ответил мне, когда я попросил поделиться тренажёром.">\${esc(state.situation)}</textarea>
+          <textarea id="situation" placeholder="Например: человек резко ответил мне, когда я попросил поделиться тренажёром.">${esc(state.situation)}</textarea>
           <p class="tiny">Проверка: мог бы этот текст увидеть видеорегистратор?</p>
-        </div>\`
+        </div>`
     },
     {
       kicker:'2 · ЗАМЕТИТЬ СИГНАЛ',
       title:'Что делает реакция?',
       guide:'Сначала не исправляй её. Заметь эмоцию, тело и интенсивность. Это сигнал — не приказ.',
-      render:() => \`
+      render:() => `
         <div class="field">
           <div class="label">Что ближе?</div>
           <div class="chips" id="emotionChips">
-            \${['злость','отвращение','обида','страх','тревога','стыд'].map(x=>\`<button type="button" class="chip \${state.emotions.includes(x)?'selected':''}" data-emotion="\${x}">\${x}</button>\`).join('')}
+            ${['злость','отвращение','обида','страх','тревога','стыд'].map(x=>`<button type="button" class="chip ${state.emotions.includes(x)?'selected':''}" data-emotion="${x}">${x}</button>`).join('')}
           </div>
         </div>
         <div class="field">
-          <div class="label"><span>Насколько захватывает?</span><strong class="charge" id="chargeLabel">\${state.charge}/10</strong></div>
+          <div class="label"><span>Насколько захватывает?</span><strong class="charge" id="chargeLabel">${state.charge}/10</strong></div>
           <div class="scale">
             <div class="scale-head"><span>0 — спокойно</span><span>10 — захватывает</span></div>
-            <input id="charge" type="range" min="0" max="10" step="1" value="\${state.charge}">
+            <input id="charge" type="range" min="0" max="10" step="1" value="${state.charge}">
           </div>
         </div>
         <div class="field">
           <label class="label" for="body">Что происходит в теле?</label>
-          <textarea id="body" placeholder="Лоб, челюсть, грудь, живот, желание отвернуться…">\${esc(state.body)}</textarea>
-        </div>\`
+          <textarea id="body" placeholder="Лоб, челюсть, грудь, живот, желание отвернуться…">${esc(state.body)}</textarea>
+        </div>`
     },
     {
       kicker:'3 · РАЗДЕЛИТЬ',
       title:'Факт или история?',
       guide:'Мозг быстро достраивает намерения и характер. Раздели наблюдаемое и то, что ты уже добавил к нему.',
-      render:() => \`
+      render:() => `
         <div class="split">
           <div class="mini-card">
             <h3>Что я знаю</h3>
-            <textarea id="facts" placeholder="Наблюдаемые слова и действия…">\${esc(state.facts)}</textarea>
+            <textarea id="facts" placeholder="Наблюдаемые слова и действия…">${esc(state.facts)}</textarea>
           </div>
           <div class="mini-card">
             <h3>Что я додумал</h3>
-            <textarea id="story" placeholder="Он считает себя…, он всегда…, он специально…">\${esc(state.story)}</textarea>
+            <textarea id="story" placeholder="Он считает себя…, он всегда…, он специально…">${esc(state.story)}</textarea>
           </div>
         </div>
-        <div class="anti"><strong>Не обесценивай интуицию.</strong> Просто не выдавай интерпретацию за установленный факт.</div>\`
+        <div class="anti"><strong>Не обесценивай интуицию.</strong> Просто не выдавай интерпретацию за установленный факт.</div>`
     },
     {
       kicker:'4 · ВЕРНУТЬ ЧЕЛОВЕКА',
       title:'Что мне неизвестно?',
       guide:'Не оправдывай человека. Верни неопределённость там, где мозг уже вынес окончательный приговор.',
-      render:() => \`
+      render:() => `
         <div class="field">
           <label class="label" for="unknown">Чего я не знаю?</label>
-          <textarea id="unknown" placeholder="Что он имел в виду, какой у него был день, как он понял меня…">\${esc(state.unknown)}</textarea>
+          <textarea id="unknown" placeholder="Что он имел в виду, какой у него был день, как он понял меня…">${esc(state.unknown)}</textarea>
         </div>
         <div class="field">
           <label class="label" for="alternatives">Какие ещё объяснения возможны?</label>
-          <textarea id="alternatives" placeholder="Минимум одно объяснение, которое не требует считать человека чудовищем.">\${esc(state.alternatives)}</textarea>
+          <textarea id="alternatives" placeholder="Минимум одно объяснение, которое не требует считать человека чудовищем.">${esc(state.alternatives)}</textarea>
           <p class="tiny">Это не отменяет границ и не требует симпатии.</p>
-        </div>\`
+        </div>`
     },
     {
       kicker:'5 · ВЫБРАТЬ',
       title:'Что уменьшит вред?',
       guide:'Теперь выбери действие. Не самое красивое — самое устойчивое и безопасное для тебя и других.',
-      render:() => \`
+      render:() => `
         <div class="field">
           <div class="label">Сейчас лучше</div>
           <div class="chips" id="actionChips">
-            \${['Держать дистанцию','Подождать','Спокойно обозначить границу','Поговорить','Отпустить'].map(x=>\`<button type="button" class="chip \${state.action===x?'selected':''}" data-action="\${x}">\${x}</button>\`).join('')}
+            ${['Держать дистанцию','Подождать','Спокойно обозначить границу','Поговорить','Отпустить'].map(x=>`<button type="button" class="chip ${state.action===x?'selected':''}" data-action="${x}">${x}</button>`).join('')}
           </div>
         </div>
         <div class="field">
           <label class="label" for="note">Одно конкретное правило для себя</label>
-          <textarea id="note" placeholder="Например: если снова пересечёмся, отвечу коротко и не буду спорить.">\${esc(state.note)}</textarea>
+          <textarea id="note" placeholder="Например: если снова пересечёмся, отвечу коротко и не буду спорить.">${esc(state.note)}</textarea>
         </div>
-        <div class="anti"><strong>Карантин ≠ примирение.</strong> Можно сохранить дистанцию и одновременно перестать кормить внутреннюю дегуманизацию.</div>\`
+        <div class="anti"><strong>Карантин ≠ примирение.</strong> Можно сохранить дистанцию и одновременно перестать кормить внутреннюю дегуманизацию.</div>`
     }
   ];
 
@@ -297,7 +297,7 @@
     window.scrollTo({top:0,behavior:'smooth'});
   }
   function renderDots(){
-    $('dots').innerHTML = steps.map((_,i)=>\`<span class="dot \${i===state.step?'active':i<state.step?'done':''}"></span>\`).join('');
+    $('dots').innerHTML = steps.map((_,i)=>`<span class="dot ${i===state.step?'active':i<state.step?'done':''}"></span>`).join('');
   }
   function persistVisible(){
     const map = ['situation','body','facts','story','unknown','alternatives','note'];
@@ -308,7 +308,7 @@
     $('stepCount').textContent = (state.step+1)+' / 5';
     renderDots();
     const s=steps[state.step];
-    $('card').innerHTML = \`<p class="kicker">\${s.kicker}</p><h2>\${s.title}</h2><p class="guide">\${s.guide}</p>\${s.render()}\`;
+    $('card').innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2><p class="guide">${s.guide}</p>${s.render()}`;
     $('back').style.visibility = state.step===0 ? 'hidden' : 'visible';
     $('next').innerHTML = state.step===steps.length-1 ? 'Поместить в карантин →' : 'Дальше →';
     wireDynamic();
