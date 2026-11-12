@@ -1,0 +1,30 @@
+/* 5 · UX audit preview — 12 Nov 2026. Isolated from production. */
+#practice .step-copy{width:100%;max-width:420px;align-items:stretch}
+#practice #stepTitle{align-self:center;text-align:center}
+html[data-pw-ux-typography="left"] #practice .step-guide{width:100%;max-width:38ch;margin:19px auto 0;text-align:start;line-height:1.62;overflow-wrap:break-word;hyphens:auto}
+html[data-pw-ux-typography="left"] .pw-practice-hint-card .pw-practice-hint-text{max-width:36ch;text-align:start;overflow-wrap:break-word}
+html[data-pw-ux-typography="center"] #practice .step-guide,html[data-pw-ux-typography="center"] .pw-practice-hint-card .pw-practice-hint-text{text-align:center}
+#practice .step-meta span{display:inline;color:var(--text);font-size:.82rem;font-weight:650;line-height:1.3;white-space:nowrap}
+#practice .step-meta small{display:none}
+#practice #soundToggle{position:relative;overflow:visible}
+#practice .sound-toggle-caption{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);display:block;white-space:nowrap;color:var(--text);font-size:.65rem;font-weight:560;line-height:1.2;letter-spacing:0;pointer-events:none}
+#practice .pause-btn.is-waiting-ready{color:#fff;background:var(--ink);border-color:var(--ink);font-weight:670}
+#practice .timer-shell.awaiting-ready .timer-center,#practice .timer-shell.awaiting-ready .timer-ring{opacity:1!important}
+.pw-exit-dialog{width:min(92vw,370px);max-height:calc(100dvh - 28px);overflow-y:auto;padding:26px 23px 22px;border:1px solid var(--line);border-radius:23px;background:var(--surface);color:var(--ink);box-shadow:0 22px 70px rgba(18,22,20,.2);text-align:center}
+.pw-exit-dialog::backdrop{background:rgba(18,22,20,.35)}
+.pw-exit-dialog h2{margin:0;font-size:1.32rem;line-height:1.3}
+.pw-exit-dialog p{margin:13px auto 0;max-width:33ch;font-size:.95rem;line-height:1.55;color:var(--text);text-align:start}
+.pw-exit-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.pw-exit-actions .secondary{margin:0;min-width:125px;min-height:44px}
+#pwExitStay{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media(max-height:400px){
+ #practice.practice-screen{justify-content:flex-start;align-items:stretch;overflow-y:auto;overscroll-behavior-y:contain}
+ #practice .practice-topbar,#practice .progress-dots,#practice .practice-footer{flex:0 0 auto}
+ #practice .practice-card{flex:0 0 auto;min-height:0;display:grid;grid-template-rows:42px auto;margin:14px auto 9px;padding:6px 12px 13px}
+ #practice .step-number{font-size:2.75rem}
+ #practice .step-copy{justify-content:flex-start;padding-bottom:0}
+ #practice .practice-footer{padding-bottom:12px}
+ #practice .timer-shell{width:82px;height:82px}
+ #practice .pause-btn{margin-top:6px;min-height:44px}
+}
+@media(max-width:360px){#practice .step-guide{max-width:100%}.pw-exit-dialog{padding:18px 16px}.pw-exit-actions .secondary{flex:1 1 100%}}
