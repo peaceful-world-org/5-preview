@@ -139,5 +139,14 @@
   "ai.guide.cta.aria": "Задать вопрос AI-проводнику",
   "analytics.body.native": "Google Analytics for Firebase помогает нам улучшать тренажёр «5». Он собирает статистику только с твоего разрешения, без рекламной персонализации.",
   "analytics.thanks": "Спасибо! 😊",
-  "build.reveal.aria": "Показать версию после пяти нажатий"
+  "build.reveal.aria": "Показать версию после пяти нажатий",
+  "practice.sound.label": "Тиканье",
+  "practice.step.progress": "Шаг {n} из {total}",
+  "practice.ready": "Я готов",
+  "practice.ready.caption": "ЧИТАЙ ИНСТРУКЦИЮ",
+  "practice.ready.announce": "Прочитай инструкцию, затем нажми «Я готов».",
+  "practice.exit.title": "Прервать тренировку?",
+  "practice.exit.body": "Текущий сеанс не сохранится. Следующий начнётся с первого шага.",
+  "practice.exit.stay": "Продолжить",
+  "practice.exit.leave": "Прервать"
 }

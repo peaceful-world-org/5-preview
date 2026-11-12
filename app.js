@@ -91,6 +91,10 @@ function selectPracticeSteps() {
   return true;
 }
 
+const UX_INTRO_MODE = new URLSearchParams(location.search).get('intro');
+const UX_EXIT_MODE = new URLSearchParams(location.search).get('exit');
+const UX_READY_KEY = 'pw-ux-ready-seen-v1';
+
 const store = {
   get(key, fallback) {
     try {
@@ -120,6 +124,8 @@ let lastObservedRemainingMs = 0;
 let deferredInstallPrompt = null;
 let finalHiddenAt = 0;
 let startingPractice = false;
+let awaitingIntroReady = false;
+let resumeAfterExitDialog = false;
 
 const $ = id => document.getElementById(id);
 const home = $('home');
@@ -128,6 +134,9 @@ const done = $('done');
 const feedback = $('feedback');
 const startBtn = $('startBtn');
 const closeBtn = $('closeBtn');
+const exitDialog = $('pwExitDialog');
+const exitStayBtn = $('pwExitStay');
+const exitLeaveBtn = $('pwExitLeave');
 const pauseBtn = $('pauseBtn');
 const feedbackBtn = $('feedbackBtn');
 const shareBtn = $('shareBtn');
@@ -412,7 +421,7 @@ function renderTimer() {
   if (phase === 'prep') {
     const seconds = Math.max(1, Math.ceil(ms / 1000));
     timer.textContent = String(seconds);
-    timerCaption.textContent = i18nText('practice.preparing', 'ПОДГОТОВКА');
+    timerCaption.textContent = awaitingIntroReady ? i18nText('practice.ready.caption', 'ЧИТАЙ ИНСТРУКЦИЮ') : i18nText('practice.preparing', 'ПОДГОТОВКА');
     timerShell.classList.add('preparing');
     timerShell.classList.remove('is-practice', 'ending');
     timerShell.setAttribute(
@@ -433,7 +442,7 @@ function renderTimer() {
   progressRing.style.strokeDasharray = String(CIRC);
 
   const seconds = Math.max(0, Math.ceil(ms / 1000) - 1);
-  const ariaSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const ariaSeconds = seconds;
   timerShell.classList.toggle('ending', seconds <= 5);
   timer.textContent = String(seconds);
   timerCaption.textContent = i18nText('practice.seconds', 'СЕКУНД');
@@ -462,7 +471,7 @@ function updatePhaseVisual() {
 
 function writeStep() {
   const step = STEPS[stepIndex];
-  stepCount.textContent = `${stepIndex + 1} / ${STEPS.length}`;
+  stepCount.textContent = i18nText('practice.step.progress', 'Шаг {n} из {total}', { n: stepIndex + 1, total: STEPS.length });
   stepTitle.textContent = step.title;
   stepGuide.textContent = step.guide;
   updateDots();
@@ -558,7 +567,9 @@ function stopSession({ unlockLocale = true } = {}) {
   clearPending();
   transitionLock = false;
   paused = false;
-  timerShell.classList.remove('preparing', 'phase-change', 'is-practice', 'ending', 'paused');
+  awaitingIntroReady = false;
+  pauseBtn.classList.remove('is-waiting-ready');
+  timerShell.classList.remove('preparing', 'phase-change', 'is-practice', 'ending', 'paused', 'awaiting-ready');
   practiceContent.classList.remove('changing', 'entering');
   releaseWakeLock();
   if (unlockLocale) window.PW_I18N?.unlockLocale?.();
@@ -593,8 +604,20 @@ async function startPractice() {
     updateSound();
     startStep(false);
     startTicker();
-    acquireWakeLock();
-    announce(stepAnnouncement(0));
+    const firstGuided = window.PW_TRAINING_MODES?.mode !== 'metta';
+    const manualIntro = UX_INTRO_MODE === 'manual' ||
+      (UX_INTRO_MODE !== 'auto' && !IS_DEMO && store.get(UX_READY_KEY, '0') !== '1');
+    if (firstGuided && manualIntro) {
+      awaitingIntroReady = true;
+      pausePractice();
+      timerShell.classList.add('awaiting-ready');
+      pauseBtn.classList.add('is-waiting-ready');
+      pauseBtn.textContent = i18nText('practice.ready', 'Я готов');
+      renderTimer();
+    } else acquireWakeLock();
+    announce(awaitingIntroReady
+      ? stepAnnouncement(0) + ' ' + i18nText('practice.ready.announce', 'Прочитай инструкцию, затем нажми «Я готов».')
+      : stepAnnouncement(0));
     focusQuietly(stepTitle);
   } finally {
     startingPractice = false;
@@ -643,6 +666,12 @@ function tick() {
 }
 
 function pausePractice() {
+  if (awaitingIntroReady) {
+    awaitingIntroReady = false;
+    store.set(UX_READY_KEY, '1');
+    timerShell.classList.remove('awaiting-ready');
+    pauseBtn.classList.remove('is-waiting-ready');
+  }
   if (paused) {
     ensureAudio();
     paused = false;
@@ -697,6 +726,7 @@ function finish() {
 }
 
 function exit() {
+  if (exitDialog?.open) exitDialog.close();
   stopSession();
   show(home);
   announce(i18nText('practice.sr.ended', 'Тренировка завершена.'));
@@ -716,8 +746,27 @@ function maybeResetCompletedView() {
   focusQuietly(startBtn);
 }
 
+function requestExit() {
+  if (UX_EXIT_MODE === 'direct' || !exitDialog?.showModal) { exit(); return; }
+  if (exitDialog.open) return;
+  resumeAfterExitDialog = !paused;
+  if (resumeAfterExitDialog) pausePractice();
+  exitDialog.showModal();
+  exitStayBtn?.focus({ preventScroll:true });
+}
+function answerExitDialog(shouldLeave) {
+  if (exitDialog?.open) exitDialog.close();
+  if (shouldLeave) { resumeAfterExitDialog = false; exit(); return; }
+  if (resumeAfterExitDialog && paused) pausePractice();
+  resumeAfterExitDialog = false;
+  closeBtn.focus({ preventScroll:true });
+}
+exitStayBtn?.addEventListener('click', () => answerExitDialog(false));
+exitLeaveBtn?.addEventListener('click', () => answerExitDialog(true));
+exitDialog?.addEventListener('cancel', e => { e.preventDefault(); answerExitDialog(false); });
+
 startBtn.addEventListener('click', startPractice);
-closeBtn.addEventListener('click', exit);
+closeBtn.addEventListener('click', requestExit);
 pauseBtn.addEventListener('click', pausePractice);
 
 if (feedbackBtn) {
@@ -766,7 +815,8 @@ soundToggle.addEventListener('click', () => {
 
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
-  if (practice.classList.contains('active')) exit();
+  if (exitDialog?.open) return;
+  if (practice.classList.contains('active')) requestExit();
   else if (feedback && feedback.classList.contains('active')) backFromFeedback();
 });
 

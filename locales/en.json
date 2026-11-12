@@ -139,5 +139,14 @@
   "ai.guide.cta.aria": "Ask the AI Guide a question",
   "analytics.body.native": "Google Analytics for Firebase helps us improve 5 Practice. It collects statistics only with your permission, without ad personalization.",
   "analytics.thanks": "Thank you! 😊",
-  "build.reveal.aria": "Press five times to reveal the version"
+  "build.reveal.aria": "Press five times to reveal the version",
+  "practice.sound.label": "Ticking",
+  "practice.step.progress": "Step {n} of {total}",
+  "practice.ready": "I'm ready",
+  "practice.ready.caption": "READ THE PROMPT",
+  "practice.ready.announce": "Read the instruction, then select I'm ready.",
+  "practice.exit.title": "End this practice?",
+  "practice.exit.body": "This session will not be saved. The next one will start from step one.",
+  "practice.exit.stay": "Continue",
+  "practice.exit.leave": "End practice"
 }
