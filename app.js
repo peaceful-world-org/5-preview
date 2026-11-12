@@ -609,8 +609,11 @@ async function startPractice() {
       (UX_INTRO_MODE !== 'auto' && !IS_DEMO && store.get(UX_READY_KEY, '0') !== '1');
     if (firstGuided && manualIntro) {
       awaitingIntroReady = true;
-      pausePractice();
-      timerShell.classList.add('awaiting-ready');
+      remainingMs = left();
+      lastObservedRemainingMs = remainingMs;
+      paused = true;
+      timerShell.classList.add('paused', 'awaiting-ready');
+      releaseWakeLock();
       pauseBtn.classList.add('is-waiting-ready');
       pauseBtn.textContent = i18nText('practice.ready', 'Я готов');
       renderTimer();
