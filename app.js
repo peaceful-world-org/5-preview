@@ -426,11 +426,9 @@ function renderTimer() {
     timerShell.classList.remove('is-practice', 'ending');
     timerShell.setAttribute(
       'aria-label',
-      i18nText(
-        'practice.timer.prep.aria',
-        'Подготовка, осталось {seconds} секунд',
-        { seconds }
-      )
+      awaitingIntroReady
+        ? i18nText('practice.ready.aria', 'Таймер остановлен. Прочитай инструкцию и нажми «Я готов».')
+        : i18nText('practice.timer.prep.aria', 'Подготовка, осталось {seconds} секунд', { seconds })
     );
     progressRing.style.strokeDasharray = '48 260';
     progressRing.style.strokeDashoffset = '0';
