@@ -9,10 +9,10 @@
       "copyVersion": "ru-v0.18.50-stable",
       "rotationVersion": "ru-rotation-v1",
       "privacy": "/privacy.html",
-      "privacyVersion": "2.1",
+      "privacyVersion": "2.3",
       "shareHint": "ru",
       "links": {
-        "site": "https://peaceful-world.org/ru/",
+        "site": "https://peaceful-world.org/ru.html",
         "support": "https://peaceful-world.org/help/ru",
         "article": "https://peaceful-world.org/ru/research/peaceful-world-practice",
         "notebook": "https://notebook.google.com/notebook/c24ace59-2fe4-46be-afbc-ba4ee2c9ab4a"
@@ -31,7 +31,7 @@
       "copyVersion": "en-v1",
       "rotationVersion": null,
       "privacy": "/privacy.en.html",
-      "privacyVersion": "2.1",
+      "privacyVersion": "2.3",
       "shareHint": "en",
       "links": {
         "site": "https://peaceful-world.org/",

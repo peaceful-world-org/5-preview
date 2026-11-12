@@ -1,5 +1,5 @@
 /* 5 by Peaceful World — service worker */
-const VERSION = 'v0.18.55';
+const VERSION = 'v0.18.59-completion-ui1';
 const CORE = 'pw-core-' + VERSION;
 const NETWORK_TIMEOUT_MS = 1800;
 const IOS_GUIDE_PART_COUNT = 6;
@@ -15,12 +15,16 @@ const CORE_ASSETS = [
   '/install.css',
   '/step-number.css',
   '/completion-polish.css',
+  '/practice-modes.css',
   '/copy-rotation.js',
+  '/metta-focus.js',
+  '/practice-modes.js',
   '/app.js',
   '/sound-v1.js',
   '/step-number.js',
   '/ios-install-guide.js',
   '/ai-guide.js',
+  '/aggregate-analytics.js',
   '/analytics.js',
   '/feedback.js',
   '/free-practice.js?v=3',

@@ -11,6 +11,7 @@
   if (!home || !app || !startBtn) return;
 
   const COMPLETED_KEY = 'pw-completed-practices';
+  const METTA_KEY = 'pw-metta-completed-practices-v1';
   const FREE_SECONDS_KEY = 'pw-free-practice-seconds-v1';
   const FREE_SESSIONS_KEY = 'pw-free-practice-sessions-v1';
   const SESSION_KEY = 'pw-free-practice-session-v1';
@@ -18,15 +19,15 @@
 
   const STRINGS = {
     ru: {
-      totalLabel: 'В практике',
+      totalLabel: 'В тренировках',
       practiceOne: 'тренировка',
       practiceFew: 'тренировки',
       practiceMany: 'тренировок',
-      entry: 'Свободная практика',
-      screenLabel: 'СВОБОДНАЯ ПРАКТИКА',
+      entry: 'Свободная тренировка',
+      screenLabel: 'СВОБОДНАЯ ТРЕНИРОВКА',
       title: 'Таймер',
-      idea: 'Практикуйся столько, сколько нужно.',
-      note: 'Без цели и без серии. Просто время, проведённое в практике.',
+      idea: 'Тренируйся столько, сколько нужно.',
+      note: 'Без цели и без серии. Просто время, посвящённое тренировке.',
       start: 'Начать',
       pause: 'Пауза',
       resume: 'Продолжить',
@@ -34,12 +35,12 @@
       back: 'Назад',
       tickingOn: 'Тиканье включено',
       tickingOff: 'Тиканье выключено',
-      currentLabel: 'ТЕКУЩАЯ ПРАКТИКА',
+      currentLabel: 'ТЕКУЩАЯ ТРЕНИРОВКА',
       hintTrigger: 'Подсказка',
-      hintAria: 'Что можно делать в свободной практике',
+      hintAria: 'Что можно делать в свободной тренировке',
       hintTitle: 'Что здесь делать?',
       hintBody1: 'Используй это время для любой практики, которая помогает тренировать более мирный ум — религиозной, светской или терапевтической. Можно наблюдать за дыханием, возвращаться к доброжелательности или прощению, молиться, медитировать или делать знакомое тебе упражнение.',
-      hintBody2: 'Правильной длительности нет. Даже короткое время, которое ты сознательно отдаёшь практике, имеет значение — поэтому таймер считает каждую секунду.',
+      hintBody2: 'Правильной длительности нет. Даже короткое время, которое ты сознательно посвящаешь тренировке, имеет значение — поэтому таймер считает каждую секунду.',
       hintContinue: 'Продолжить'
     },
     en: {
@@ -128,13 +129,13 @@
   }
 
   function totalTrainingCount() {
-    return completedPractices() + freeSessions();
+    return completedPractices() + safeInt(safeGet(METTA_KEY, '0')) + freeSessions();
   }
 
   function totalSeconds() {
     // Current guided practice is exactly five full minutes. Keep guided and free
     // time separate in storage; combine only for the user-facing odometer.
-    return completedPractices() * 300 + freeSeconds();
+    return (completedPractices() + safeInt(safeGet(METTA_KEY, '0'))) * 300 + freeSeconds();
   }
 
   function formatTotal(seconds) {

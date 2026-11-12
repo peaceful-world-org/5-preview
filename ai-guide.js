@@ -3,23 +3,28 @@
 
 (() => {
   const WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-  const WIDGET_DELAY_MS = 10 * 1000;
 
   const home = document.getElementById('home');
   const practice = document.getElementById('practice');
   const done = document.getElementById('done');
   const startBtn = document.getElementById('startBtn');
+  const supportBtn = document.getElementById('supportBtn');
 
   let widget = null;
   let widgetLocale = '';
-  let widgetScriptReady = Boolean(customElements.get('elevenlabs-convai'));
-  let widgetScriptLoading = false;
-  let widgetRevealTimer = null;
   let widgetSurface = '';
-  let widgetRevealReady = false;
+  let widgetScriptPromise = null;
+  let homeTrigger = null;
+  let doneTrigger = null;
+  let pendingRequestToken = 0;
+  let pendingRequestSurface = '';
 
   function localeConfig() {
     return window.PW_I18N?.config || null;
+  }
+
+  function text(key, fallback) {
+    return window.PW_I18N?.text?.(key, fallback) ?? fallback;
   }
 
   function openExternal(url) {
@@ -28,23 +33,6 @@
     if (opened) return { ok:true, target:'new-tab' };
     location.href = url;
     return { ok:true, target:'same-tab' };
-  }
-
-  function clearWidgetRevealTimer() {
-    if (widgetRevealTimer === null) return;
-    clearTimeout(widgetRevealTimer);
-    widgetRevealTimer = null;
-  }
-
-  function unmountWidget() {
-    if (!widget) return;
-    try { widget.remove(); } catch (_) {}
-    widget = null;
-    widgetLocale = '';
-  }
-
-  function shouldShowWidget() {
-    return Boolean(home?.classList.contains('active') || done?.classList.contains('active'));
   }
 
   function activeWidgetSurface() {
@@ -58,32 +46,92 @@
     return typeof value === 'string' && value.trim() ? value.trim() : '';
   }
 
-  function ensureWidgetScript() {
-    if (widgetScriptReady || widgetScriptLoading || !currentAgentId()) return;
-    widgetScriptLoading = true;
-    const script = document.createElement('script');
-    script.src = WIDGET_SRC;
-    script.async = true;
-    script.type = 'text/javascript';
-    script.addEventListener('load', () => {
-      widgetScriptLoading = false;
-      widgetScriptReady = true;
-      syncWidget();
-    }, { once:true });
-    script.addEventListener('error', () => {
-      widgetScriptLoading = false;
-    }, { once:true });
-    document.head.appendChild(script);
+  function renderTriggerCopy() {
+    const label = text('ai.guide.cta', 'Спросить AI');
+    const aria = text('ai.guide.cta.aria', 'Задать вопрос AI-проводнику');
+    [homeTrigger, doneTrigger].filter(Boolean).forEach(button => {
+      button.textContent = label;
+      button.setAttribute('aria-label', aria);
+    });
   }
 
-  function mountWidget() {
+  function createTriggers() {
+    if (!homeTrigger && home) {
+      homeTrigger = document.createElement('button');
+      homeTrigger.type = 'button';
+      homeTrigger.className = 'text-action pw-ai-guide-trigger';
+      homeTrigger.dataset.pwAiGuideTrigger = 'home';
+      const privacyRow = home.querySelector('.home-privacy-row');
+      if (privacyRow) privacyRow.insertAdjacentElement('beforebegin', homeTrigger);
+      else home.querySelector('.home-stack')?.appendChild(homeTrigger);
+      homeTrigger.addEventListener('click', () => void requestGuide('home'));
+    }
+
+    if (!doneTrigger && done) {
+      doneTrigger = document.createElement('button');
+      doneTrigger.type = 'button';
+      doneTrigger.className = 'text-action pw-ai-guide-trigger';
+      doneTrigger.dataset.pwAiGuideTrigger = 'done';
+      if (supportBtn) supportBtn.insertAdjacentElement('afterend', doneTrigger);
+      else done.querySelector('.done-stack')?.appendChild(doneTrigger);
+      doneTrigger.addEventListener('click', () => void requestGuide('done'));
+    }
+
+    renderTriggerCopy();
+    syncTriggerAvailability();
+  }
+
+  function syncTriggerAvailability() {
+    const available = Boolean(currentAgentId());
+    if (homeTrigger) homeTrigger.hidden = !available;
+    if (doneTrigger) doneTrigger.hidden = !available;
+  }
+
+  function ensureWidgetScript() {
+    if (!currentAgentId()) return Promise.resolve(false);
+    if (customElements.get('elevenlabs-convai')) return Promise.resolve(true);
+    if (widgetScriptPromise) return widgetScriptPromise;
+
+    widgetScriptPromise = new Promise(resolve => {
+      const existing = document.querySelector('script[data-pw-elevenlabs-widget="1"]');
+      if (existing) {
+        existing.addEventListener('load', () => resolve(Boolean(customElements.get('elevenlabs-convai'))), { once:true });
+        existing.addEventListener('error', () => resolve(false), { once:true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = WIDGET_SRC;
+      script.async = true;
+      script.type = 'text/javascript';
+      script.dataset.pwElevenlabsWidget = '1';
+      script.addEventListener('load', () => resolve(Boolean(customElements.get('elevenlabs-convai'))), { once:true });
+      script.addEventListener('error', () => {
+        widgetScriptPromise = null;
+        resolve(false);
+      }, { once:true });
+      document.head.appendChild(script);
+    });
+
+    return widgetScriptPromise;
+  }
+
+  function unmountWidget() {
+    if (!widget) return;
+    try { widget.remove(); } catch (_) {}
+    widget = null;
+    widgetLocale = '';
+    widgetSurface = '';
+  }
+
+  function mountWidget(surface) {
     const config = localeConfig();
     const agentId = currentAgentId();
     const activeLocale = window.PW_I18N?.locale || document.documentElement.lang || 'ru';
 
-    if (!agentId || !widgetScriptReady || !widgetRevealReady || !shouldShowWidget()) return;
-    if (activeWidgetSurface() !== widgetSurface) return;
-    if (widget && widgetLocale === activeLocale) return;
+    if (!agentId || !customElements.get('elevenlabs-convai')) return false;
+    if (practice?.classList.contains('active') || activeWidgetSurface() !== surface) return false;
+
     if (widget) unmountWidget();
 
     const articleUrl = config?.links?.article || '';
@@ -91,8 +139,11 @@
 
     widget = document.createElement('elevenlabs-convai');
     widgetLocale = activeLocale;
+    widgetSurface = surface;
     widget.setAttribute('agent-id', agentId);
     widget.setAttribute('language', activeLocale);
+    widget.setAttribute('variant', 'expanded');
+    widget.setAttribute('dismissible', 'true');
     widget.setAttribute('data-pw-ai-guide', '1');
     widget.setAttribute('data-pw-locale', activeLocale);
 
@@ -112,41 +163,48 @@
     });
 
     document.body.appendChild(widget);
+    return true;
   }
 
-  function beginWidgetSurface(nextSurface) {
-    clearWidgetRevealTimer();
-    unmountWidget();
-    widgetSurface = nextSurface;
-    widgetRevealReady = false;
+  async function requestGuide(surface) {
+    if (surface !== activeWidgetSurface() || practice?.classList.contains('active')) return;
+    // An async widget import must never turn into a delayed unsolicited popup
+    // if the visitor navigated away, switched locale, or changed surfaces.
+    const token = ++pendingRequestToken;
+    pendingRequestSurface = surface;
 
-    if (!nextSurface) return;
+    const trigger = surface === 'done' ? doneTrigger : homeTrigger;
+    if (trigger) {
+      trigger.disabled = true;
+      trigger.setAttribute('aria-busy', 'true');
+    }
 
-    ensureWidgetScript();
-    widgetRevealTimer = setTimeout(() => {
-      widgetRevealTimer = null;
-      if (activeWidgetSurface() !== nextSurface) return;
-      widgetRevealReady = true;
-      syncWidget();
-    }, WIDGET_DELAY_MS);
+    document.dispatchEvent(new CustomEvent('pw:ai-guide-requested', {
+      detail:{ surface }
+    }));
+
+    try {
+      const ready = await ensureWidgetScript();
+      if (!ready || token !== pendingRequestToken) return;
+      if (surface !== activeWidgetSurface() || practice?.classList.contains('active')) return;
+      mountWidget(surface);
+    } finally {
+      if (token === pendingRequestToken) pendingRequestSurface = '';
+      if (trigger) {
+        trigger.disabled = false;
+        trigger.removeAttribute('aria-busy');
+      }
+    }
   }
 
   function syncWidget() {
-    const nextSurface = practice?.classList.contains('active') ? '' : activeWidgetSurface();
-
-    if (nextSurface !== widgetSurface) {
-      beginWidgetSurface(nextSurface);
-      return;
+    const surface = practice?.classList.contains('active') ? '' : activeWidgetSurface();
+    if (pendingRequestSurface && pendingRequestSurface !== surface) {
+      pendingRequestToken += 1;
+      pendingRequestSurface = '';
     }
-
-    if (!nextSurface || !currentAgentId()) {
-      unmountWidget();
-      return;
-    }
-
-    ensureWidgetScript();
-    if (!widgetRevealReady || !widgetScriptReady) return;
-    mountWidget();
+    if (!surface || (widget && widgetSurface !== surface)) unmountWidget();
+    syncTriggerAvailability();
   }
 
   [home, practice, done].filter(Boolean).forEach(screen => {
@@ -154,15 +212,20 @@
   });
 
   document.addEventListener('pw:locale-changed', () => {
+    pendingRequestToken += 1;
+    pendingRequestSurface = '';
     unmountWidget();
+    renderTriggerCopy();
+    syncTriggerAvailability();
+  });
+
+  window.PW_I18N?.ready?.then(() => {
+    createTriggers();
+    syncWidget();
+  }).catch(() => {
+    createTriggers();
     syncWidget();
   });
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) syncWidget();
-  });
-
-  window.PW_I18N?.ready?.then(syncWidget).catch(() => {});
 })();
 
 /* Optional in-app reporting for AI responses. It stays invisible until the
@@ -176,7 +239,7 @@
   report.type = 'button';
   report.dataset.pwAiReport = '1';
   report.hidden = true;
-  report.style.cssText = 'position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(88px,calc(74px + env(safe-area-inset-bottom)));z-index:9999;border:0;background:transparent;padding:5px 7px;color:var(--muted);font:500 11px/1.25 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.9';
+  report.style.cssText = 'position:fixed;right:max(14px,max(env(safe-area-inset-right),var(--safe-area-inset-right,0px)));bottom:max(88px,calc(74px + max(env(safe-area-inset-bottom),var(--safe-area-inset-bottom,0px))));z-index:9999;border:0;background:transparent;padding:5px 7px;color:var(--muted);font:500 11px/1.25 Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.9';
   document.body.appendChild(report);
 
   const kicker = document.querySelector('#feedbackHeader .feedback-kicker');
@@ -275,7 +338,7 @@
   const done = document.getElementById('done');
   const doneStack = done?.querySelector('.done-stack');
   const subtitle = done?.querySelector('.done-subtitle');
-  if (!done || !doneStack || !subtitle || done.querySelector('.pw-completion-roadmap')) return;
+  if (!done || !doneStack || !subtitle || done.querySelector('.pw-completion-roadmap') || done.querySelector('#pwModeRoadmap')) return;
 
   function text(key, fallback) {
     return window.PW_I18N?.text?.(key, fallback) ?? fallback;
@@ -410,9 +473,9 @@
         padding-bottom:24px!important;
       }
       .pw-completion-scroll-runway{
-        height:max(148px,calc(128px + env(safe-area-inset-bottom)));
-        min-height:max(148px,calc(128px + env(safe-area-inset-bottom)));
-        flex-basis:max(148px,calc(128px + env(safe-area-inset-bottom)));
+        height:max(148px,calc(128px + max(env(safe-area-inset-bottom),var(--safe-area-inset-bottom,0px))));
+        min-height:max(148px,calc(128px + max(env(safe-area-inset-bottom),var(--safe-area-inset-bottom,0px))));
+        flex-basis:max(148px,calc(128px + max(env(safe-area-inset-bottom),var(--safe-area-inset-bottom,0px))));
       }
     }
     @media(max-width:420px){
@@ -511,16 +574,3 @@
   window.PW_I18N?.ready?.then(render).catch(() => {});
   document.addEventListener('pw:locale-changed', render);
 })();
-
-/* Permanent preview environment: non-product QA utilities only. */
-if (location.hostname === 'preview-5.peaceful-world.org') {
-  const darkPolish = document.createElement('link');
-  darkPolish.rel = 'stylesheet';
-  darkPolish.href = 'preview-dark-polish.css?v=2';
-  document.head.appendChild(darkPolish);
-
-  const utilities = document.createElement('script');
-  utilities.src = 'preview-utilities.js?v=2';
-  utilities.async = true;
-  document.head.appendChild(utilities);
-}

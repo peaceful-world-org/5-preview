@@ -21,14 +21,14 @@
   const STRINGS = {
     ru: {
       saveTitle:'Сохранить прогресс',
-      saveBody:'Необязательно. Сохрани время и практики, чтобы восстановить их после переустановки или смены устройства.',
+      saveBody:'Необязательно. Сохраняются результаты «Базы» и свободной тренировки. Доброжелательность пока хранится только на этом устройстве.',
       saveButton:'Сохранить прогресс',
       savedTitle:'Прогресс сохранён',
-      savedBody:'Он будет доступен после входа с тем же email на другом устройстве.',
+      savedBody:'Результаты «Базы» и свободной тренировки можно восстановить на другом устройстве. Доброжелательность пока хранится только здесь.',
       open:'Открыть сохранение прогресса',
       close:'Закрыть',
       dialogTitle:'Сохранить прогресс',
-      dialogBody:'Без пароля. Мы отправим одноразовый код на email.',
+      dialogBody:'Без пароля: отправим одноразовый код на email. Пока переносится история «Базы» и свободной тренировки; доброжелательность сохраняется только на этом устройстве.',
       emailLabel:'Email',
       emailPlaceholder:'name@example.com',
       sendCode:'Отправить код',
@@ -64,14 +64,14 @@
     },
     en: {
       saveTitle:'Save progress',
-      saveBody:'Optional. Save your time and practices so you can restore them after reinstalling or changing devices.',
+      saveBody:'Optional backup for Foundation and Free practice. Loving-kindness history is currently stored on this device only.',
       saveButton:'Save progress',
       savedTitle:'Progress saved',
-      savedBody:'It will be available after signing in with the same email on another device.',
+      savedBody:'Foundation and Free practice history can be restored on another device. Loving-kindness is stored on this device only for now.',
       open:'Open progress backup',
       close:'Close',
       dialogTitle:'Save progress',
-      dialogBody:'No password. We will email you a one-time code.',
+      dialogBody:'No password: we will email a one-time code. Only Foundation and Free practice history sync; Loving-kindness stays on this device for now.',
       emailLabel:'Email',
       emailPlaceholder:'name@example.com',
       sendCode:'Send code',
@@ -259,7 +259,7 @@
   const style = document.createElement('style');
   style.id = 'pw-progress-sync-style';
   style.textContent = [
-    '.pw-progress-save{width:min(100%,390px);margin:18px auto 2px;padding:15px 14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.42);text-align:center;color:var(--text)}',
+    '.pw-progress-save{width:min(100%,384px);margin:18px auto 2px;padding:15px 14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.42);text-align:center;color:var(--text)}',
     '.pw-progress-save-title{margin:0;font-size:.91rem;font-weight:700;color:var(--ink)}',
     '.pw-progress-save-body{margin:6px auto 0;max-width:340px;font-size:.76rem;line-height:1.48;color:var(--muted)}',
     '.pw-progress-save-btn{min-height:40px;margin-top:10px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);font-size:.79rem;font-weight:650;cursor:pointer}',
@@ -285,7 +285,11 @@
   const card = document.createElement('section');
   card.className = 'pw-progress-save';
   card.innerHTML = '<p class="pw-progress-save-title"></p><p class="pw-progress-save-body"></p><button type="button" class="pw-progress-save-btn"></button>';
-  feedbackBtn.insertAdjacentElement('beforebegin', card);
+  // Only small actions belong in the two-column completion grid. A full
+  // backup card inside it stretches the neighboring feedback button to match.
+  const completionActions = feedbackBtn.closest('.preview-done-actions');
+  if (completionActions) completionActions.insertAdjacentElement('beforebegin', card);
+  else feedbackBtn.insertAdjacentElement('beforebegin', card);
 
   const homeRestoreWrap = document.createElement('p');
   homeRestoreWrap.className = 'pw-progress-home';
