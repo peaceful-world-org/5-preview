@@ -1,18 +1,113 @@
 /* 5 by Peaceful World — small UI enhancements */
 'use strict';
 
-window.PW_BUILD_VERSION = 'v0.18.55';
+window.PW_BUILD_VERSION = 'v0.18.59';
 
 var i18nText = (key, fallback, vars) =>
   window.PW_I18N?.text?.(key, fallback, vars) ?? fallback;
 
 (() => {
+  const host = String(location.hostname || '').trim().toLowerCase().replace(/\.+$/, '');
+  if (host !== '5.peaceful-world.org' && host !== 'android.5.peaceful-world.org') return;
+  const script = document.createElement('script');
+  script.src = 'aggregate-analytics.js';
+  script.async = true;
+  script.dataset.pwAggregateAnalyticsLoader = '1';
+  document.head.appendChild(script);
+})();
+
+(() => {
   const badge = document.querySelector('.build-version');
   if (!badge) return;
-  badge.textContent = 'v0.18.55';
-  const sync = () => badge.setAttribute('aria-label', i18nText('build.aria', 'Версия 0.18.55'));
+  badge.textContent = 'v0.18.59';
+  const sync = () => badge.setAttribute('aria-label', i18nText('build.aria', 'Версия 0.18.59'));
   sync();
   document.addEventListener('pw:locale-changed', sync);
+
+  // Five deliberate presses reveal the build without cluttering the Home.
+  // The existing seven presses on the badge still activate Android diagnostics.
+  const mark = document.querySelector('#home .five-mark');
+  if (mark) {
+    let count = 0;
+    let startedAt = 0;
+    mark.addEventListener('click', () => {
+      const now = Date.now();
+      if (!startedAt || now - startedAt > 4500) {
+        startedAt = now;
+        count = 0;
+      }
+      if (++count < 5) return;
+      count = 0;
+      startedAt = 0;
+      badge.hidden = !badge.hidden;
+      mark.setAttribute('aria-expanded', String(!badge.hidden));
+    });
+  }
+
+  // Keep the diagnostic trigger independent from analytics.js. If analytics
+  // returns before initialization, the version badge can still expose the
+  // native runtime state instead of failing silently.
+  if (badge.dataset.analyticsDiagnosticBound !== '1') {
+    badge.dataset.analyticsDiagnosticBound = '1';
+    let taps = 0;
+    let resetTimer = 0;
+
+    const value = item => item === true ? 'OK' : item === false ? 'FAIL' : 'n/a';
+    const formatReport = report => [
+      'Android analytics diagnostic',
+      `Host: ${location.hostname || 'unknown'}`,
+      `Native Android: ${value(report.nativeAndroid)}`,
+      `Consent granted: ${value(report.consentGranted)}`,
+      `Bridge reports plugin: ${value(report.bridgePluginAvailable)}`,
+      `Plugin proxy created: ${value(report.pluginProxyCreated)}`,
+      `Consent + enable: ${value(report.configureSucceeded)}`,
+      `Firebase instance: ${value(report.instanceIdSucceeded)}`,
+      `Diagnostic event: ${value(report.lastEventSucceeded)}`,
+      `Last event: ${report.lastEventName || 'none'}`,
+      `Error: ${report.lastError || 'none'}`
+    ].join('\n');
+
+    async function showDiagnostic() {
+      if (window.PW_ANALYTICS?.runDiagnostics) {
+        const report = await window.PW_ANALYTICS.runDiagnostics();
+        window.alert(formatReport(report));
+        return;
+      }
+
+      const capacitor = window.Capacitor;
+      let platform = 'unavailable';
+      let pluginAvailable = null;
+      let injectedPluginAvailable = false;
+      try { platform = capacitor?.getPlatform?.() || 'unavailable'; } catch (_) {}
+      try { injectedPluginAvailable = Boolean(capacitor?.Plugins?.FirebaseAnalytics); } catch (_) {}
+      try {
+        pluginAvailable = typeof capacitor?.isPluginAvailable === 'function'
+          ? Boolean(capacitor.isPluginAvailable('FirebaseAnalytics'))
+          : null;
+      } catch (_) {}
+      window.alert([
+        'Android analytics bootstrap diagnostic',
+        `Host: ${location.hostname || 'unknown'}`,
+        `PW_NATIVE_ANDROID: ${value(window.PW_NATIVE_ANDROID === true)}`,
+        `Capacitor platform: ${platform}`,
+        `Injected FirebaseAnalytics: ${value(injectedPluginAvailable)}`,
+        `registerPlugin: ${value(typeof capacitor?.registerPlugin === 'function')}`,
+        `FirebaseAnalytics available: ${value(pluginAvailable)}`,
+        'PW_ANALYTICS: FAIL',
+        'Error: analytics.js did not initialize'
+      ].join('\n'));
+    }
+
+    badge.addEventListener('click', () => {
+      taps += 1;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { taps = 0; }, 4000);
+      if (taps < 7) return;
+      taps = 0;
+      clearTimeout(resetTimer);
+      void showDiagnostic();
+    });
+  }
 })();
 
 (() => {
@@ -25,6 +120,14 @@ var i18nText = (key, fallback, vars) =>
   const done = document.getElementById('done');
   const feedback = document.getElementById('feedback');
   const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)');
+  // Display future languages without making unreleased translation packs selectable.
+  const PLANNED_LOCALES = Object.freeze([
+    ['uk', 'Українська'],
+    ['es', 'Español'],
+    ['ar', 'العربية'],
+    ['fa', 'فارسی'],
+    ['fr', 'Français']
+  ]);
   if (!home || !practice || !done || !window.PW_I18N) return;
 
   function safeGet(key) {
@@ -61,7 +164,13 @@ var i18nText = (key, fallback, vars) =>
   panel.setAttribute('role', 'menu');
   panel.hidden = true;
 
+  // Attach the existing accessible brand link to the same viewport-fixed
+  // utility rail as the language and theme controls. Keeping it inside the
+  // scrolling home screen offsets its top edge by the app's safe-area padding.
+  const homeLogo = home.querySelector('.home-stack--cards > .pw-origin-mark');
+  if (homeLogo) homeLogo.classList.add('pw-utility-origin-mark');
   utilities.append(languageButton, themeButton);
+  if (homeLogo) utilities.appendChild(homeLogo);
   document.body.append(utilities, panel);
 
   const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.25 5.25l1.45 1.45M17.3 17.3l1.45 1.45M18.75 5.25 17.3 6.7M6.7 17.3l-1.45 1.45"></path></svg>';
@@ -101,12 +210,35 @@ var i18nText = (key, fallback, vars) =>
     languageButton.hidden = availableLocales().length < 2;
   }
 
+  // Built-in Capacitor 8 SystemBars: LIGHT means dark icons on light surfaces.
+  // Scope this to Android; browser/PWA and iOS appearance remain unchanged.
+  function syncNativeSystemBars(theme) {
+    if (!window.PW_NATIVE_ANDROID) return;
+    root.dataset.pwNativeAndroid = '1';
+    const capacitor = window.Capacitor;
+    // Unbundled WebView builds may expose native plugins directly or via
+    // the registerPlugin compatibility bridge.
+    const plugin = capacitor?.Plugins?.SystemBars ||
+      (typeof capacitor?.registerPlugin === 'function' ? capacitor.registerPlugin('SystemBars') : null);
+    if (typeof plugin?.setStyle !== 'function') {
+      console.warn('[5] Android SystemBars bridge unavailable');
+      return;
+    }
+    try {
+      void Promise.resolve(plugin.setStyle({ style:theme === 'dark' ? 'DARK' : 'LIGHT' }))
+        .catch(error => console.warn('[5] Android SystemBars styling failed', error));
+    } catch (error) {
+      console.warn('[5] Android SystemBars styling failed', error);
+    }
+  }
+
   function applyTheme() {
     const theme = effectiveTheme();
     root.dataset.pwTheme = theme;
     root.dataset.pwThemePreference = themePreference;
     root.style.colorScheme = theme;
     syncThemeColor(theme);
+    syncNativeSystemBars(theme);
     themeButton.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
     syncLabels();
   }
@@ -144,6 +276,22 @@ var i18nText = (key, fallback, vars) =>
     return button;
   }
 
+  function plannedLanguageOption(label, status) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pw-language-option pw-language-option--planned';
+    button.setAttribute('role', 'menuitem');
+    button.setAttribute('aria-disabled', 'true');
+    button.disabled = true;
+    const name = document.createElement('span');
+    name.textContent = label;
+    const state = document.createElement('span');
+    state.className = 'pw-language-planned-status';
+    state.textContent = status;
+    button.append(name, state);
+    return button;
+  }
+
   function renderLanguagePanel() {
     const fragment = document.createDocumentFragment();
     const title = document.createElement('p');
@@ -169,6 +317,14 @@ var i18nText = (key, fallback, vars) =>
         syncLabels();
       }));
     });
+    const plannedHeading = document.createElement('p');
+    plannedHeading.className = 'pw-language-title pw-language-planned-title';
+    plannedHeading.textContent = i18nText('locale.planned.title', 'Другие языки — в планах');
+    fragment.appendChild(plannedHeading);
+    const plannedStatus = i18nText('locale.planned.status', 'В планах');
+    PLANNED_LOCALES.forEach(([, label]) => {
+      fragment.appendChild(plannedLanguageOption(label, plannedStatus));
+    });
     panel.replaceChildren(fragment);
   }
 
@@ -191,9 +347,14 @@ var i18nText = (key, fallback, vars) =>
   }
 
   function syncVisibility() {
-    const visible = Boolean(home.classList.contains('active') || done.classList.contains('active'));
-    utilities.hidden = !visible;
-    if (!visible) closeLanguagePanel();
+    const onHome = home.classList.contains('active');
+    const visible = Boolean(onHome || done.classList.contains('active'));
+    const activeScreen = onHome ? home : done;
+    // A fixed utility rail must not cover buttons/cards after the page scrolls.
+    const scrolled = visible && activeScreen.scrollTop > 56;
+    utilities.hidden = !visible || scrolled;
+    if (homeLogo) homeLogo.hidden = !onHome;
+    if (!visible || scrolled) closeLanguagePanel();
   }
 
   languageButton.addEventListener('click', toggleLanguagePanel);
@@ -213,6 +374,8 @@ var i18nText = (key, fallback, vars) =>
   [home, practice, done, feedback].filter(Boolean).forEach(screen => {
     new MutationObserver(syncVisibility).observe(screen, { attributes:true, attributeFilter:['class'] });
   });
+  home.addEventListener('scroll', syncVisibility, { passive:true });
+  done.addEventListener('scroll', syncVisibility, { passive:true });
 
   systemDark?.addEventListener?.('change', () => {
     if (themePreference === 'system') applyTheme();
@@ -377,7 +540,10 @@ var i18nText = (key, fallback, vars) =>
   area.classList.add('done-install-area');
   button.classList.remove('text-action');
   button.classList.add('done-action');
-  feedbackButton.before(area);
+  // Keep the optional install panel outside the completion action grid.
+  const completionActions = feedbackButton.closest('.preview-done-actions');
+  if (completionActions) completionActions.insertAdjacentElement('afterend', area);
+  else feedbackButton.before(area);
 
   function syncCompletionInstallAction() {
     if (isStandalone()) {

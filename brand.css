@@ -223,3 +223,18 @@
   line-height:0;
   background:url('./five-mark.svg') center / contain no-repeat;
 }
+
+/* Home clarity v0.18.58: one visual mark and a hidden build diagnostic. */
+.five-mark{appearance:none;padding:0;border:0;border-radius:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.five-mark:focus-visible{outline:2px solid var(--accent-text);outline-offset:6px;border-radius:8px}
+.build-version[hidden]{display:none!important}
+.home-screen .home-headline{
+  margin:0 auto;
+  max-width:360px;
+  white-space:pre-line;
+  font-size:clamp(1.16rem,4.2vw,1.32rem);
+  line-height:1.38;
+  font-weight:650;
+  letter-spacing:-.012em;
+}
+@media(max-height:620px){.home-screen .home-headline{font-size:1.08rem;line-height:1.32}}

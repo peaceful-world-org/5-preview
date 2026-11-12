@@ -97,3 +97,6 @@ h1{margin:0;font-size:clamp(3.55rem,15vw,5.15rem);line-height:1;font-weight:700;
 @media(orientation:landscape) and (max-height:400px){.progress-dots{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 @media(prefers-contrast:more){:root{--muted:#4C534F;--accent:#4A5A4D;--accent-text:#435347;--line:#C8CFC6}}
+
+/* Android SystemBars can expose CSS custom-property insets on older WebViews. */
+html[data-pw-native-android="1"] .app{padding-top:max(18px,env(safe-area-inset-top),var(--safe-area-inset-top,0px));padding-bottom:max(18px,env(safe-area-inset-bottom),var(--safe-area-inset-bottom,0px))}

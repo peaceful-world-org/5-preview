@@ -178,7 +178,275 @@ textarea:focus-visible{outline-color:#6E866E}
 .locale-switcher,
 .locale-switcher button{color:var(--muted)}
 
+/* Language and theme controls live outside the practice itself. */
+.pw-utilities{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  pointer-events:none;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+}
+.pw-utilities[hidden]{display:none!important}
+.pw-utility-button{
+  position:fixed;
+  top:max(12px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));
+  width:42px;
+  height:42px;
+  padding:0;
+  border:1px solid rgba(107,113,109,.22);
+  border-radius:50%;
+  background:rgba(255,255,255,.60);
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  pointer-events:auto;
+  box-shadow:none;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:color .16s ease,background .16s ease,border-color .16s ease,transform .12s ease;
+}
+.pw-language-button{left:max(10px,calc(50vw - 268px),max(env(safe-area-inset-left),var(--safe-area-inset-left,0px)))}
+.pw-theme-button{right:max(10px,calc(50vw - 268px),max(env(safe-area-inset-right),var(--safe-area-inset-right,0px)))}
+.pw-utility-button:hover{color:var(--text);background:rgba(255,255,255,.88);border-color:rgba(107,113,109,.34)}
+.pw-utility-button:active{transform:scale(.96)}
+.pw-language-button[aria-expanded="true"]{color:var(--text);background:rgba(255,255,255,.92);border-color:rgba(107,113,109,.36)}
+.pw-utility-button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.pw-utility-button[hidden]{display:none!important}
+
+.pw-language-panel{
+  position:fixed;
+  top:max(62px,calc(max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)) + 62px));
+  left:max(10px,calc(50vw - 268px),max(env(safe-area-inset-left),var(--safe-area-inset-left,0px)));
+  z-index:8999;
+  min-width:184px;
+  max-width:min(280px,calc(100vw - 20px));
+  padding:7px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.96);
+  color:var(--text);
+  box-shadow:0 14px 42px rgba(32,37,34,.10);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.pw-language-panel[hidden]{display:none!important}
+.pw-language-title{
+  margin:4px 8px 6px;
+  color:var(--muted);
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.pw-language-option{
+  width:100%;
+  min-height:42px;
+  padding:0 10px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  text-align:left;
+  font:600 .9rem/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  cursor:pointer;
+}
+.pw-language-option:hover{background:rgba(103,118,103,.08)}
+.pw-language-option[aria-checked="true"]{font-weight:700}
+.pw-language-check{width:14px;color:var(--accent-text);font-size:.9rem;text-align:center}
+.pw-language-option:focus-visible,
+.pw-utility-button:focus-visible{outline:2px solid #6E866E;outline-offset:2px}
+
+/* Warm graphite dark mode. Keep the same hierarchy; only luminance changes. */
+:root[data-pw-theme="dark"]{
+  --bg:#171A18;
+  --surface:#1D211E;
+  --ink:#ECEDE8;
+  --text:#E2E5E0;
+  --muted:#A8B0AA;
+  --accent:#8FA68F;
+  --accent-text:#9CB19C;
+  --accent-soft:#273129;
+  --line:#3A413B;
+  --shadow:none;
+}
+html[data-pw-theme="dark"] .five-mark{filter:invert(94%)}
+html[data-pw-theme="dark"] .primary{
+  background:#E8EAE5!important;
+  color:#171A18!important;
+  box-shadow:none!important;
+}
+html[data-pw-theme="dark"] .primary:hover{box-shadow:none!important}
+html[data-pw-theme="dark"] .round-btn,
+html[data-pw-theme="dark"] .secondary,
+html[data-pw-theme="dark"] .done-action,
+html[data-pw-theme="dark"] .install-help,
+html[data-pw-theme="dark"] .feedback-text,
+html[data-pw-theme="dark"] .feedback-email{
+  background:#1D211E!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+  box-shadow:none!important;
+}
+html[data-pw-theme="dark"] .done-action:hover{background:#232824!important;border-color:#454C46!important;box-shadow:none!important}
+html[data-pw-theme="dark"] .sound-on{background:#273129!important;color:#9CB19C!important}
+html[data-pw-theme="dark"] .timer-track{stroke:#3A403B!important}
+html[data-pw-theme="dark"] .timer-shell.preparing .timer-track{stroke:#343A35!important}
+
+/* Slightly stronger legibility for quiet structural markers in dark mode. */
+html[data-pw-theme="dark"] .step-number{color:rgba(156,177,156,.24)}
+html[data-pw-theme="dark"] .timer-shell.is-practice:not(.ending):not(.paused) .timer-center{opacity:.64}
+html[data-pw-theme="dark"] .dot::before{background:#4A514B}
+html[data-pw-theme="dark"] .dot:not(:last-child)::after{background:#404741}
+html[data-pw-theme="dark"] .dot.done::before{background:#778479}
+html[data-pw-theme="dark"] .dot.done::after{background:#566158}
+
+html[data-pw-theme="dark"] .feedback-text::placeholder,
+html[data-pw-theme="dark"] .feedback-email::placeholder{color:#7F8781}
+html[data-pw-theme="dark"] .feedback-audio,
+html[data-pw-theme="dark"] .audio-player-row,
+html[data-pw-theme="dark"] .audio-record-btn,
+html[data-pw-theme="dark"] .feedback-success-mark{
+  background:#1D211E!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+  box-shadow:none!important;
+}
+html[data-pw-theme="dark"] .feedback-audio.recorded{background:#1D211E!important}
+html[data-pw-theme="dark"] .feedback-audio.recording{background:#241F1E!important;border-color:#55413F!important}
+html[data-pw-theme="dark"] .audio-record-btn.recording{background:#302524!important;border-color:#624845!important;color:#D7AAA5!important}
+html[data-pw-theme="dark"] .audio-status,
+html[data-pw-theme="dark"] .audio-player-meta,
+html[data-pw-theme="dark"] .feedback-success p{color:var(--muted)!important}
+
+html[data-pw-theme="dark"] .ios-install-guide-sheet{background:#171A18!important;border-color:#343A35!important;color:var(--text)!important}
+html[data-pw-theme="dark"] .ios-install-guide-close{background:#1D211E!important;color:var(--text)!important;border-color:var(--line)!important}
+html[data-pw-theme="dark"] .ios-install-guide-actions{background:rgba(23,26,24,.97)!important;border-color:var(--line)!important}
+html[data-pw-theme="dark"] .ios-install-guide-image{background:#212622!important}
+html[data-pw-theme="dark"] .ios-install-guide-done{background:#E8EAE5!important;color:#171A18!important}
+
+html[data-pw-theme="dark"] .pw-analytics-notice{
+  background:rgba(29,33,30,.98)!important;
+  border-color:var(--line)!important;
+  color:var(--text)!important;
+  box-shadow:0 14px 44px rgba(0,0,0,.28)!important;
+}
+html[data-pw-theme="dark"] .pw-analytics-copy{color:var(--muted)!important}
+html[data-pw-theme="dark"] .pw-analytics-copy strong{color:var(--text)!important}
+html[data-pw-theme="dark"] .pw-analytics-btn{
+  background:#1D211E!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+html[data-pw-theme="dark"] .pw-analytics-btn.is-primary{
+  background:#E8EAE5!important;
+  color:#171A18!important;
+  border-color:#E8EAE5!important;
+}
+
+html[data-pw-theme="dark"] .pw-utility-button{
+  background:rgba(29,33,30,.70);
+  border-color:rgba(168,176,170,.18);
+  color:#AAB2AC;
+}
+html[data-pw-theme="dark"] .pw-utility-button:hover,
+html[data-pw-theme="dark"] .pw-language-button[aria-expanded="true"]{
+  background:#252A26;
+  border-color:rgba(168,176,170,.30);
+  color:#ECEDE8;
+}
+html[data-pw-theme="dark"] .pw-language-panel{
+  background:rgba(29,33,30,.97);
+  border-color:#3B423C;
+  box-shadow:0 16px 46px rgba(0,0,0,.28);
+}
+html[data-pw-theme="dark"] .pw-language-option:hover{background:rgba(143,166,143,.10)}
+
+@media(max-width:520px){
+  .pw-utility-button{top:max(9px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));width:40px;height:40px}
+  .pw-language-button{left:max(9px,max(env(safe-area-inset-left),var(--safe-area-inset-left,0px)))}
+  .pw-theme-button{right:max(9px,max(env(safe-area-inset-right),var(--safe-area-inset-right,0px)))}
+  .pw-language-panel{top:max(58px,calc(max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)) + 58px));left:max(9px,max(env(safe-area-inset-left),var(--safe-area-inset-left,0px)))}
+}
+
 @media(prefers-reduced-motion:reduce){
   .timer-center,
-  .timer-ring{transition-duration:.001ms!important}
+  .timer-ring,
+  .pw-utility-button{transition-duration:.001ms!important}
+}
+
+
+/* Home practice CTAs: two equal choices. Solid colors, no decorative effects.
+   Higher specificity than the dynamically injected free-practice fallback CSS. */
+#home #startBtn,
+#home .pw-free-entry{
+  width:min(100%,340px);
+  min-height:58px;
+  padding:0 18px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:1.03rem;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:0;
+  gap:13px;
+  box-shadow:none;
+  transition:background-color .16s ease,transform .15s ease;
+}
+#home #startBtn{background:#202522;color:#fff}
+#home #startBtn:hover{background:#303934;box-shadow:none}
+#home .pw-free-entry{background:#F3E8D2;border-color:#C6A66C;color:#202522}
+#home .pw-free-entry:hover{background:#EEDFBF;border-color:#B89354}
+html[data-pw-theme="dark"] #home .pw-free-entry{
+  background:#E7D8B8;
+  color:#171A18;
+  border-color:#C6A66C;
+  box-shadow:none;
+}
+html[data-pw-theme="dark"] #home .pw-free-entry:hover{background:#F0E0BF;border-color:#D2B681}
+@media(max-height:720px){
+  #home #startBtn,#home .pw-free-entry{min-height:52px}
+}
+@media(orientation:landscape) and (max-height:520px){
+  #home #startBtn,#home .pw-free-entry{min-height:44px}
+}
+
+/* Future language choices are visible for transparency, never actionable. */
+.pw-language-panel{min-width:238px}
+.pw-language-planned-title{
+  margin-top:11px;
+  padding-top:11px;
+  border-top:1px solid var(--line);
+  letter-spacing:.03em;
+  text-transform:none;
+}
+.pw-language-option--planned,
+.pw-language-option--planned:hover{
+  background:transparent;
+  color:var(--muted);
+  cursor:default;
+}
+.pw-language-planned-status{
+  flex:0 0 auto;
+  color:var(--muted);
+  font-size:.7rem;
+  font-weight:500;
+  white-space:nowrap;
+}
+
+/* Keep the expanded language roadmap scrollable on compact and landscape screens. */
+.pw-language-panel{
+  max-height:calc(100dvh - max(62px,calc(max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)) + 62px)) - env(safe-area-inset-bottom,0px) - 12px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+}
+@media(max-width:520px){
+  .pw-language-panel{
+    max-height:calc(100dvh - max(58px,calc(max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)) + 58px)) - env(safe-area-inset-bottom,0px) - 10px);
+  }
 }

@@ -46,8 +46,8 @@
       if (meta) meta.content = theme === 'dark' ? '#171A18' : '#F9F8F4';
     })();
   </script>
-  <link rel="manifest" href="manifest.webmanifest?v=0.18.55" />
-  <link rel="icon" href="icon.svg?v=0.18.55" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest?v=0.18.59" />
+  <link rel="icon" href="icon.svg?v=0.18.59" type="image/svg+xml" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="feedback.css" />
@@ -55,29 +55,71 @@
   <link rel="stylesheet" href="install.css" />
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
+  <link rel="stylesheet" href="practice-modes.css" />
   <title>5 — Peace Practice by Peaceful World</title>
 </head>
 <body>
   <main class="app">
-    <section id="home" class="screen active home-screen">
-      <div class="home-stack">
-        <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+    <section id="home" class="screen active home-screen home-screen--cards">
+      <div class="home-stack home-stack--cards">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru.html" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
           <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
         </a>
 
         <div class="five-brand" aria-label="5, пять" data-i18n-aria-label="brand.aria">
-          <div class="five-mark" aria-hidden="true">5</div>
+          <button type="button" class="five-mark" aria-controls="pwBuildVersion" aria-expanded="false" aria-label="Показать версию после пяти нажатий" data-i18n-aria-label="build.reveal.aria">5</button>
           <div class="five-word" data-i18n="brand.word">пять</div>
-          <div class="five-byline">PEACEFUL WORLD PRACTICE</div>
-          <div class="build-version" aria-label="Версия 0.18.55" data-i18n-aria-label="build.aria">v0.18.55</div>
+          <div id="pwBuildVersion" class="build-version" aria-label="Версия 0.18.59" data-i18n-aria-label="build.aria" aria-live="polite" hidden>v0.18.59</div>
         </div>
 
         <div class="hero-copy">
-          <p class="subtitle" data-i18n="home.subtitle">Тренажёр мирного ума</p>
-          <p class="intro intro-lines"><span data-i18n="home.intro.1">Пять простых упражнений.</span><span data-i18n="home.intro.2">Одна минута на каждое.</span></p>
+          <p class="subtitle home-headline" data-i18n="home.subtitle">Тренировка
+мирного мышления</p>
         </div>
 
-        <button id="startBtn" type="button" class="primary"><span data-i18n="home.start">Начать</span><span aria-hidden="true">→</span></button>
+        <button id="startBtn" type="button" class="primary"><span data-i18n="home.start">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+
+        <div id="pwModeProgress" class="preview-progress-grid" role="status" aria-live="polite" hidden>
+          <div class="preview-progress-cell"><strong id="pwModeTotalTime" class="preview-progress-number"></strong><span id="pwModeTotalLabel" class="preview-progress-text"></span></div>
+          <span class="preview-progress-divider" aria-hidden="true"></span>
+          <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
+        </div>
+        <h2 id="pwModeChoose" class="mode-section-label">ВЫБЕРИ ТРЕНИРОВКУ</h2>
+        <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose">
+          <article class="practice-choice practice-choice--foundation" role="listitem" aria-labelledby="pwCardBaseTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardBaseTitle" class="practice-choice-title">База</h3>
+              <button id="pwModeInfoFoundation" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardBaseDesc" class="practice-choice-description">Пять шагов мирного мышления.</p><span id="pwModeUsageFoundation" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeBaseStart" class="practice-card-cta practice-card-cta--foundation" type="button"><span id="pwCardBaseAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="practice-choice practice-choice--metta" role="listitem" aria-labelledby="pwCardMettaTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardMettaTitle" class="practice-choice-title">Доброжелательность</h3>
+              <span id="pwCardNew" class="practice-new-label">НОВАЯ</span>
+              <button id="pwModeInfoMetta" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardMettaDesc" class="practice-choice-description">От себя ко всем живым.</p><span id="pwModeUsageMetta" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeMettaStart" class="practice-card-cta practice-card-cta--metta" type="button"><span id="pwCardMettaAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardFreeTitle" class="practice-choice-title">Свободная тренировка</h3>
+              <button id="pwModeInfoFree" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardFreeDesc" class="practice-choice-description">Открытый таймер в твоём темпе.</p><span id="pwModeUsageFree" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeFreeStart" class="practice-card-cta practice-card-cta--free" type="button"><span id="pwCardFreeAction">Начать</span><span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+        <section id="pwModeUpcoming" class="practice-upcoming" aria-labelledby="pwModePlannedHeading">
+          <h2 id="pwModePlannedHeading" class="practice-upcoming-heading">В ПЛАНАХ</h2>
+          <div class="practice-upcoming-list">
+            <div class="practice-upcoming-item"><strong id="pwModeUpcomingCompassion">Сострадание</strong><span id="pwModeUpcomingCompassionStatus">В планах</span></div>
+            <div class="practice-upcoming-item"><strong id="pwModeUpcomingAnger">Работа с гневом</strong><span id="pwModeUpcomingAngerStatus">В планах</span></div>
+          </div>
+        </section>
+
 
         <div id="homeInstallArea" class="home-install-area" hidden>
           <button id="homeInstallBtn" type="button" class="home-install-cta" data-i18n="home.install.cta">Установить</button>
@@ -130,17 +172,28 @@
       </div>
     </section>
 
-    <section id="done" class="screen done-screen">
-      <div class="done-stack">
-        <a class="pw-origin-mark" href="https://peaceful-world.org/ru/" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+    <section id="done" class="screen done-screen done-screen--cards">
+      <div class="done-stack done-stack--cards">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru.html" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
           <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
         </a>
+        <span class="done-checkmark" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="m5.5 12 4.2 4.2 8.8-9"/></svg></span>
         <p id="doneKicker" class="brand-name done-kicker" data-i18n="done.kicker">Тренировка завершена</p>
         <h1 id="doneTitle" class="done-title" tabindex="-1" data-i18n="done.title">Теперь просто действуй.</h1>
         <p class="done-subtitle done-lines" data-i18n-lines="done.subtitle"><span>Закрой приложение</span><span>и вернись к своему дню.</span></p>
+
+        <section id="pwModeDoneSummary" class="done-summary" aria-label="Результат тренировки">
+          <div class="done-summary-eyebrow"><span id="pwModeDoneSummaryHeading">РЕЗУЛЬТАТ</span></div>
+          <h2 id="pwModeDoneSummaryTitle" class="done-summary-title"></h2>
+          <p id="pwModeDoneSummaryTime" class="done-summary-total"></p>
+          <p id="pwModeDoneSummaryMode" class="done-summary-mode"></p>
+        </section>
+        <button id="pwModeBack" class="done-primary-action" type="button"><span id="pwModeDoneBackText">К выбору тренировок</span><span aria-hidden="true">→</span></button>
+        <div class="preview-done-actions" role="group" aria-label="Другие действия">
         <button id="feedbackBtn" type="button" class="done-action" data-i18n="done.feedback">Поделиться впечатлением</button>
         <button id="shareBtn" type="button" class="done-action" data-i18n="done.share">Поделиться с друзьями</button>
         <a id="supportBtn" class="done-action done-support-action" href="https://peaceful-world.org/help/ru" data-i18n-link="support" target="_blank" rel="noopener noreferrer" data-i18n="done.support">Поддержать развитие</a>
+        </div>
         <div id="installArea" class="install-area" hidden>
           <button id="installBtn" type="button" class="text-action install-action" data-i18n="install.device.fallback">Установить 5 на устройство</button>
           <div id="installHelp" class="install-help" hidden>
@@ -149,6 +202,17 @@
             <button id="installHelpClose" type="button" class="install-help-close" data-i18n="install.help.close">Понятно</button>
           </div>
         </div>
+
+        <section id="pwModeRoadmap" class="practice-roadmap-complete" aria-labelledby="pwModeNewTitle">
+          <h2 id="pwModeNewTitle" class="practice-roadmap-title">Новые тренировки</h2>
+          <p id="pwModeNewDescription" class="practice-roadmap-description">Следующие направления — в планах.</p>
+          <div class="practice-roadmap-items">
+            <div class="practice-roadmap-item practice-roadmap-item--available"><strong id="pwModeRoadmapMetta">Доброжелательность</strong><span id="pwModeRoadmapMettaStatus">Новая</span></div>
+            <div class="practice-roadmap-item"><strong id="pwModeRoadmapCompassion">Сострадание</strong><span id="pwModeRoadmapCompassionStatus">В планах</span></div>
+            <div class="practice-roadmap-item"><strong id="pwModeRoadmapAnger">Работа с гневом</strong><span id="pwModeRoadmapAngerStatus">В планах</span></div>
+          </div>
+          <a id="pwModeRoadmapLink" class="practice-roadmap-link" href="https://peaceful-world.org/ru/research/peaceful-world-practice" target="_blank" rel="noopener noreferrer"><span id="pwModeRoadmapLinkText">Посмотреть планы развития →</span></a>
+        </section>
       </div>
     </section>
 
@@ -219,8 +283,19 @@
 
     <p id="srStatus" class="sr-only" aria-live="polite"></p>
   </main>
+
+  <dialog id="pwModeInfoDialog" class="practice-info-dialog" aria-labelledby="pwModeInfoTitle" aria-describedby="pwModeInfoBody">
+    <div class="practice-info-surface">
+      <div class="practice-info-heading"><h2 id="pwModeInfoTitle">О тренировке</h2><button id="pwModeInfoClose" class="practice-info-close" type="button" aria-label="Закрыть">×</button></div>
+      <p id="pwModeInfoBody" class="practice-info-text"></p>
+      <p id="pwModeInfoUsage" class="practice-info-usage" hidden></p>
+      <button id="pwModeInfoStart" class="practice-info-start" type="button"><span id="pwModeInfoStartText">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+    </div>
+  </dialog>
   <script src="i18n.js"></script>
   <script src="copy-rotation.js"></script>
+  <script src="metta-focus.js"></script>
+  <script src="practice-modes.js"></script>
   <script src="app.js"></script>
   <script src="sound-v1.js"></script>
   <script src="step-number.js"></script>
@@ -418,7 +493,7 @@
       }
 
       function renderHint(step) {
-        hintText.textContent = localeCopy()[`step${step}`] || '';
+        hintText.textContent = window.PW_TRAINING_MODES?.example?.(step) || localeCopy()[`step${step}`] || '';
       }
 
       function pauseForHint() {
