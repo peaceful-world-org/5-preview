@@ -39,6 +39,9 @@
         const saved = localStorage.getItem(THEME_KEY);
         if (saved === 'light' || saved === 'dark') preference = saved;
       } catch (_) {}
+      // Non-persistent QA override for reliable light/dark screenshot comparisons.
+      const qaTheme = new URLSearchParams(location.search).get('previewTheme');
+      if (qaTheme === 'light' || qaTheme === 'dark') preference = qaTheme;
       const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
       const theme = preference === 'dark' || (preference === 'system' && systemDark) ? 'dark' : 'light';
       document.documentElement.dataset.pwTheme = theme;
@@ -671,6 +674,6 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/world.js?v=20261118-1"></script>
+  <script src="/languages/world/world.js?v=20261118-2"></script>
 </body>
 </html>
