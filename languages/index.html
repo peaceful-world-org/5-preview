@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="en" data-preview-pending="1">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#F9F8F4" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="description" content="Spanish editorial QA preview of 5 · Peace Practice." />
+  <meta name="description" content="Multilingual editorial QA preview of 5 · Peace Practice." />
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -57,16 +57,28 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <title>5 — Vista previa en español · Revisión</title>
+  <title>5 · Translation review — Peaceful World</title>
 <style>
 .pw-qa-banner{box-sizing:border-box;width:100%;margin:0;padding:54px 12px 9px;background:#eef0e9;color:#303831;border-bottom:1px solid #bfc8bc;text-align:center;font:500 12px/1.4 system-ui,sans-serif}
 .pw-qa-banner a{color:inherit;text-decoration:underline}
 html[data-pw-theme="dark"] .pw-qa-banner{background:#29352e;color:#ecf1e8;border-color:#435447}
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
+html[data-preview-pending="1"] main.app{visibility:hidden}
 </style>
+<script>
+(() => {
+  document.addEventListener('pw:locale-ready', () => document.documentElement.removeAttribute('data-preview-pending'), {once:true});
+  setTimeout(() => {
+    if (!document.documentElement.hasAttribute('data-preview-pending')) return;
+    document.documentElement.removeAttribute('data-preview-pending');
+    const banner = document.querySelector('.pw-qa-banner');
+    if (banner) banner.textContent = 'Translation could not load. Reload the preview to retry.';
+  }, 8000);
+})();
+</script>
 </head>
 <body>
-<aside class="pw-qa-banner" role="note" lang="es">Versión de prueba en español · sin sincronización en la nube ni envío de comentarios. <a href="https://5.peaceful-world.org/" target="_blank" rel="noopener noreferrer">Versión principal</a></aside>
+<aside class="pw-qa-banner" role="note" lang="en">Translation preview · draft languages only. No cloud sync or feedback submission. <a href="https://5.peaceful-world.org/" target="_blank" rel="noopener noreferrer">Main app</a></aside>
   <main class="app">
     <section id="home" class="screen active home-screen home-screen--cards">
       <div class="home-stack home-stack--cards">
@@ -303,6 +315,10 @@ más pacífica</p>
   <script src="i18n.js"></script>
   <script src="uk-preview.js"></script>
   <script src="es-preview.js"></script>
+  <script src="pt-br-preview.js"></script>
+  <script src="pt-pt-preview.js"></script>
+  <script src="fr-preview.js"></script>
+  <script src="id-preview.js"></script>
   <script src="draft-locales.js"></script>
   <script src="copy-rotation.js"></script>
   <script src="metta-focus.js"></script>
@@ -361,7 +377,9 @@ más pacífica</p>
           step5: 'For example: not just “I’ll try to be kinder,” but “When I notice I’m getting angry, I’ll pause before I speak so I don’t say something hurtful.”'
         }
       };
-      if (window.PW_UK_PREVIEW?.foundationExamples) COPY.uk = window.PW_UK_PREVIEW.foundationExamples;
+      for(const [code,draft] of Object.entries(window.PW_DRAFT_LOCALES || {})) {
+        if(draft?.foundationExamples) COPY[code] = draft.foundationExamples;
+      }
 
       const style = document.createElement('style');
       style.id = 'pwPracticeHintStyles';
@@ -467,7 +485,8 @@ más pacífica</p>
       let pausedByHint = false;
 
       function currentLocale() {
-        const code = String(window.PW_I18N?.locale || document.documentElement.lang || 'ru').toLowerCase().split('-')[0];
+        const raw = String(window.PW_I18N?.locale || document.documentElement.lang || 'ru');
+        const code = window.PW_I18N?.normalizeLocale?.(raw) || raw.toLowerCase().split('-')[0];
         return COPY[code] ? code : 'ru';
       }
 

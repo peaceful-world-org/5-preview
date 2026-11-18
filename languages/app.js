@@ -17,7 +17,7 @@ const CONFIG = {
 };
 
 const FINAL_RETURN_RESET_MS = 30 * 60 * 1000;
-const SHARE_URL = 'https://preview-5.peaceful-world.org/es/';
+const SHARE_URL = 'https://preview-5.peaceful-world.org/languages/';
 
 // Last-resort Russian copy if both the i18n and rotation layers are unavailable.
 // Keep in sync with copy-rotation.js and locales/ru.json.

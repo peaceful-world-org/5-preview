@@ -2,7 +2,7 @@
 'use strict';
 
 (() => {
-  const REGISTRY_URL = '/es/locales/index.json';
+  const REGISTRY_URL = '/languages/locales/index.json';
   const LOCALE_KEY = 'pw-locale';
   const LOCALE_SOURCE_KEY = 'pw-locale-source';
   const LEGACY_LOCALE = 'ru';
@@ -35,7 +35,11 @@
 
   function normalizeLocale(value) {
     if (!value) return '';
-    return String(value).trim().toLowerCase().replace('_', '-').split('-')[0];
+    const code = String(value).trim().toLowerCase().replaceAll('_', '-');
+    // Portuguese variants are independently translated; preserve their region.
+    if (code === 'pt') return 'pt-br';
+    if (code === 'pt-br' || code === 'pt-pt') return code;
+    return code.split('-')[0];
   }
 
   function normalizedHostname() {
@@ -87,7 +91,6 @@
   function stripLocaleHint() {
     const url = new URL(location.href);
     if (!url.searchParams.has('lang')) return;
-    if (previewMode() && url.pathname.startsWith('/es/') && ['es','uk'].includes(normalizeLocale(url.searchParams.get('lang')))) return;
     url.searchParams.delete('lang');
     const query = url.searchParams.toString();
     const next = `${url.pathname}${query ? `?${query}` : ''}${url.hash}`;
@@ -150,7 +153,7 @@
   }
 
   async function loadPack(code) {
-    const value = await fetchJson(`/es/locales/${encodeURIComponent(code)}.json`);
+    const value = await fetchJson(`/languages/locales/${encodeURIComponent(code)}.json`);
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       throw new Error(`Invalid locale pack: ${code}`);
     }

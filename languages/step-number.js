@@ -444,7 +444,7 @@ var i18nText = (key, fallback, vars) =>
 
 (() => {
   const script = document.createElement('script');
-  script.src = '/es/ios-install-guide.js?v=1';
+  script.src = '/languages/ios-install-guide.js?v=1';
   script.async = true;
   document.head.appendChild(script);
 })();
@@ -584,7 +584,7 @@ var i18nText = (key, fallback, vars) =>
 })();
 
 (() => {
-  if (location.pathname.startsWith('/es/')) return; // Isolated QA preview: never register the root worker.
+  if (location.pathname.startsWith('/languages/')) return; // Isolated QA: do not register the root worker.
   if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
   window.addEventListener('load', () => {
     window.setTimeout(async () => {
@@ -680,7 +680,7 @@ var i18nText = (key, fallback, vars) =>
 
 (() => {
   const script = document.createElement('script');
-  script.src = '/es/ai-guide.js?v=1';
+  script.src = '/languages/ai-guide.js?v=1';
   script.async = true;
   document.body.appendChild(script);
 })();
