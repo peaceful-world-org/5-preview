@@ -41,8 +41,17 @@
     url.searchParams.set('order',mode);
     if(!url.searchParams.has('demo'))url.searchParams.set('demo','1');
     a.href=url.pathname+'?'+url.searchParams.toString();
+    a.dataset.worldOrder=mode;
     if(mode===order)a.setAttribute('aria-current','page');
     return a;
+  }
+  function syncCompareLinks() {
+    const lang=currentCode();
+    for(const link of document.querySelectorAll('.pw-world-compare a[data-world-order]')){
+      const url=new URL(link.href,location.href);
+      url.searchParams.set('lang',lang);
+      link.href=url.pathname+'?'+url.searchParams.toString();
+    }
   }
   const qa=document.querySelector('.pw-qa-banner');
   if(qa){
@@ -96,7 +105,8 @@
     }
   }
   function update() {
-    const c=t(),lang=currentCode();
+    const c=t();
+    syncCompareLinks();
     put('pwWorldScaleLine',c.scale);
     put('pwWorldEyebrow',c.eye);
     put('pwWorldTitle',c.title);
