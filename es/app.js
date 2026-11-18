@@ -17,7 +17,7 @@ const CONFIG = {
 };
 
 const FINAL_RETURN_RESET_MS = 30 * 60 * 1000;
-const SHARE_URL = 'https://preview-5.peaceful-world.org/uk/';
+const SHARE_URL = 'https://preview-5.peaceful-world.org/es/';
 
 // Last-resort Russian copy if both the i18n and rotation layers are unavailable.
 // Keep in sync with copy-rotation.js and locales/ru.json.
@@ -52,8 +52,8 @@ function currentLocale() {
   return window.PW_I18N?.locale || document.documentElement.lang || 'ru';
 }
 function localizedSeconds(value) {
-  return currentLocale() === 'uk' && window.PW_UK_PREVIEW?.formatSeconds
-    ? window.PW_UK_PREVIEW.formatSeconds(value) : value;
+  const format = window.PW_DRAFT_LOCALES?.[currentLocale()]?.formatSeconds;
+  return typeof format === 'function' ? format(value) : value;
 }
 
 function localizedFallbackSteps() {
@@ -272,7 +272,7 @@ function clearPending() {
 function shareUrl() {
   const url = new URL(SHARE_URL);
   const locale = currentLocale();
-  if (locale === 'uk' && window.PW_I18N?.isPreview) {
+  if (window.PW_DRAFT_LOCALES?.[locale] && window.PW_I18N?.isPreview) {
     url.protocol = location.protocol;
     url.host = location.host;
   }

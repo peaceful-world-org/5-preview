@@ -70,7 +70,9 @@
     }
   };
 
-  if (window.PW_UK_PREVIEW?.freePractice) STRINGS.uk = window.PW_UK_PREVIEW.freePractice;
+  for (const [code, draft] of Object.entries(window.PW_DRAFT_LOCALES || {})) {
+    if (draft?.freePractice) STRINGS[code] = draft.freePractice;
+  }
 
   function localeCode() {
     // The document language reflects the locale that has actually been applied.
@@ -148,7 +150,7 @@
     const uk = localeCode() === 'uk';
     const hourLabel = ru ? 'ч' : uk ? 'год' : 'h';
     const minuteLabel = ru ? 'мин' : uk ? 'хв' : 'min';
-    const secondLabel = ru ? 'сек' : uk ? 'с' : 'sec';
+    const secondLabel = ru ? 'сек' : uk ? 'с' : localeCode() === 'es' ? 's' : 'sec';
     if (hours > 0) return hours + ' ' + hourLabel + ' ' + String(minutes).padStart(2, '0') + ' ' + minuteLabel;
     if (minutes > 0) return minutes + ' ' + minuteLabel;
     return total + ' ' + secondLabel;

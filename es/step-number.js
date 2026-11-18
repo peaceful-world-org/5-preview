@@ -194,7 +194,7 @@ var i18nText = (key, fallback, vars) =>
   function availableLocales() {
     const registry = window.PW_I18N.registry;
     return Object.entries(registry?.locales || {})
-      .filter(([code, config]) => config?.released === true || (code === 'uk' && window.PW_I18N?.isPreview === true && config?.released === false));
+      .filter(([code, config]) => config?.released === true || (window.PW_I18N?.isPreview === true && config?.released === false && !!window.PW_DRAFT_LOCALES?.[code]));
   }
 
   function syncLabels() {
@@ -308,7 +308,7 @@ var i18nText = (key, fallback, vars) =>
         try {
           await window.PW_I18N.setLocale(code, {
             source: 'explicit',
-            allowUnreleased: code === 'uk' && window.PW_I18N?.isPreview === true
+            allowUnreleased: window.PW_I18N?.isPreview === true && !!window.PW_DRAFT_LOCALES?.[code]
           });
         } catch (error) {
           console.warn('[5][i18n] locale switch failed', error);
@@ -444,7 +444,7 @@ var i18nText = (key, fallback, vars) =>
 
 (() => {
   const script = document.createElement('script');
-  script.src = '/uk/ios-install-guide.js?v=1';
+  script.src = '/es/ios-install-guide.js?v=1';
   script.async = true;
   document.head.appendChild(script);
 })();
@@ -584,7 +584,7 @@ var i18nText = (key, fallback, vars) =>
 })();
 
 (() => {
-  if (location.pathname.startsWith('/uk/')) return; // QA subpath must not register root worker.
+  if (location.pathname.startsWith('/es/')) return; // Isolated QA preview: never register the root worker.
   if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
   window.addEventListener('load', () => {
     window.setTimeout(async () => {
@@ -680,7 +680,7 @@ var i18nText = (key, fallback, vars) =>
 
 (() => {
   const script = document.createElement('script');
-  script.src = '/uk/ai-guide.js?v=1';
+  script.src = '/es/ai-guide.js?v=1';
   script.async = true;
   document.body.appendChild(script);
 })();

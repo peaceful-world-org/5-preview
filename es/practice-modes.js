@@ -10,7 +10,9 @@
   const FREE_SECONDS = 'pw-free-practice-seconds-v1';
   const FREE_SESSIONS = 'pw-free-practice-sessions-v1';
   const copy = window.PW_FOCUS_METTA_COPY;
-  if (copy && window.PW_UK_PREVIEW?.metta) copy.uk = window.PW_UK_PREVIEW.metta;
+  for (const [code, draft] of Object.entries(window.PW_DRAFT_LOCALES || {})) {
+    if (copy && draft?.metta) copy[code] = draft.metta;
+  }
   const rotation = window.PW_COPY_ROTATION;
   if (!copy?.ru?.steps || !copy?.en?.steps || !rotation) {
     console.error('[5] Required practice copy is unavailable');
@@ -67,7 +69,9 @@
       infoTime:'All-time total'
     }
   };
-  if (window.PW_UK_PREVIEW?.modeUi) text.uk = window.PW_UK_PREVIEW.modeUi;
+  for (const [code, draft] of Object.entries(window.PW_DRAFT_LOCALES || {})) {
+    if (draft?.modeUi) text[code] = draft.modeUi;
+  }
   const safeInt = key => {
     try {
       const n = Number.parseInt(localStorage.getItem(key) || '0', 10);
@@ -84,7 +88,8 @@
   // Never render "undefined" in the details title, screen-reader label or history.
   const modeCopyKey = mode => mode === 'foundation' ? 'base' : mode;
   const modeTitle = (c, mode) => c[modeCopyKey(mode)];
-  const mettaCopyVersion = () => locale() === 'uk' ? (window.PW_I18N?.config?.copyVersion || copy.version) : copy.version;
+  const mettaCopyVersion = () => window.PW_DRAFT_LOCALES?.[locale()]
+    ? (window.PW_I18N?.config?.copyVersion || copy.version) : copy.version;
   let selected = 'foundation';
   let info = 'foundation';
   let infoOpener = null;
@@ -98,7 +103,7 @@
     const amount = Math.max(0, Math.floor(s));
     const h = Math.floor(amount / 3600);
     const m = Math.floor((amount % 3600) / 60);
-    const unit = locale() === 'ru' ? [' ч ', ' мин', ' сек'] : locale() === 'uk' ? [' год ', ' хв', ' с'] : [' h ', ' min', ' sec'];
+    const unit = locale() === 'ru' ? [' ч ', ' мин', ' сек'] : locale() === 'uk' ? [' год ', ' хв', ' с'] : locale() === 'es' ? [' h ', ' min', ' s'] : [' h ', ' min', ' sec'];
     if (h > 0) return h + unit[0] + String(m).padStart(2,'0') + unit[1];
     if (m > 0) return m + unit[1];
     return amount + unit[2];

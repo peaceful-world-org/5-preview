@@ -332,7 +332,7 @@
   form.addEventListener('submit', async event => {
     event.preventDefault();
     setStatus();
-    if (location.pathname.startsWith('/uk/')) {
+    if (location.pathname.startsWith('/es/')) {
       setStatus('Це тестовий перегляд. Надсилання відгуків вимкнено.', 'error');
       return;
     }
