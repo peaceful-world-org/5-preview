@@ -163,92 +163,152 @@ html[data-world-concept="1"][data-pw-theme="dark"] #pwPreviewProdLink{color:#D5E
    max-height:calc(100dvh - 125px);
  }
 }
-/* Desktop v3: one stable visual axis. Never separate the 5 from its title. */
-@media(min-width:980px){
- html[data-world-concept="1"][data-world-home="1"] main.app{width:min(100%,920px)}
- html[data-world-concept="1"] .pw-language-button{left:max(16px,calc(50vw - 205px))}
- html[data-world-concept="1"] .pw-theme-button{right:max(16px,calc(50vw - 205px))}
- html[data-world-concept="1"] .pw-language-panel{left:max(16px,calc(50vw - 205px))}
- html[data-world-concept="1"] #home .home-stack--cards{
-   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-   box-sizing:border-box;width:100%;max-width:800px;min-height:100%;
-   margin-inline:auto;padding:78px 0 28px;gap:0;
- }
- html[data-world-concept="1"] #home .home-stack--cards>.five-brand{
-   position:static;align-self:center;flex:0 0 auto;margin:0;
- }
- html[data-world-concept="1"] #home .home-stack--cards .five-brand .five-mark{
-   width:3.5rem;height:6.1rem;
- }
- html[data-world-concept="1"] #home .home-stack--cards>.hero-copy{
-   position:static;align-self:center;flex:0 0 auto;
-   margin:4px 0 0;padding:0;text-align:center;
- }
- html[data-world-concept="1"] #home .home-headline{
-   max-width:32ch;margin:0;text-align:center;
-   font-size:clamp(1.13rem,1.6vw,1.33rem);line-height:1.4;
-   letter-spacing:-.012em
- }
- html[data-world-concept="1"] #home #pwModeProgress{
-   align-self:center;flex:0 0 auto;box-sizing:border-box;
-   width:min(100%,300px);max-width:300px;margin:14px auto 0;
- }
- html[data-world-concept="1"] #home .mode-section-label{
-   align-self:stretch;box-sizing:border-box;width:100%;max-width:none;
-   margin:22px 0 0;padding:13px 0 0;text-align:left
- }
- html[data-world-concept="1"] #home .pw-world-scale-line{
-   align-self:stretch;box-sizing:border-box;width:100%;max-width:none;
-   margin:6px 0 0;padding:0;text-align:left;font-size:.76rem
- }
- html[data-world-concept="1"] #home .practice-card-list{
-   align-self:stretch;box-sizing:border-box;width:100%;max-width:none;
-   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-   gap:12px;margin:11px 0 0
- }
- html[data-world-concept="1"] #home .practice-choice--free{
-   grid-column:1/-1;display:grid;
-   grid-template-columns:minmax(0,1fr) minmax(230px,.8fr);
-   gap:3px 18px;align-items:center;padding:17px 20px
- }
- html[data-world-concept="1"] #home .practice-choice--free .practice-choice-heading{
-   grid-column:1;grid-row:1;min-height:29px
- }
- html[data-world-concept="1"] #home .practice-choice--free .practice-choice-detail-row{
-   grid-column:1;grid-row:2;margin:0;align-self:start
- }
- html[data-world-concept="1"] #home .practice-choice--free .practice-card-cta{
-   grid-column:2;grid-row:1/span 2;
-   align-self:center;width:100%;max-width:none;margin:0
- }
- html[data-world-concept="1"] #home .pw-world-section{
-   align-self:stretch;box-sizing:border-box;display:block;
-   width:100%;max-width:none;margin:15px 0 0;
-   padding:21px 25px;text-align:left
- }
- html[data-world-concept="1"] #home .pw-world-title{
-   margin:0;max-width:44ch;font-size:1.34rem;line-height:1.35
- }
- html[data-world-concept="1"] #home .pw-world-description{
-   margin:8px 0 0;max-width:68ch
- }
- html[data-world-concept="1"] #home .pw-world-chips{
-   display:flex;flex-wrap:wrap;justify-content:flex-start;
-   gap:7px;margin:13px 0 0
- }
- html[data-world-concept="1"] #home .pw-world-open{
-   margin-top:14px
- }
- html[data-world-concept="1"] #home .pw-world-atlas-list{
-   grid-template-columns:repeat(2,minmax(0,1fr))
- }
- html[data-world-concept="1"] #home .home-privacy-row{
-   align-self:center
- }
+/* World Practice desktop v4: semantic hero grouping, three aligned practice cards.
+   Only this noindex preview route uses these styles; production untouched. */
+#home .pw-world-hero{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  box-sizing:border-box;width:100%;min-width:0;
 }
-@media(min-width:980px) and (max-height:700px){
- html[data-world-concept="1"] #home .home-stack--cards{padding-top:64px}
- html[data-world-concept="1"] #home .mode-section-label{margin-top:17px;padding-top:12px}
+#home .pw-world-brandline{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:0;text-align:center;
+}
+#home .pw-world-hero .five-brand{margin:0 auto;align-self:center;flex:0 0 auto}
+#home .pw-world-hero .hero-copy{margin:9px auto 0;align-self:center;min-width:0}
+#home .pw-world-hero .home-headline{text-align:center}
+#home .pw-world-hero #pwModeProgress{align-self:center}
+html[data-world-concept="1"] .pw-qa-banner{
+  position:relative;top:auto;left:auto;right:auto;bottom:auto;
+  align-self:center;display:block;width:auto;max-width:100%;
+  margin:18px auto 0;padding:0;z-index:2;pointer-events:auto
+}
+html[data-world-concept="1"] .pw-preview-pane{
+  top:auto;bottom:calc(100% + 9px);left:auto;right:0
+}
+@media(min-width:980px){
+  html[data-world-concept="1"][data-world-home="1"] main.app{width:min(100%,1210px)}
+  html[data-world-concept="1"] .pw-language-button{left:max(12px,calc(50vw - 260px))}
+  html[data-world-concept="1"] .pw-theme-button{right:max(12px,calc(50vw - 260px))}
+  html[data-world-concept="1"] .pw-language-panel{left:max(12px,calc(50vw - 260px))}
+  html[data-world-concept="1"] #home .home-stack--cards{
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    box-sizing:border-box;width:100%;max-width:1110px;min-height:100%;
+    margin-inline:auto;padding:88px 0 26px;gap:0
+  }
+  html[data-world-concept="1"] #home .pw-world-hero{
+    display:grid;grid-template-columns:minmax(0,1.35fr) minmax(275px,.65fr);
+    align-items:center;justify-items:stretch;gap:24px;width:100%;
+    min-height:185px;padding:10px 8px 24px
+  }
+  html[data-world-concept="1"] #home .pw-world-brandline{
+    display:flex;flex-direction:row;align-items:center;justify-content:flex-start;
+    gap:27px;margin:0;min-width:0;text-align:left
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .five-brand{
+    margin:0;flex:0 0 auto;align-self:center
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .five-brand .five-mark{
+    width:5rem;height:8.7rem
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .hero-copy{
+    align-self:center;flex:1 1 auto;margin:0;min-width:0
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .home-headline{
+    max-width:29ch;margin:0;text-align:left;
+    font-size:clamp(1.46rem,2.1vw,1.85rem);font-weight:680;
+    line-height:1.25;letter-spacing:-.02em;text-wrap:balance
+  }
+  html[data-world-concept="1"] #home #pwModeProgress{
+    justify-self:end;align-self:center;box-sizing:border-box;
+    width:min(100%,300px);max-width:300px;margin:0;
+    padding-bottom:0
+  }
+  html[data-world-concept="1"] #home .mode-section-label{
+    box-sizing:border-box;align-self:stretch;width:100%;max-width:none;
+    margin:0;border-top:1px solid var(--line);
+    padding-top:16px;text-align:left
+  }
+  html[data-world-concept="1"] #home .pw-world-scale-line{
+    box-sizing:border-box;align-self:stretch;width:100%;max-width:none;
+    padding:0;margin:6px 0 0;text-align:left;font-size:.76rem
+  }
+  html[data-world-concept="1"] #home .practice-card-list{
+    box-sizing:border-box;align-self:stretch;display:grid;
+    width:100%;max-width:none;grid-template-columns:1.1fr 1fr 1fr;
+    gap:13px;margin:15px 0 0
+  }
+  html[data-world-concept="1"] #home .practice-choice{
+    display:flex;flex-direction:column;min-width:0;
+    min-height:194px;padding:20px 20px 17px
+  }
+  html[data-world-concept="1"] #home .practice-choice--free{
+    grid-column:auto;grid-row:auto
+  }
+  html[data-world-concept="1"] #home .practice-choice-heading,
+  html[data-world-concept="1"] #home .practice-choice-detail-row,
+  html[data-world-concept="1"] #home .practice-card-cta{
+    grid-column:auto;grid-row:auto
+  }
+  html[data-world-concept="1"] #home .practice-choice-detail-row{
+    min-height:2.2em;margin:8px 0 19px
+  }
+  html[data-world-concept="1"] #home .practice-card-cta{
+    width:100%;max-width:none;min-height:48px;margin-top:auto
+  }
+  html[data-world-concept="1"] #home .pw-world-section{
+    box-sizing:border-box;display:block;align-self:stretch;width:100%;max-width:none;
+    padding:23px 26px 20px;margin:16px 0 0;text-align:left
+  }
+  html[data-world-concept="1"] #home .pw-world-title{
+    max-width:56ch;margin:0;font-size:1.48rem;line-height:1.36
+  }
+  html[data-world-concept="1"] #home .pw-world-description{
+    margin:9px 0 0;max-width:70ch
+  }
+  html[data-world-concept="1"] #home .pw-world-chips{
+    display:flex;flex-wrap:wrap;justify-content:flex-start;
+    gap:8px;margin:14px 0 0
+  }
+  html[data-world-concept="1"] #home .pw-world-open{margin-top:15px}
+  html[data-world-concept="1"] #home .pw-world-atlas-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-world-concept="1"] #home .home-privacy-row{align-self:center}
+}
+@media(min-width:980px) and (max-width:1139px){
+  html[data-world-concept="1"] #home .home-stack--cards{max-width:880px}
+  html[data-world-concept="1"] #home .pw-world-hero{
+    grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:10px
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .five-brand .five-mark{
+    width:4rem;height:7rem
+  }
+  html[data-world-concept="1"] #home .pw-world-hero .home-headline{font-size:1.45rem}
+  html[data-world-concept="1"] #home .practice-card-list{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  html[data-world-concept="1"] #home .practice-choice--free{
+    grid-column:1/-1;min-height:105px;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(220px,.7fr);
+    gap:4px 18px;align-items:center
+  }
+  html[data-world-concept="1"] #home .practice-choice--free .practice-choice-heading{
+    grid-column:1;grid-row:1
+  }
+  html[data-world-concept="1"] #home .practice-choice--free .practice-choice-detail-row{
+    grid-column:1;grid-row:2;min-height:1.35em;margin:0
+  }
+  html[data-world-concept="1"] #home .practice-choice--free .practice-card-cta{
+    grid-column:2;grid-row:1/span 2;align-self:center;margin:0
+  }
+}
+@media(max-width:979px){
+  html[data-world-concept="1"] #home .pw-world-hero{width:100%}
+  html[data-world-concept="1"] #home .pw-world-brandline{gap:0}
+  html[data-world-concept="1"] #home .pw-world-hero .five-brand .five-mark{
+    width:clamp(3.4rem,14.5vw,5.2rem);height:clamp(5.92rem,25.23vw,9.05rem)
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-world-concept="1"] #home .pw-world-hero *{scroll-behavior:auto}
 }
 
 /* Preview-only contrast: small New label must remain readable in light theme. */

@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-stable4" />
+  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-wide4" />
   <title>5 · World Practice — design preview</title>
 <style>
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
@@ -102,6 +102,8 @@ html[data-preview-pending="1"] main.app{visibility:hidden}
           <img src="/peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
         </a>
 
+        <div id="pwWorldHero" class="pw-world-hero">
+          <div class="pw-world-brandline">
         <div class="five-brand" aria-label="cinco" data-i18n-aria-label="brand.aria">
           <button type="button" class="five-mark" aria-controls="pwBuildVersion" aria-expanded="false" aria-label="Pulsa cinco veces para mostrar la versión" data-i18n-aria-label="build.reveal.aria">5</button>
           <div class="five-word" data-i18n="brand.word">cinco</div>
@@ -113,12 +115,14 @@ html[data-preview-pending="1"] main.app{visibility:hidden}
 más pacífica</p>
         </div>
 
+          </div>
         <button id="startBtn" type="button" class="primary"><span data-i18n="home.start">Empezar · 5 min</span><span aria-hidden="true">→</span></button>
 
         <div id="pwModeProgress" class="preview-progress-grid" role="status" aria-live="polite" hidden>
           <div class="preview-progress-cell"><strong id="pwModeTotalTime" class="preview-progress-number"></strong><span id="pwModeTotalLabel" class="preview-progress-text"></span></div>
           <span class="preview-progress-divider" aria-hidden="true"></span>
           <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
+        </div>
         </div>
         <h2 id="pwModeChoose" class="mode-section-label">ELIGE UNA PRÁCTICA</h2>
         <p id="pwWorldScaleLine" class="pw-world-scale-line" role="note">7 languages · 8 web versions</p>
@@ -673,6 +677,6 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/world.js?v=20261118-stable4"></script>
+  <script src="/languages/world/world.js?v=20261118-wide4"></script>
 </body>
 </html>
