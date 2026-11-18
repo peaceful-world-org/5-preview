@@ -42,6 +42,8 @@
   }
 
   function currentAgentId() {
+    // Shared QA staging must not contact a live voice agent, even when switching to RU/EN.
+    if (location.pathname.startsWith('/languages/')) return '';
     const value = localeConfig()?.ai?.agentId;
     return typeof value === 'string' && value.trim() ? value.trim() : '';
   }
