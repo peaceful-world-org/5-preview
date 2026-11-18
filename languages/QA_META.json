@@ -1,0 +1,28 @@
+{
+  "kind": "five-multilingual-preview-hub",
+  "date": "2026-11-18",
+  "source_repo": "peaceful-world-org/5",
+  "source_branch": "i18n/uk-preview-v0.2",
+  "source_commit": "ab08569f3cd4f661067a555ede6f7b2e1bb9f453",
+  "preview_repo": "peaceful-world-org/5-preview",
+  "preview_path": "/languages/",
+  "review_only": true,
+  "released_in_production": [
+    "ru",
+    "en"
+  ],
+  "draft_locales": [
+    "uk",
+    "es",
+    "pt-br",
+    "pt-pt",
+    "fr",
+    "id"
+  ],
+  "core_keys_per_locale": 141,
+  "staging_feedback_enabled": false,
+  "staging_cloud_sync_enabled": false,
+  "staging_installs_enabled": false,
+  "staging_native_qa": false,
+  "audit_stage": "Awaiting real-browser and independent copy review"
+}
