@@ -204,6 +204,15 @@ html[data-world-concept="1"] .pw-preview-pane{
     display:flex;flex-direction:row;align-items:center;justify-content:flex-start;
     gap:27px;margin:0;min-width:0;text-align:left
   }
+  /* New visitors have no progress yet: do not reserve a blank second column. */
+  html[data-world-concept="1"] #home .pw-world-hero:has(#pwModeProgress[hidden]){
+    display:flex;justify-content:center;align-items:center;
+    min-height:185px
+  }
+  html[data-world-concept="1"] #home .pw-world-hero:has(#pwModeProgress[hidden]) .pw-world-brandline{
+    justify-content:center
+  }
+
   html[data-world-concept="1"] #home .pw-world-hero .five-brand{
     margin:0;flex:0 0 auto;align-self:center
   }
