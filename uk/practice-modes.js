@@ -84,6 +84,7 @@
   // Never render "undefined" in the details title, screen-reader label or history.
   const modeCopyKey = mode => mode === 'foundation' ? 'base' : mode;
   const modeTitle = (c, mode) => c[modeCopyKey(mode)];
+  const mettaCopyVersion = () => locale() === 'uk' ? (window.PW_I18N?.config?.copyVersion || copy.version) : copy.version;
   let selected = 'foundation';
   let info = 'foundation';
   let infoOpener = null;
@@ -281,7 +282,7 @@
     const practiceNumber=n===null?null:safeInt(LEGACY_BASE)+n;
     mettaMeta={
       practiceNumber,modeNumber:n,
-      copyVersion:copy.version,setId:'metta-focus-01',
+      copyVersion:mettaCopyVersion(),setId:'metta-focus-01',
       locale:locale(),demo:mettaDemo
     };
     window.PW_LAST_COMPLETION={mode:'metta',practiceNumber,durationSeconds:mettaDemo?null:300,demo:mettaDemo};
@@ -290,11 +291,11 @@
   };
   const propOverrides={
     lastCompletedPracticeNumber:meta=>meta?.practiceNumber??null,
-    lastCompletedCopyVersion:meta=>meta?.copyVersion||copy.version,
+    lastCompletedCopyVersion:meta=>meta?.copyVersion||mettaCopyVersion(),
     lastCompletedSetId:meta=>meta?.setId||'metta-focus-01',
     lastCompletedLocale:meta=>meta?.locale||locale(),
     lastCompletedWasDemo:meta=>Boolean(meta?.demo),
-    copyVersion:()=>copy.version,
+    copyVersion:()=>mettaCopyVersion(),
     currentSetId:()=> 'metta-focus-01',
     currentLocale:()=>locale()
   };

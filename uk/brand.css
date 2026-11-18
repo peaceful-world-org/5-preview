@@ -123,6 +123,8 @@
   align-items:center;
   justify-content:center;
 }
+/* A disabled, unavailable AI Guide must not be shown by the inline-flex rule. */
+.pw-ai-guide-trigger[hidden]{display:none!important}
 
 /* Quiet epilogue: record the practice, not app engagement. */
 .outro-stack{
