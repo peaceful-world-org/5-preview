@@ -1,0 +1,16 @@
+{
+  "kind": "5-uk-editorial-preview",
+  "preview_only": true,
+  "source_repo": "peaceful-world-org/5",
+  "source_commit": "a58f03b535a8a102c5b1ff09f972293a412a687a",
+  "uk_released": false,
+  "analytics_disabled": true,
+  "cloud_sync_disabled": true,
+  "feedback_submission_disabled": true,
+  "root_preview_untouched": true,
+  "mode_ids": [
+    "foundation",
+    "metta",
+    "free"
+  ]
+}
