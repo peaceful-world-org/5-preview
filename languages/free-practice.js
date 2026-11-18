@@ -77,8 +77,8 @@
   function localeCode() {
     // The document language reflects the locale that has actually been applied.
     // Prefer it over PW_I18N's bootstrap default to avoid a mixed RU/EN first paint.
-    return String(document.documentElement.lang || window.PW_I18N?.locale || 'en')
-      .toLowerCase().split('-')[0];
+    const raw = String(document.documentElement.lang || window.PW_I18N?.locale || 'en');
+    return window.PW_I18N?.normalizeLocale?.(raw) || raw.toLowerCase().split('-')[0];
   }
 
   function s() {
@@ -148,9 +148,10 @@
     const minutes = Math.floor((total % 3600) / 60);
     const ru = localeCode() === 'ru';
     const uk = localeCode() === 'uk';
-    const hourLabel = ru ? 'ч' : uk ? 'год' : 'h';
-    const minuteLabel = ru ? 'мин' : uk ? 'хв' : 'min';
-    const secondLabel = ru ? 'сек' : uk ? 'с' : localeCode() === 'es' ? 's' : 'sec';
+    const hourLabel = ru ? 'ч' : uk ? 'год' : localeCode() === 'id' ? 'jam' : 'h';
+    const minuteLabel = ru ? 'мин' : uk ? 'хв' : localeCode() === 'id' ? 'mnt' : 'min';
+    const id = localeCode() === 'id';
+    const secondLabel = ru ? 'сек' : uk ? 'с' : id ? 'detik' : localeCode() === 'en' ? 'sec' : 's';
     if (hours > 0) return hours + ' ' + hourLabel + ' ' + String(minutes).padStart(2, '0') + ' ' + minuteLabel;
     if (minutes > 0) return minutes + ' ' + minuteLabel;
     return total + ' ' + secondLabel;

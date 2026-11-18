@@ -82,7 +82,11 @@
     try { localStorage.setItem(key, String(Math.max(0, Math.floor(n)))); return true; }
     catch (_) { return false; }
   };
-  const locale = () => { const code = String(document.documentElement.lang || window.PW_I18N?.locale || 'ru').split('-')[0]; return text[code] && copy[code] ? code : 'en'; };
+  const locale = () => {
+    const raw = String(document.documentElement.lang || window.PW_I18N?.locale || 'ru');
+    const code = window.PW_I18N?.normalizeLocale?.(raw) || raw.toLowerCase().split('-')[0];
+    return text[code] && copy[code] ? code : 'en';
+  };
   const dict = () => text[locale()];
   // Storage mode ID is 'foundation', while the approved copy key is 'base'.
   // Never render "undefined" in the details title, screen-reader label or history.
@@ -103,7 +107,8 @@
     const amount = Math.max(0, Math.floor(s));
     const h = Math.floor(amount / 3600);
     const m = Math.floor((amount % 3600) / 60);
-    const unit = locale() === 'ru' ? [' ч ', ' мин', ' сек'] : locale() === 'uk' ? [' год ', ' хв', ' с'] : locale() === 'es' ? [' h ', ' min', ' s'] : [' h ', ' min', ' sec'];
+    const units = {ru:[' ч ',' мин',' сек'],uk:[' год ',' хв',' с'],es:[' h ',' min',' s'],'pt-br':[' h ',' min',' s'],'pt-pt':[' h ',' min',' s'],fr:[' h ',' min',' s'],id:[' jam ',' mnt',' dtk']};
+    const unit = units[locale()] || [' h ',' min',' sec'];
     if (h > 0) return h + unit[0] + String(m).padStart(2,'0') + unit[1];
     if (m > 0) return m + unit[1];
     return amount + unit[2];

@@ -112,7 +112,8 @@
   }
 
   function localeCode() {
-    return String(document.documentElement.lang || window.PW_I18N?.locale || 'en').toLowerCase().split('-')[0];
+    const raw = String(document.documentElement.lang || window.PW_I18N?.locale || 'en');
+    return window.PW_I18N?.normalizeLocale?.(raw) || raw.toLowerCase().split('-')[0];
   }
   function s() { return STRINGS[localeCode()] || STRINGS.en; }
   function safeGet(key, fallback = null) {

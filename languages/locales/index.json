@@ -89,6 +89,94 @@
       "iosGuide": {
         "assetLocale": ""
       }
+    },
+    "pt-br": {
+      "released": false,
+      "dir": "ltr",
+      "label": "Português (Brasil)",
+      "copyVersion": "pt-br-draft-v0.1",
+      "rotationVersion": null,
+      "privacy": "/privacy.en.html",
+      "privacyVersion": "2.3",
+      "shareHint": "pt-br",
+      "links": {
+        "site": "https://peaceful-world.org/",
+        "support": "https://peaceful-world.org/help",
+        "article": "https://peaceful-world.org/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
+      },
+      "ai": {
+        "agentId": ""
+      },
+      "iosGuide": {
+        "assetLocale": ""
+      }
+    },
+    "pt-pt": {
+      "released": false,
+      "dir": "ltr",
+      "label": "Português (Portugal)",
+      "copyVersion": "pt-pt-draft-v0.1",
+      "rotationVersion": null,
+      "privacy": "/privacy.en.html",
+      "privacyVersion": "2.3",
+      "shareHint": "pt-pt",
+      "links": {
+        "site": "https://peaceful-world.org/",
+        "support": "https://peaceful-world.org/help",
+        "article": "https://peaceful-world.org/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
+      },
+      "ai": {
+        "agentId": ""
+      },
+      "iosGuide": {
+        "assetLocale": ""
+      }
+    },
+    "fr": {
+      "released": false,
+      "dir": "ltr",
+      "label": "Français",
+      "copyVersion": "fr-draft-v0.1",
+      "rotationVersion": null,
+      "privacy": "/privacy.en.html",
+      "privacyVersion": "2.3",
+      "shareHint": "fr",
+      "links": {
+        "site": "https://peaceful-world.org/",
+        "support": "https://peaceful-world.org/help",
+        "article": "https://peaceful-world.org/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
+      },
+      "ai": {
+        "agentId": ""
+      },
+      "iosGuide": {
+        "assetLocale": ""
+      }
+    },
+    "id": {
+      "released": false,
+      "dir": "ltr",
+      "label": "Bahasa Indonesia",
+      "copyVersion": "id-draft-v0.1",
+      "rotationVersion": null,
+      "privacy": "/privacy.en.html",
+      "privacyVersion": "2.3",
+      "shareHint": "id",
+      "links": {
+        "site": "https://peaceful-world.org/",
+        "support": "https://peaceful-world.org/help",
+        "article": "https://peaceful-world.org/research/peaceful-world-practice",
+        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
+      },
+      "ai": {
+        "agentId": ""
+      },
+      "iosGuide": {
+        "assetLocale": ""
+      }
     }
   }
 }
