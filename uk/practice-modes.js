@@ -82,7 +82,8 @@
   const dict = () => text[locale()];
   // Storage mode ID is 'foundation', while the approved copy key is 'base'.
   // Never render "undefined" in the details title, screen-reader label or history.
-  const modeTitle = (c, mode) => c[mode === 'foundation' ? 'base' : mode];
+  const modeCopyKey = mode => mode === 'foundation' ? 'base' : mode;
+  const modeTitle = (c, mode) => c[modeCopyKey(mode)];
   let selected = 'foundation';
   let info = 'foundation';
   let infoOpener = null;
@@ -149,7 +150,7 @@
   function updateInfo(){
     const c=dict(), data=stats()[info];
     set('pwModeInfoTitle',modeTitle(c,info));
-    set('pwModeInfoBody',c[info+'More']);
+    set('pwModeInfoBody',c[modeCopyKey(info)+'More']);
     set('pwModeInfoStartText',info==='free'?c.startFree:c.start);
     const usage=$('pwModeInfoUsage');
     if(usage){
