@@ -76,3 +76,8 @@ html[data-pw-theme="dark"][data-world-concept="1"] #home .pw-world-wave h4{color
 @media(max-width:380px){#home .pw-world-section{padding:19px 15px}#home .pw-world-title{font-size:1.12rem}#home .pw-world-chip{font-size:.68rem}#home .pw-world-description{font-size:.8rem}}
 @media(orientation:landscape) and (max-height:520px){#home .pw-world-section{margin-top:12px}#home .pw-world-eyebrow{font-size:.6rem}}
 @media(prefers-reduced-motion:reduce){#home .pw-world-open,html[data-world-concept="1"] .pw-world-candidate-details{scroll-behavior:auto}}
+
+/* 2026-11-18 mobile Lighthouse: increase the Foundation summary contrast.
+   This fix belongs only to the World Practice staging concept. */
+html[data-world-concept="1"] #home .practice-choice--foundation .practice-choice-description{color:#39453D}
+html[data-world-concept="1"][data-pw-theme="dark"] #home .practice-choice--foundation .practice-choice-description{color:#DBE5D9}
