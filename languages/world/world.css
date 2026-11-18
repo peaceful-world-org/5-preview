@@ -233,3 +233,6 @@ html[data-world-concept="1"][data-pw-theme="dark"] #pwPreviewProdLink{color:#D5E
  html[data-world-concept="1"] #home .home-stack--cards{padding-top:66px}
  html[data-world-concept="1"] #home .mode-section-label{margin-top:17px;padding-top:12px}
 }
+
+/* Preview-only contrast: small New label must remain readable in light theme. */
+html[data-world-concept="1"]:not([data-pw-theme="dark"]) #home .practice-new-label{color:#274831;background:#D8E8D4;border-color:#AFC9AB}
