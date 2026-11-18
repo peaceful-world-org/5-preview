@@ -145,8 +145,17 @@ html[data-world-concept="1"][data-pw-theme="dark"] .pw-world-compare a[aria-curr
 }
 html[data-world-concept="1"][data-pw-theme="dark"] #pwPreviewProdLink{color:#D5E7D3}
 @media(max-width:979px){
- html[data-world-concept="1"] .pw-qa-banner{
-   top:auto;left:auto;bottom:max(14px,env(safe-area-inset-bottom));right:14px;
+ /* Mobile QA controls belong to the bottom of Home, not over practice buttons. */
+ html[data-world-concept="1"] #home .pw-qa-banner{
+   position:relative;top:auto;left:auto;bottom:auto;right:auto;
+   align-self:center;display:block;width:auto;max-width:100%;
+   margin:21px auto 0;padding:0;pointer-events:auto;z-index:1;
+ }
+ html[data-world-concept="1"] #home .pw-preview-toggle{min-height:40px;padding:8px 11px}
+ html[data-world-concept="1"] #home .pw-preview-pane{
+   top:auto;left:auto;right:0;bottom:calc(100% + 9px);
+   width:280px;max-width:calc(100vw - 28px);
+   max-height:calc(100dvh - 125px);
  }
  html[data-world-concept="1"] .pw-preview-toggle{min-height:40px;padding:8px 11px}
  html[data-world-concept="1"] .pw-preview-pane{

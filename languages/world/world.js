@@ -81,6 +81,17 @@
     if(qa)qa.setAttribute('aria-label',labels.label);
   }
   const qa=document.querySelector('.pw-qa-banner');
+  // On phones/tablets, keep diagnostic controls after Home content in the
+  // scrollable document; no fixed overlay may cover a live practice action.
+  const mobileViewport=window.matchMedia?.('(max-width: 979px)');
+  const homeContainer=el('home')?.querySelector('.home-stack--cards');
+  const placePreviewControls=()=>{
+    if(!qa||!homeContainer)return;
+    const parent=mobileViewport?.matches?homeContainer:document.body;
+    if(qa.parentElement!==parent)parent.appendChild(qa);
+  };
+  placePreviewControls();
+  mobileViewport?.addEventListener?.('change',placePreviewControls);
   if(qa){
     const row=make('div','pw-world-compare');
     row.append(compareLink('A · Free first','free'),compareLink('B · Foundation first','foundation'));
