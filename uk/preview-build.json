@@ -2,7 +2,7 @@
   "kind": "5-uk-editorial-preview",
   "preview_only": true,
   "source_repo": "peaceful-world-org/5",
-  "source_commit": "a58f03b535a8a102c5b1ff09f972293a412a687a",
+  "source_commit": "8a51314a07065a4ec490dd2b3e4e9ce592a5e3d7",
   "uk_released": false,
   "analytics_disabled": true,
   "cloud_sync_disabled": true,
@@ -12,5 +12,7 @@
     "foundation",
     "metta",
     "free"
-  ]
+  ],
+  "mobile_qa": "Chromium offline real-source mirror; 320/390/430 light/dark; all three mode flows",
+  "note": "Preview-only static Ukrainian first paint; production single-shell locale fallback requires separate release QA"
 }
