@@ -9,9 +9,9 @@
     "baseDesc": "Lima langkah untuk berpikir lebih damai.",
     "mettaDesc": "Dari dirimu kepada semua makhluk hidup.",
     "freeDesc": "Pengatur waktu terbuka, sesuai ritmemu.",
-    "baseMore": "Lima langkah: Berhenti sejenak, Lihat makhluk hidup, Harapkan kebaikan bagi seseorang, Kurangi dampak buruk, dan Buat pilihan. Setiap langkah berlangsung satu menit setelah persiapan singkat. Tidak ada jawaban benar yang harus ditemukan.",
+    "baseMore": "Lima langkah: Berhenti sejenak, Lihat makhluk hidup, Harapkan kebaikan, Kurangi dampak buruk, dan Buat pilihan. Setiap langkah berlangsung satu menit setelah persiapan singkat. Tidak ada jawaban benar yang harus ditemukan.",
     "mettaMore": "Lima arah niat baik: dirimu, seseorang yang pernah berbuat baik, orang dekat, orang yang hampir tidak kamu kenal, dan semua makhluk hidup. Mengharapkan kebahagiaan dan kebebasan dari penderitaan tidak mewajibkan perasaan tertentu atau memaafkan siapa pun.",
-    "freeMore": "Pengatur waktu tanpa durasi tetap untuk latihan yang sudah kamu kenal. Ada petunjuk opsional. Dalam aplikasi yang telah dirilis, waktumu ditambahkan ke total latihan.",
+    "freeMore": "Pengatur waktu tanpa durasi tetap untuk latihan yang sudah kamu kenal. Ada petunjuk opsional. Waktumu ditambahkan ke total latihan.",
     "choose": "PILIH LATIHAN",
     "start": "Mulai · 5 menit",
     "startFree": "Mulai",
@@ -64,7 +64,7 @@
       },
       {
         "id": "metta.kind_person",
-        "title": "Untuk orang yang pernah membantu",
+        "title": "Untuk yang membantumu",
         "guide": "Ingat seseorang yang kebaikan atau dukungannya masih kamu kenang. Harapkan hal yang sama untuknya seperti yang kamu harapkan bagi dirimu.",
         "example": "Mungkin guru atau seseorang yang pernah mendukungmu. Pada langkah berikutnya, kamu bisa memikirkan orang yang dekat denganmu."
       },
@@ -76,13 +76,13 @@
       },
       {
         "id": "metta.neutral_person",
-        "title": "Untuk orang yang nyaris tak dikenal",
+        "title": "Untuk kenalan",
         "guide": "Pikirkan seseorang yang sesekali kamu lihat, tetapi hampir tidak kamu kenal. Harapkan baginya hal yang sama seperti untuk orang dekat.",
         "example": "Mungkin petugas toko atau tetangga yang hanya kamu sapa. Kamu tidak tahu kisah hidupnya, tetapi seperti kamu, ia ingin bahagia dan tidak ingin menderita."
       },
       {
         "id": "metta.all_beings",
-        "title": "Untuk semua makhluk hidup",
+        "title": "Untuk semua makhluk",
         "guide": "Sekarang perluas harapan itu ke seluruh dunia: “Semoga semua makhluk hidup bahagia dan bebas dari penderitaan.”",
         "example": "Kamu bisa memikirkan orang-orang yang jauh, burung di luar jendela, atau hewan di hutan. Tidak perlu membayangkan semuanya satu per satu."
       }
@@ -135,7 +135,7 @@
     "open": "Buka cadangan kemajuan",
     "close": "Tutup",
     "dialogTitle": "Simpan kemajuan",
-    "dialogBody": "Tanpa kata sandi: kami akan mengirim kode sekali pakai melalui email. Hanya riwayat Dasar dan Bebas yang disinkronkan; Niat baik tetap disimpan di perangkat ini.",
+    "dialogBody": "Tanpa kata sandi: kami akan mengirim kode sekali pakai melalui email. Hanya riwayat Dasar dan Bebas yang disinkronkan; untuk saat ini, Niat baik tetap disimpan di perangkat ini.",
     "emailLabel": "Email",
     "emailPlaceholder": "nama@contoh.com",
     "sendCode": "Kirim kode",
@@ -170,6 +170,6 @@
     "manageNote": "Penghapusan hanya berlaku untuk cadangan di awan dan akun masuk. Data lokal dapat dihapus secara terpisah dengan mengosongkan data aplikasi."
   }
 };
- const pluralCategory = _n => 'many';
+  const pluralCategory = _n => 'many';
  window.PW_ID_PREVIEW = Object.freeze({...draft,pluralCategory,formatSeconds(n){const x=Math.max(0,Math.trunc(Number(n)||0));return x+' detik';}});
 })();

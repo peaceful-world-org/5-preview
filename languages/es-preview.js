@@ -4,13 +4,13 @@
   const draft = {
   "modeUi": {
     "base": "Base",
-    "metta": "Amabilidad",
+    "metta": "Benevolencia",
     "free": "Práctica libre",
     "baseDesc": "Cinco pasos para pensar de manera más pacífica.",
     "mettaDesc": "De ti a todos los seres vivos.",
     "freeDesc": "Un temporizador abierto, a tu ritmo.",
     "baseMore": "Cinco pasos consecutivos: detente, observa un ser vivo, desea el bien a alguien, reduce el daño y elige cómo actuar. Cada paso dura un minuto después de una breve preparación. No hay una respuesta correcta que encontrar.",
-    "mettaMore": "Cinco direcciones de amabilidad: hacia ti, hacia alguien que fue amable contigo, hacia alguien cercano, hacia alguien que apenas conoces y hacia todos los seres vivos. Desear felicidad y libertad del sufrimiento no exige sentir nada especial ni perdonar.",
+    "mettaMore": "Cinco direcciones de benevolencia: hacia ti, hacia alguien que fue amable contigo, hacia alguien cercano, hacia alguien que apenas conoces y hacia todos los seres vivos. Desear felicidad y libertad del sufrimiento no exige sentir nada especial ni perdonar.",
     "freeMore": "Un temporizador sin duración fija para una práctica que ya conoces. Puedes abrir una sugerencia si lo deseas. El tiempo se suma a tu registro general de práctica.",
     "choose": "ELIGE UNA PRÁCTICA",
     "start": "Empezar · 5 minutos",
@@ -45,7 +45,7 @@
   },
   "metta": {
     "mode": {
-      "title": "Amabilidad",
+      "title": "Benevolencia",
       "subtitle": "Mettā · 5 minutos",
       "description": "Cinco minutos para desearte a ti y a otras personas felicidad y libertad del sufrimiento."
     },
@@ -76,7 +76,7 @@
       },
       {
         "id": "metta.neutral_person",
-        "title": "A alguien que apenas conoces",
+        "title": "A un conocido",
         "guide": "Piensa en alguien a quien ves de vez en cuando, pero conoces muy poco. Deséale lo mismo que a alguien cercano.",
         "example": "Una persona que atiende una tienda o un vecino a quien solo saludas. No conoces su historia, pero, al igual que tú, desea ser feliz y no sufrir."
       },
@@ -87,7 +87,7 @@
         "example": "Puedes pensar en personas que viven lejos, aves al otro lado de la ventana o animales de un bosque. No hace falta imaginar a cada uno."
       }
     ],
-    "intro": "Empieza contigo y amplía poco a poco el círculo de amabilidad. No necesitas sentir nada especial: basta con formular el deseo.",
+    "intro": "Empieza contigo y amplía poco a poco el círculo de benevolencia. No necesitas sentir nada especial: basta con formular el deseo.",
     "completion": "Si quieres, haz algo pequeño y amable.",
     "guardrail": "Si pensar en alguien te resulta doloroso, elige a otra persona o detente. Desear el bien no significa perdonar a quien te dañó ni renunciar a tus límites."
   },
@@ -112,7 +112,7 @@
     "hintTrigger": "Sugerencia",
     "hintAria": "Qué puedes hacer durante la práctica libre",
     "hintTitle": "¿Qué puedo hacer aquí?",
-    "hintBody1": "Dedica este tiempo a cualquier ejercicio que conozcas y que te ayude a pensar de forma más pacífica: religioso, secular o terapéutico. Puedes observar la respiración, practicar la amabilidad o el perdón, rezar, meditar o hacer un ejercicio que te resulte familiar.",
+    "hintBody1": "Dedica este tiempo a cualquier ejercicio que conozcas y que te ayude a pensar de forma más pacífica: religioso, secular o terapéutico. Puedes observar la respiración, volver a la benevolencia o al perdón, rezar, meditar o hacer un ejercicio que te resulte familiar.",
     "hintBody2": "No hay una duración correcta para todos. Incluso un momento breve que dedicas conscientemente a practicar cuenta; por eso el temporizador registra cada segundo.",
     "hintContinue": "Continuar"
   },
@@ -124,23 +124,23 @@
     "step2": "Por ejemplo, un ave al otro lado de la ventana puede convertirse en parte del paisaje. Intenta verla como una vida propia, y no solo como algo de fondo.",
     "step3": "Por ejemplo, puedes pensar en alguien cercano o en un animal y desearle: «Que estés bien». Tal vez no sientas una emoción cálida, y eso no impide practicar.",
     "step4": "Por ejemplo, fumar un cigarrillo menos, permitir que tu cuerpo descanse o dejar de hacer algo que te perjudica a ti o a otras personas.",
-    "step5": "Por ejemplo, en vez de decir «intentaré ser más amable», decide: «cuando note que estoy enfadándome, haré una pausa antes de decir algo que pueda herir a alguien»."
+    "step5": "Por ejemplo, en vez de decir «intentaré ser más amable», decide: «cuando note que la ira empieza a subir, haré una pausa antes de decir algo que pueda herir a alguien»."
   },
   "progressSync": {
     "saveTitle": "Guardar progreso",
-    "saveBody": "Copia de seguridad opcional para Base y Práctica libre. Por ahora, el historial de Amabilidad solo se guarda en este dispositivo.",
+    "saveBody": "Copia de seguridad opcional para Base y Práctica libre. Por ahora, el historial de Benevolencia solo se guarda en este dispositivo.",
     "saveButton": "Guardar progreso",
     "savedTitle": "Progreso guardado",
-    "savedBody": "Puedes recuperar el historial de Base y Práctica libre en otro dispositivo. El historial de Amabilidad permanece en este dispositivo por ahora.",
+    "savedBody": "Puedes recuperar el historial de Base y Práctica libre en otro dispositivo. El historial de Benevolencia permanece en este dispositivo por ahora.",
     "open": "Abrir copia de seguridad",
     "close": "Cerrar",
     "dialogTitle": "Guardar progreso",
-    "dialogBody": "Sin contraseña: te enviaremos un código de un solo uso por correo. Solo se sincronizan Base y Práctica libre; Amabilidad permanece en este dispositivo por ahora.",
+    "dialogBody": "Sin contraseña: te enviaremos un código de un solo uso por correo. Solo se sincronizan Base y Práctica libre; Benevolencia permanece en este dispositivo por ahora.",
     "emailLabel": "Correo electrónico",
     "emailPlaceholder": "nombre@ejemplo.com",
     "sendCode": "Enviar código",
     "codeTitle": "Revisa tu correo",
-    "codeBody": "Introduce el código del mensaje.",
+    "codeBody": "Escribe el código que recibiste por correo.",
     "codeLabel": "Código",
     "verify": "Verificar y guardar",
     "resend": "Enviar otro código",

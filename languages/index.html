@@ -64,9 +64,21 @@
 html[data-pw-theme="dark"] .pw-qa-banner{background:#29352e;color:#ecf1e8;border-color:#435447}
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
 html[data-preview-pending="1"] main.app{visibility:hidden}
+.app{height:calc(var(--pw-viewport-height,100dvh) - var(--pw-qa-banner-height,0px))}
+
 </style>
 <script>
 (() => {
+  const updateBannerSpace = () => {
+    const banner = document.querySelector('.pw-qa-banner');
+    if (banner) document.documentElement.style.setProperty('--pw-qa-banner-height', Math.ceil(banner.getBoundingClientRect().height) + 'px');
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    updateBannerSpace();
+    const banner = document.querySelector('.pw-qa-banner');
+    if (banner && typeof ResizeObserver === 'function') new ResizeObserver(updateBannerSpace).observe(banner);
+  }, {once:true});
+  window.addEventListener('resize', updateBannerSpace, {passive:true});
   document.addEventListener('pw:locale-ready', () => document.documentElement.removeAttribute('data-preview-pending'), {once:true});
   setTimeout(() => {
     if (!document.documentElement.hasAttribute('data-preview-pending')) return;

@@ -9,9 +9,9 @@
     "baseDesc": "Cinco passos para pensar de forma mais pacífica.",
     "mettaDesc": "De ti a todos os seres vivos.",
     "freeDesc": "Um temporizador aberto, ao teu ritmo.",
-    "baseMore": "Cinco passos: Pára, Vê um ser vivo, Deseja o bem a alguém, Reduz o dano e Faz uma escolha. Cada passo dura um minuto após uma breve preparação. Não há uma resposta certa a encontrar.",
+    "baseMore": "Cinco passos: Para, Vê um ser vivo, Deseja o bem a alguém, Reduz o dano e Faz uma escolha. Cada passo dura um minuto após uma breve preparação. Não há uma resposta certa a encontrar.",
     "mettaMore": "Cinco direções de bondade: tu, alguém que demonstrou bondade, alguém próximo, alguém que mal conheces e todos os seres vivos. Desejar felicidade e liberdade do sofrimento não exige um sentimento específico nem perdão.",
-    "freeMore": "Um temporizador sem duração fixa para uma prática que já conheces. Há uma sugestão opcional. Na aplicação publicada, o teu tempo conta para o total de prática.",
+    "freeMore": "Um temporizador sem duração fixa para uma prática que já conheces. Há uma sugestão opcional. O teu tempo conta para o total de prática.",
     "choose": "ESCOLHE UMA PRÁTICA",
     "start": "Começar · 5 minutos",
     "startFree": "Começar",
@@ -76,7 +76,7 @@
       },
       {
         "id": "metta.neutral_person",
-        "title": "A alguém que mal conheces",
+        "title": "A um conhecido",
         "guide": "Pensa numa pessoa que vês de vez em quando, mas mal conheces. Deseja-lhe o mesmo que desejaste a alguém próximo.",
         "example": "Talvez uma pessoa que trabalha numa loja ou um vizinho que apenas cumprimentas. Não conheces a sua história, mas, tal como tu, quer ser feliz e não sofrer."
       },
@@ -89,7 +89,7 @@
     ],
     "intro": "Começa por ti e alarga gradualmente o círculo de bondade. Não precisas de sentir nada de especial — basta o desejo.",
     "completion": "Se quiseres, faz um pequeno gesto de bondade.",
-    "guardrail": "Se pensar em alguém for doloroso, escolhe outra pessoa ou pára. Desejar o bem não significa perdoar nem abdicar dos teus limites."
+    "guardrail": "Se pensar em alguém for doloroso, escolhe outra pessoa ou para. Desejar o bem não significa perdoar nem abdicar dos teus limites."
   },
   "freePractice": {
     "totalLabel": "Tempo dedicado à prática",
@@ -102,7 +102,7 @@
     "idea": "Pratica durante o tempo de que precisares.",
     "note": "Sem metas nem sequências de dias. Apenas tempo dedicado à prática.",
     "start": "Começar",
-    "pause": "Pausa",
+    "pause": "Pausar",
     "resume": "Continuar",
     "finish": "Terminar",
     "back": "Voltar",
@@ -124,7 +124,7 @@
     "step2": "Por exemplo, uma ave do outro lado da janela pode tornar-se parte da paisagem. Tenta vê-la como uma vida própria, independente de ti.",
     "step3": "Por exemplo, podes desejar mentalmente a um amigo ou animal: «Espero que te corra tudo bem». Podes não sentir uma emoção calorosa. Isso não é necessário para o exercício.",
     "step4": "Por exemplo: fumar menos um cigarro, descansar um pouco mais ou dizer não a algo que te possa prejudicar a ti ou a outra pessoa.",
-    "step5": "Por exemplo: em vez de apenas «vou tentar ser mais amável», decide: «Quando notar que estou a ficar zangado, faço uma pausa antes de falar para não dizer algo que magoe»."
+    "step5": "Por exemplo: em vez de apenas «vou tentar ser mais amável», decide: «Quando notar que me estou a irritar, faço uma pausa antes de falar para não dizer algo que magoe»."
   },
   "progressSync": {
     "saveTitle": "Guardar progresso",
@@ -170,6 +170,6 @@
     "manageNote": "A eliminação afeta apenas a cópia na nuvem e a conta de acesso. Para remover os dados locais, limpa separadamente os dados da aplicação."
   }
 };
- const pluralCategory = n => Math.abs(Math.trunc(Number(n)||0)) === 1 ? 'one' : 'many';
+  const pluralCategory = n => Math.abs(Math.trunc(Number(n)||0)) === 1 ? 'one' : 'many';
  window.PW_PT_PT_PREVIEW = Object.freeze({...draft,pluralCategory,formatSeconds(n){const x=Math.max(0,Math.trunc(Number(n)||0));return x+(x===1?' segundo':' segundos');}});
 })();

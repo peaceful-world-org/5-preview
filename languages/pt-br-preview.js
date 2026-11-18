@@ -11,7 +11,7 @@
     "freeDesc": "Um cronômetro aberto, no seu ritmo.",
     "baseMore": "Cinco etapas: Pare, Veja um ser vivo, Deseje o bem a alguém, Reduza os danos e Faça uma escolha. Cada etapa dura um minuto após uma breve preparação. Não há uma resposta certa a encontrar.",
     "mettaMore": "Cinco direções de bondade: você, alguém que mostrou gentileza, alguém próximo, alguém que você mal conhece e todos os seres vivos. Desejar felicidade e liberdade do sofrimento não exige um sentimento específico nem perdão.",
-    "freeMore": "Um cronômetro sem duração fixa para uma prática que você já conhece. Há uma dica opcional. No aplicativo publicado, seu tempo conta para o total de prática.",
+    "freeMore": "Um cronômetro sem duração fixa para uma prática que você já conhece. Há uma dica opcional. Seu tempo conta para o total de prática.",
     "choose": "ESCOLHA UMA PRÁTICA",
     "start": "Começar · 5 minutos",
     "startFree": "Começar",
@@ -22,7 +22,7 @@
     "countFew": "práticas",
     "countMany": "práticas",
     "sample": "",
-    "history": "Histórico total",
+    "history": "Total geral",
     "new": "NOVA",
     "planned": "Em breve",
     "plannedHeader": "EM BREVE",
@@ -40,7 +40,7 @@
     "doneFree": "Prática livre",
     "infoFallback": "Sobre esta prática",
     "friendlyMetta": "Se quiser, faça um pequeno gesto de bondade.",
-    "infoTime": "Histórico total",
+    "infoTime": "Total geral",
     "freeDoneSubtitle": "Você dedicou este tempo à prática."
   },
   "metta": {
@@ -64,7 +64,7 @@
       },
       {
         "id": "metta.kind_person",
-        "title": "A quem ajudou",
+        "title": "A quem ajudou você",
         "guide": "Lembre-se de alguém cuja bondade ou apoio tenha marcado você. Deseje a essa pessoa o mesmo que desejou a si.",
         "example": "Pode ser um professor ou alguém que ofereceu apoio. Na próxima etapa, você poderá pensar em alguém próximo."
       },
@@ -170,6 +170,6 @@
     "manageNote": "A exclusão afeta apenas o backup na nuvem e a conta de acesso. Para remover os dados locais, limpe os dados do aplicativo separadamente."
   }
 };
- const pluralCategory = n => Math.abs(Math.trunc(Number(n)||0)) === 1 ? 'one' : 'many';
+  const pluralCategory = n => Math.abs(Math.trunc(Number(n)||0)) === 1 ? 'one' : 'many';
  window.PW_PT_BR_PREVIEW = Object.freeze({...draft,pluralCategory,formatSeconds(n){const x=Math.max(0,Math.trunc(Number(n)||0));return x+(x===1?' segundo':' segundos');}});
 })();
