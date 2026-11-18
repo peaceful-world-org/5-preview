@@ -2,6 +2,20 @@
 'use strict';
 (() => {
   if (!location.pathname.startsWith('/languages/world/')) return;
+  // Test-only theme query wins even when a returning visitor saved a theme.
+  // Preserve localStorage: a QA link must not change any real preference.
+  const previewTheme = new URLSearchParams(location.search).get('previewTheme');
+  if ((previewTheme === 'dark' || previewTheme === 'light') && window.PW_THEME?.set) {
+    let saved=null, readable=false;
+    try { saved=localStorage.getItem('pw-theme'); readable=true; } catch (_) {}
+    window.PW_THEME.set(previewTheme);
+    if (readable) {
+      try {
+        if (saved === null) localStorage.removeItem('pw-theme');
+        else localStorage.setItem('pw-theme',saved);
+      } catch (_) {}
+    }
+  }
   const el = id => document.getElementById(id);
   const texts = {
     ru:{scale:'7 языков доступны · 52 языка на карте развития',eye:'КАРТА ПРАКТИК',title:'Маленькая практика. Большой горизонт.',desc:'Свободный таймер — простой вход. За ним — навыки внимания, доброжелательности и мирного действия.',expand:'Исследовать карту практик и языков',collapse:'Свернуть карту',atlas:'Направления практик',ideas:'30 идей',ideasNote:'Это идеи для изучения и экспертной проверки, а не доступные тренировки или обещанные релизы.',untranslated:'',languages:'Международная языковая карта',live:'7 языков сейчас',langNote:'Севильское заявление опубликовано в 54 языковых редакциях на 52 языках. Это отдельные тексты, а не готовые переводы приложения «5».',showCandidates:'Показать 46 языковых версий-кандидатов',source:'О Севильском заявлении ↗',done:'Практика мира будет расти',doneNote:'Новые направления пока только на стадии идей.',doneOpen:'Посмотреть карту развития →',menu:'Карта языков · 46 кандидатов',waves:['Следующие кандидаты (латиница)','Другие письменности','RTL: требуется отдельная проверка','Дальнейшая карта'],groups:['Внимание и ясность','Забота и отношения','Конфликт и речь','Границы и защита','Ответственность и восстановление','Живой мир']},
