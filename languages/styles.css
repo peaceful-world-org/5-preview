@@ -100,6 +100,10 @@ h1{margin:0;font-size:clamp(3.55rem,15vw,5.15rem);line-height:1;font-weight:700;
   .practice-topbar,.progress-dots,.practice-footer{flex-shrink:0}
   .practice-card{flex:1 1 0;min-height:0;overflow:hidden;padding-block:clamp(12px,2.6vh,27px)}
   .practice-card .step-copy{min-width:0;min-height:0;max-height:100%;width:100%;flex:0 1 auto;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .practice-card .step-copy{justify-content:flex-start}
+  .practice-card .step-copy::before,
+  .practice-card .step-copy::after{content:"";flex:1 0 0}
+  .practice-card #stepTitle{overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 @media(prefers-contrast:more){:root{--muted:#4C534F;--accent:#4A5A4D;--accent-text:#435347;--line:#C8CFC6}}
