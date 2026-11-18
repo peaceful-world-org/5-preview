@@ -61,8 +61,8 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-wide5" />
-  <title>5 · World Practice — design preview</title>
+  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-stable1" />
+  <title>5 · Peace Practice — Preview</title>
 <style>
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
 html[data-preview-pending="1"] main.app{visibility:hidden}
@@ -74,27 +74,13 @@ html[data-preview-pending="1"] main.app{visibility:hidden}
   setTimeout(() => {
     if (!document.documentElement.hasAttribute('data-preview-pending')) return;
     document.documentElement.removeAttribute('data-preview-pending');
-    const message = document.getElementById('pwPreviewCopy');
+    const message = document.getElementById('pwWorldPreviewNote');
     if (message) message.textContent = 'Translation could not load. Reload the preview to retry.';
   }, 8000);
 })();
 </script>
 </head>
 <body>
-<aside class="pw-qa-banner" role="note" aria-label="Предпросмотр">
-  <details id="pwPreviewTools" class="pw-preview-tools">
-    <summary class="pw-preview-toggle">
-      <span class="pw-preview-symbol" aria-hidden="true">◇</span>
-      <span id="pwPreviewToggleLabel">Предпросмотр</span>
-      <span class="pw-preview-chevron" aria-hidden="true">⌄</span>
-    </summary>
-    <div class="pw-preview-pane">
-      <p id="pwPreviewCopy" class="pw-preview-copy">Это тестовая версия: отзывы, облачная синхронизация и установка отключены.</p>
-      <nav class="pw-preview-compare-links" aria-label="Сравнить порядок тренировок"></nav>
-      <a id="pwPreviewProdLink" href="https://5.peaceful-world.org/" target="_blank" rel="noopener noreferrer">Рабочее приложение ↗</a>
-    </div>
-  </details>
-</aside>
   <main class="app">
     <section id="home" class="screen active home-screen home-screen--cards">
       <div class="home-stack home-stack--cards">
@@ -208,6 +194,7 @@ más pacífica</p>
           </div>
         </details>
         <p class="home-privacy-row"><a class="home-privacy-link" href="/privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Privacidad (en inglés)</a></p>
+        <p id="pwWorldPreviewNote" class="pw-world-preview-note" role="note">Предпросмотр. Отзывы, синхронизация и установка отключены.</p>
       </div>
     </section>
 
@@ -677,6 +664,6 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/world.js?v=20261118-wide4"></script>
+  <script src="/languages/world/world.js?v=20261118-stable1"></script>
 </body>
 </html>

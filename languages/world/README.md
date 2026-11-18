@@ -13,3 +13,12 @@ Acceptance: 320/375/430px mobile + desktop, 8 locales, switchers, all 3 practice
 Sources: 5 product issues #184, #185, #186; 5-preview experiments/UX_AUDIT_2026-11-12.md; website-lab/config/seville-1986-served-54-identity-lock.json.
 
 Out of scope: new languages, any native store release, editing current production PWA, replacing the previously audited manual-ready/exit variants. Behavioral audit changes are still separate until reviewed and regression tested.
+
+## Stable cross-device review (2026-11-18)
+
+User link: https://preview-5.peaceful-world.org/languages/world/?lang=ru
+
+- One responsive URL for phone, tablet and desktop, no demo/QA query needed.
+- Diagnostic A/B overlay removed from user-facing HTML. Preview-only restrictions remain: noindex, no PWA installation, no feedback submission or cloud progress sync.
+- Free, Foundation and Mettā retain their original runtime action IDs; full atlas is expandable and the language map remains visible without promising unreleased translations.
+- 700–979px tablet now uses full width; <=699px phone remains stacked; >=980px desktop retains coherent grouped hero and 2/3-card width logic. Real phone and screen-reader QA remain a separate gate.
