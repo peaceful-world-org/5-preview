@@ -1,9 +1,13 @@
 {
-  "kind": "5-uk-editorial-preview",
+  "kind": "5-es-editorial-preview",
   "preview_only": true,
+  "locale": "es",
   "source_repo": "peaceful-world-org/5",
-  "source_commit": "8a51314a07065a4ec490dd2b3e4e9ce592a5e3d7",
-  "uk_released": false,
+  "source_commit": "3ee15687c991ba7ffb8cd0b821dd690ba9fc9ff8",
+  "source_pr": 181,
+  "es_released": false,
+  "public_staging_only": true,
+  "production_unchanged": true,
   "analytics_disabled": true,
   "cloud_sync_disabled": true,
   "feedback_submission_disabled": true,
@@ -13,6 +17,7 @@
     "metta",
     "free"
   ],
-  "mobile_qa": "Chromium offline real-source mirror; 320/390/430 light/dark; all three mode flows",
-  "note": "Preview-only static Ukrainian first paint; production single-shell locale fallback requires separate release QA"
+  "translation_state": "AI-first-draft; Claude/Gemini/human review invited",
+  "legal_disclosure": "English privacy policy linked and clearly labeled in Spanish",
+  "native_builds_triggered": false
 }
