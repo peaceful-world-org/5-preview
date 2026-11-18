@@ -61,41 +61,40 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-2" />
+  <link rel="stylesheet" href="/languages/world/world.css?v=20261118-desktop2" />
   <title>5 · World Practice — design preview</title>
 <style>
-.pw-qa-banner{box-sizing:border-box;width:100%;margin:0;padding:54px 12px 9px;background:#eef0e9;color:#303831;border-bottom:1px solid #bfc8bc;text-align:center;font:500 12px/1.4 system-ui,sans-serif}
-.pw-qa-banner a{color:inherit;text-decoration:underline}
-html[data-pw-theme="dark"] .pw-qa-banner{background:#29352e;color:#ecf1e8;border-color:#435447}
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
 html[data-preview-pending="1"] main.app{visibility:hidden}
-.app{height:calc(var(--pw-viewport-height,100dvh) - var(--pw-qa-banner-height,0px))}
 
 </style>
 <script>
 (() => {
-  const updateBannerSpace = () => {
-    const banner = document.querySelector('.pw-qa-banner');
-    if (banner) document.documentElement.style.setProperty('--pw-qa-banner-height', Math.ceil(banner.getBoundingClientRect().height) + 'px');
-  };
-  document.addEventListener('DOMContentLoaded', () => {
-    updateBannerSpace();
-    const banner = document.querySelector('.pw-qa-banner');
-    if (banner && typeof ResizeObserver === 'function') new ResizeObserver(updateBannerSpace).observe(banner);
-  }, {once:true});
-  window.addEventListener('resize', updateBannerSpace, {passive:true});
   document.addEventListener('pw:locale-ready', () => document.documentElement.removeAttribute('data-preview-pending'), {once:true});
   setTimeout(() => {
     if (!document.documentElement.hasAttribute('data-preview-pending')) return;
     document.documentElement.removeAttribute('data-preview-pending');
-    const banner = document.querySelector('.pw-qa-banner');
-    if (banner) banner.textContent = 'Translation could not load. Reload the preview to retry.';
+    const message = document.getElementById('pwPreviewCopy');
+    if (message) message.textContent = 'Translation could not load. Reload the preview to retry.';
   }, 8000);
 })();
 </script>
 </head>
 <body>
-<aside class="pw-qa-banner" role="note" lang="en">WORLD PRACTICE CONCEPT · 8 available web versions · no sync, submissions or installation. <a href="https://5.peaceful-world.org/" target="_blank" rel="noopener noreferrer">Main app</a></aside>
+<aside class="pw-qa-banner" role="note" aria-label="Предпросмотр">
+  <details id="pwPreviewTools" class="pw-preview-tools">
+    <summary class="pw-preview-toggle">
+      <span class="pw-preview-symbol" aria-hidden="true">◇</span>
+      <span id="pwPreviewToggleLabel">Предпросмотр</span>
+      <span class="pw-preview-chevron" aria-hidden="true">⌄</span>
+    </summary>
+    <div class="pw-preview-pane">
+      <p id="pwPreviewCopy" class="pw-preview-copy">Это тестовая версия: отзывы, облачная синхронизация и установка отключены.</p>
+      <nav class="pw-preview-compare-links" aria-label="Сравнить порядок тренировок"></nav>
+      <a id="pwPreviewProdLink" href="https://5.peaceful-world.org/" target="_blank" rel="noopener noreferrer">Рабочее приложение ↗</a>
+    </div>
+  </details>
+</aside>
   <main class="app">
     <section id="home" class="screen active home-screen home-screen--cards">
       <div class="home-stack home-stack--cards">
@@ -674,6 +673,6 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/world.js?v=20261118-3"></script>
+  <script src="/languages/world/world.js?v=20261118-desktop2"></script>
 </body>
 </html>

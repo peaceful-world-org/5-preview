@@ -27,6 +27,7 @@
     fr:{scale:'7 langues disponibles · 52 sur la feuille de route',eye:'CARTE DES PRATIQUES',title:'Une petite pratique. Un horizon plus large.',desc:'Un minuteur libre pour commencer. Ensuite, attention, bienveillance et compétences de non-violence.',expand:'Explorer les pratiques et les langues',collapse:'Refermer la carte',atlas:'Domaines de pratique',ideas:'30 idées',ideasNote:'Des idées à étudier et à faire évaluer, pas des exercices disponibles ni des sorties promises.',untranslated:'Les noms des futures pratiques sont actuellement en anglais.',languages:'Carte internationale des langues',live:'7 langues disponibles',langNote:'La Déclaration de Séville compte 54 éditions dans 52 langues. Ce sont des textes distincts, pas des traductions prêtes de l’application.',showCandidates:'Voir 46 variantes linguistiques envisagées',source:'À propos de la Déclaration de Séville ↗',done:'Cette bibliothèque peut grandir',doneNote:'Les prochains thèmes sont encore des idées.',doneOpen:'Explorer la carte →',menu:'Carte des langues · 46 candidats',waves:['Prochaines langues envisagées','Autres systèmes d’écriture','RTL : évaluation distincte requise','Candidats à plus long terme'],groups:['Attention et clarté','Soin et relations','Conflit et parole','Limites et sécurité','Responsabilité et réparation','Vie et interdépendance']},
     id:{scale:'7 bahasa tersedia · 52 dalam peta pengembangan',eye:'PETA LATIHAN',title:'Latihan kecil. Cakrawala lebih luas.',desc:'Pengatur waktu bebas adalah awal yang sederhana. Berikutnya: perhatian, niat baik, dan keterampilan tanpa kekerasan.',expand:'Jelajahi peta latihan dan bahasa',collapse:'Tutup peta',atlas:'Bidang latihan',ideas:'30 gagasan',ideasNote:'Ini masih gagasan untuk dipelajari dan ditinjau, bukan latihan yang sudah tersedia atau janji rilis.',untranslated:'Nama-nama latihan yang direncanakan sementara ditampilkan dalam bahasa Inggris.',languages:'Peta bahasa internasional',live:'Saat ini tersedia 7 bahasa',langNote:'Pernyataan Sevilla memiliki 54 edisi dalam 52 bahasa. Itu adalah dokumen terpisah, bukan terjemahan aplikasi yang sudah siap.',showCandidates:'Lihat 46 kandidat versi bahasa',source:'Tentang Pernyataan Sevilla ↗',done:'Perpustakaan latihan ini dapat berkembang',doneNote:'Tema berikutnya masih berupa gagasan.',doneOpen:'Jelajahi peta →',menu:'Peta bahasa · 46 kandidat',waves:['Kandidat berikutnya','Sistem tulisan lainnya','RTL: perlu tinjauan khusus','Kandidat jangka panjang'],groups:['Perhatian dan kejernihan','Kepedulian dan relasi','Konflik dan komunikasi','Batasan dan keamanan','Tanggung jawab dan pemulihan','Kehidupan dan keterhubungan']}
   };
+  const previewLabels = {"ru":{"label":"Предпросмотр","note":"Тестовая версия. Отправка отзывов, синхронизация и установка отключены.","a":"A · Таймер первым","b":"B · База первой","prod":"Рабочее приложение ↗","nav":"Сравнение вариантов"},"en":{"label":"Preview","note":"Test version. Feedback, sync and installation are disabled.","a":"A · Free first","b":"B · Foundation first","prod":"Open live app ↗","nav":"Compare layouts"},"uk":{"label":"Попередній перегляд","note":"Тестова версія. Відгуки, синхронізацію та встановлення вимкнено.","a":"A · Таймер спочатку","b":"B · База спочатку","prod":"Основний застосунок ↗","nav":"Порівняти варіанти"},"es":{"label":"Vista previa","note":"Versión de prueba. Sin envío de opiniones, sincronización ni instalación.","a":"A · Libre primero","b":"B · Base primero","prod":"Aplicación pública ↗","nav":"Comparar versiones"},"pt-br":{"label":"Prévia","note":"Versão de teste. Sem envio de feedback, sincronização ou instalação.","a":"A · Livre primeiro","b":"B · Base primeiro","prod":"Abrir aplicativo ↗","nav":"Comparar versões"},"pt-pt":{"label":"Pré-visualização","note":"Versão de teste. Sem envio de comentários, sincronização ou instalação.","a":"A · Livre primeiro","b":"B · Base primeiro","prod":"Abrir aplicação ↗","nav":"Comparar versões"},"fr":{"label":"Aperçu","note":"Version de test. Envoi d’avis, synchronisation et installation désactivés.","a":"A · Libre d’abord","b":"B · Base d’abord","prod":"Ouvrir l’application ↗","nav":"Comparer les versions"},"id":{"label":"Pratinjau","note":"Versi uji. Pengiriman masukan, sinkronisasi, dan pemasangan dinonaktifkan.","a":"A · Bebas dulu","b":"B · Dasar dulu","prod":"Buka aplikasi ↗","nav":"Bandingkan versi"}};
   let atlas = null, opened = false;
   function currentCode() {
     const raw = String(window.PW_I18N?.locale || document.documentElement.lang || 'en').toLowerCase();
@@ -60,18 +61,30 @@
     return a;
   }
   function syncCompareLinks() {
-    const lang=currentCode();
+    const lang=currentCode(),labels=previewLabels[lang]||previewLabels.en;
     for(const link of document.querySelectorAll('.pw-world-compare a[data-world-order]')){
       const url=new URL(link.href,location.href);
       url.searchParams.set('lang',lang);
       link.href=url.pathname+'?'+url.searchParams.toString();
+      link.textContent=link.dataset.worldOrder==='free'?labels.a:labels.b;
     }
+    put('pwPreviewToggleLabel',labels.label);
+    put('pwPreviewCopy',labels.note);
+    const prod=el('pwPreviewProdLink');
+    if(prod){
+      prod.textContent=labels.prod;
+      prod.href='https://5.peaceful-world.org/?lang='+encodeURIComponent(lang);
+    }
+    const nav=document.querySelector('.pw-preview-compare-links');
+    if(nav)nav.setAttribute('aria-label',labels.nav);
+    const qa=document.querySelector('.pw-qa-banner');
+    if(qa)qa.setAttribute('aria-label',labels.label);
   }
   const qa=document.querySelector('.pw-qa-banner');
   if(qa){
-    const row=make('span','pw-world-compare');
+    const row=make('div','pw-world-compare');
     row.append(compareLink('A · Free first','free'),compareLink('B · Foundation first','foundation'));
-    qa.appendChild(row);
+    (qa.querySelector('.pw-preview-compare-links')||qa).appendChild(row);
   }
   function syncHome() {
     document.documentElement.dataset.worldHome=el('home')?.classList.contains('active')?'1':'0';
