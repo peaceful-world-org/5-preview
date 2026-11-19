@@ -24,6 +24,46 @@ const original={
 for(const [file,hash] of Object.entries(original))if(sha(file)!==hash)throw Error('Final built Web RC differs from approved SHA 048dbcc4 artifact: '+file);
 const change=(file,fn)=>{const p=path.join(dir,file),before=fs.readFileSync(p,'utf8'),after=fn(before);if(after===before)throw Error('No staging changes: '+file);fs.writeFileSync(p,after)};
 const once=(s,a,b,label)=>{if(s.split(a).length!==2)throw Error('Changed staging anchor '+label);return s.replace(a,b)};
+// Staging-only UX refinement: one readable alphabetical list, not writing-system buckets.
+change('web-vnext/world.js', s => {
+  const first = "    $('pwWorldCandidateList').replaceChildren(...atlas.waves.map((wave, index) => {";
+  const last = "\n  }\n\n  function update() {";
+  const start = s.indexOf(first), end = s.indexOf(last, start);
+  if (start < 0 || end < 0 || s.indexOf(first, start + 1) >= 0) {
+    throw Error('Candidate-language rendering anchor changed');
+  }
+  const replacement = [
+    "    const sorter = new Intl.Collator(lang, {sensitivity:'base'});",
+    "    const candidates = [...new Set(atlas.waves.flatMap(wave => wave.codes))]",
+    "      .map(code => ({code, label:name(code)}))",
+    "      .sort((a,b) => sorter.compare(a.label,b.label) || a.code.localeCompare(b.code));",
+    "    const list = make('ul', '', 'pw-world-flat-language-list');",
+    "    list.append(...candidates.map(({label}) => make('li',label)));",
+    "    $('pwWorldCandidateList').replaceChildren(list);",
+    ""
+  ].join('\n');
+  s = s.slice(0,start) + replacement + s.slice(end);
+  s = once(s, "      if (code === 'kmr') return 'Kurdî (Kurmancî)';",
+    "      if (code === 'kmr') return (names?.of('kmr') || 'Kurdish') + ' (Kurmanji)';\n      if (code === 'ro-MD') {\n        let region = 'Moldova';\n        try { region = new Intl.DisplayNames([lang],{type:'region'}).of('MD') || region; } catch (_) {}\n        return (names?.of('ro') || 'Romanian') + ' (' + region + ')';\n      }",
+    'local-language names');
+  return s;
+});
+change('web-vnext/world.css', s => s + [
+  '',
+  '/* Staging preview: simple, single, alphabetical list of language candidates. */',
+  '#home .pw-world-candidate-list{display:block;padding:0 18px 16px;min-width:0}',
+  '#home .pw-world-flat-language-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:6px 16px;margin:0;padding:14px 0 0 18px;list-style:disc}',
+  '#home .pw-world-flat-language-list li{display:list-item;min-width:0;line-height:1.55;font-size:.78rem;color:#35503B;overflow-wrap:anywhere}',
+  'html[data-pw-theme="dark"][data-pw-web-vnext] #home .pw-world-flat-language-list li{color:#D6E7D6}',
+  ''
+].join('\n'));
+const roadmap = JSON.parse(fs.readFileSync(path.join(dir,'web-vnext/roadmap.json'),'utf8'));
+const proposedCodes = roadmap.waves.flatMap(wave => wave.codes);
+if (proposedCodes.length !== 46 || new Set(proposedCodes).size !== 46) throw Error('Candidate language codes changed');
+const renderedJs = fs.readFileSync(path.join(dir,'web-vnext/world.js'),'utf8');
+if (!renderedJs.includes('pw-world-flat-language-list') || renderedJs.includes('pw-world-wave-code-list')) {
+  throw Error('Flat language-list staging failed');
+}
 change('i18n.js',s=>s.replace("'/locales/index.json'","'"+prefix+"locales/index.json'").replace('`/locales/${encodeURIComponent(code)}.json`','`'+prefix+'locales/${encodeURIComponent(code)}.json`'));
 change('step-number.js',s=>{s=once(s,"getRegistration('/')","getRegistration('"+prefix+"')",'SW registration');s=once(s,"register('/sw.js'","register('"+prefix+"sw.js'",'SW path');s=once(s,"scope: '/'","scope: '"+prefix+"'",'SW scope');s=once(s,'if (!registration) {',"if (!registration || new URL(registration.scope).pathname !== '"+prefix+"') {",'ensure nested SW even if root preview SW exists');s=once(s,"'/ai-guide.js?v=1'","'"+prefix+"ai-guide.js?v=1'",'AI Guide');s=once(s,"'/ios-install-guide.js?v=1'","'"+prefix+"ios-install-guide.js?v=1'",'iOS guide');return s});
 change('ios-install-guide.js',s=>s.replace("'/ios-guide'","'"+prefix+"ios-guide'").replace('`/assets/ios-guide/${encodeURIComponent(assetLocale)}`','`'+prefix+'assets/ios-guide/${encodeURIComponent(assetLocale)}`'));
