@@ -58,7 +58,7 @@
       assert(active('home'),'Back from completion returns Home');
     } else if(flow==='vision'){
       await wait(()=>Boolean(d.getElementById('pwWorldTraditionTitle')?.textContent),'vision copy ready');
-      assert(d.querySelectorAll('#pwWorldThemeChips [role="listitem"]').length===3,'Home shows three future directions');
+      assert(d.querySelectorAll('#pwWorldThemeChips > li').length===3,'Home shows three future directions');
       click('pwWorldOpen');
       await wait(()=>!d.getElementById('pwWorldDetails')?.hidden,'roadmap open');
       assert(d.querySelector('#pwWorldTradition button,#pwWorldTradition select')===null,'No religious or tradition mode offered as available');
@@ -70,8 +70,8 @@
       await sleep(1200);
       click('pwFreeFinish');
       await wait(()=>active('done'),'completion screen');
-      assert(d.querySelectorAll('#pwWorldDoneTracks [role="listitem"]').length===3,'Completion screen shows three future directions');
-      assert((d.getElementById('pwWorldDoneNote')?.textContent||'').length>35,'Completion explains planned status');
+      assert(d.getElementById('pwWorldDoneOpen')?.closest('#done'),'Completion has a quiet route to the roadmap');
+      assert(!d.getElementById('pwWorldDoneTracks'),'Completion leaves roadmap details on Home');
       click('pwWorldDoneOpen');
       await wait(()=>active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'return to expanded Home roadmap');
       assert(active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'Completion roadmap button opens Home atlas');
@@ -102,6 +102,16 @@
       await wait(()=>active('done'),'completion');
       assert(Boolean(d.getElementById('pwWorldAiDone')?.href.includes('elevenlabs.io/app/talk-to')),'AI Guide also available after practice');
       assert(Boolean(d.getElementById('supportBtn')?.href.includes('peaceful-world.org/help')),'Existing completion support preserved');
+      shared=null;
+      click('shareBtn');
+      await wait(()=>Boolean(shared),'completion Share handler');
+      assert(shared.url==='https://5.peaceful-world.org/','Done shares the same published app URL as Home');
+      click('feedbackBtn');
+      await wait(()=>active('feedback'),'feedback form');
+      assert(d.getElementById('feedbackSubmit').disabled,'Preview feedback cannot submit to the backend');
+      assert(d.getElementById('pwWorldFeedbackEmail').href.startsWith('mailto:hello@peaceful-world.org?subject='),'Preview feedback offers email');
+      click('feedbackBackBtn');
+      await wait(()=>active('done'),'return from feedback');
     } else if(flow==='foundation'||flow==='metta'){
       const id=flow==='foundation'?'pwModeBaseStart':'pwModeMettaStart';
       click(id);
@@ -195,15 +205,15 @@
       const disclosure=d.getElementById('pwWorldCandidateDisclosure');
       disclosure?.querySelector('summary')?.click();
       assert(disclosure?.open,'Language candidates expanded for layout QA');
-      for(const width of [320,375,430,768,1280]){
+      for(const width of [320,375,430,768,1024,1440]){
         frame.style.width=width+'px';frame.style.maxWidth='none';
         await sleep(85);
         const viewport=d.documentElement.clientWidth||w.innerWidth;
         const overflowing=d.documentElement.scrollWidth-viewport;
         const visibleIds=['pwModeFreeStart','pwModeBaseStart','pwModeMettaStart','pwWorldOpen','pwWorldAiHome','pwWorldSupportHome','pwWorldShareBtn','pwWorldExpertLink'];
-        const widths=visibleIds.map(id=>{
+        const outside=visibleIds.filter(id=>{
           const r=d.getElementById(id)?.getBoundingClientRect();
-          return r&&r.width>80&&r.left>=-2&&r.right<=viewport+3;
+          return !r || r.width<43.9 || r.height<43.9 || r.left<-1 || r.right>viewport+1;
         });
         const waveLists=[...d.querySelectorAll('.pw-world-wave-code-list')];
         const allChips=[...d.querySelectorAll('.pw-world-wave-code')];
@@ -221,26 +231,12 @@
           }
           return true;
         });
-        assert(overflowing<=4 && widths.every(Boolean),'Viewport '+width+' px: no horizontal overflow, four primary actions in bounds');
-        const tools=d.getElementById('pwWorldTools');
-        const cards=d.getElementById('pwModeCards');
-        const heading=d.getElementById('pwWorldChoiceHeader');
-        const atlas=d.getElementById('pwWorldPreview');
-        const rt=tools?.getBoundingClientRect();
-        const rc=cards?.getBoundingClientRect();
-        const rh=heading?.getBoundingClientRect();
-        const ra=atlas?.getBoundingClientRect();
-        const desktop=width>=700;
-        const correctlyPlaced=Boolean(rt && rc && rh && ra &&
-          (desktop
-            ? (tools.parentElement?.parentElement?.id==='pwWorldDesktopToolsSlot' &&
-               rt.top>=rh.top-2 && rt.bottom<=rh.bottom+2 &&
-               rt.right<=viewport+3 && rt.left>=rh.left-2)
-            : (tools.parentElement?.parentElement?.id==='pwWorldMobileToolsSlot' &&
-               rt.top>=rc.bottom-2 && rt.bottom<=ra.top+2 &&
-               rt.left>=-2 && rt.right<=viewport+3)));
-        assert(correctlyPlaced,'Viewport '+width+' px: secondary toolbar is in its intended '+(desktop?'heading':'post-card')+' slot without overlap');
-
+        assert(overflowing<=1 && !outside.length,'Viewport '+width+' px: no horizontal overflow and usable tap targets'+(outside.length?' ('+outside.join(', ')+')':''));
+        const rect=id=>d.getElementById(id).getBoundingClientRect();
+        const cards=rect('pwModeCards'), atlas=rect('pwWorldPreview');
+        const tools=rect('pwWorldTools'), invite=rect('pwWorldExpertInvite');
+        assert(cards.bottom<=atlas.top && atlas.bottom<=tools.top && tools.bottom<=invite.top,
+          'Viewport '+width+' px: practice, roadmap, utilities and invitation follow in order');
         assert(chipsInside&&rowClear,'Viewport '+width+' px: expanded language chips wrap without collisions');
       }
     } else throw new Error('Unknown QA flow '+flow);
@@ -251,5 +247,8 @@
     const li=document.createElement('li');li.className='fail';li.textContent='ERROR · '+msg;$('steps').appendChild(li);
     update('FAIL · '+flow.toUpperCase()+' · '+msg,'fail');
   });
-  frame.src='/languages/world/?lang='+encodeURIComponent(lang)+'&demo=1';
+  const frameParams = new URLSearchParams({lang, demo: '1', i18nPreview: '1'});
+  const theme = params.get('previewTheme');
+  if (theme === 'dark' || theme === 'light') frameParams.set('previewTheme', theme);
+  frame.src='/languages/world/?'+frameParams;
 })();
