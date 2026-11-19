@@ -18,7 +18,7 @@ const original={
  'locales/ru.json':'f4e874965afca63059234a0d20323443053de8b8',
  'locales/en.json':'bb4ff10aacae603a36a754c7512a16e3cb01fc16',
  'web-vnext/copy.js':'baa8db1f74973532a534900f68417c89b1d21a63',
- 'web-vnext/world.css':'eae3732bd9084032b395a9f674b42c54f61bdc9',
+ 'web-vnext/world.css':'eae3732bd9084032b395a9f674b42c54f61bdc9f',
  'web-vnext/world.js':'d72912d73eb008b4e44b42cc43ae2042107b948b'
 };
 for(const [file,hash] of Object.entries(original))if(sha(file)!==hash)throw Error('Final built Web RC differs from approved SHA 048dbcc4 artifact: '+file);
