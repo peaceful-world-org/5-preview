@@ -1,12 +1,11 @@
 /* Vision copy for the noindex World Practice preview. Future tradition forms are NOT available. */
 window.PW_WORLD_VISION_COPY = Object.freeze({
   "ru": {
-    "scale": "7 языков доступны · новые переводы в планах",
-    "home": "Три тренировки — начало. Впереди целая библиотека мирных навыков, которую мы хотим сделать доступной людям на родных языках и в близких им традициях.",
+    "home": "Мы хотим собрать библиотеку навыков для мирной жизни.",
     "tracks": [
-      "30 идей новых практик",
-      "46 целевых языковых вариантов",
-      "Традиции · в перспективе"
+      "Новые упражнения и тематические программы",
+      "Переводы на родные языки",
+      "Практики с опорой на традиции"
     ],
     "expand": "Исследовать практики, языки и традиции",
     "langNote": "Наша цель — сделать «5» доступной на родных языках. Сейчас в веб-версии есть 7 языков (8 вариантов), ещё 46 вариантов — в рабочей карте расширения. Переводы будут появляться поэтапно после редакторской и культурной проверки. Даты не установлены.",
@@ -14,17 +13,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Языки «5» · карта расширения",
     "traditionTitle": "Практики и духовные традиции",
     "traditionStatus": "В планах",
-    "traditionLead": "Мирному действию можно учиться разными путями. Мы хотим, чтобы каждый мог практиковать по-своему — в светской форме или опираясь на близкую духовную традицию.",
+    "traditionLead": "Светская практика остаётся общей основой. В будущем мы хотим предложить добровольные варианты с опорой на духовные и философские традиции.",
     "traditionDetail": "Такие практики мы хотим создавать вместе с людьми, которые знают свои традиции изнутри: буддийскими, джайнскими, христианскими, мусульманскими, иудейскими, индуистскими и другими учителями и практикующими. Пока мы только готовим этот путь.",
-    "doneEyebrow": "ГОРИЗОНТ «5»",
-    "doneTitle": "Маленькая практика. Большой путь.",
-    "doneNote": "Пять минут — только начало. Мы развиваем новые упражнения, переводы на родные языки и будущие формы практики в разных традициях.",
-    "doneTracks": [
-      "Новые практики · идеи",
-      "Родные языки · поэтапно",
-      "Традиции · после экспертной проверки"
-    ],
-    "doneOpen": "Посмотреть карту развития →",
+    "doneOpen": "Посмотреть карту развития",
     "ideasNote": "Здесь — первые идеи будущих тренировок. Мы будем развивать их вместе со специалистами и постепенно добавлять в приложение.",
     "waveTitles": [
       "Языки с латинской письменностью",
@@ -32,12 +23,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Языки с письмом справа налево",
       "Другие языки в планах"
     ],
-    "expertKicker": "ПРИГЛАШАЕМ К СОТРУДНИЧЕСТВУ",
     "expertHeading": "Помоги сделать практики глубже и точнее",
-    "expertText": "Преподаёшь, переводишь, исследуешь духовные традиции или заметил неточность? Напиши нам. Мы рады замечаниям, новым идеям и сотрудничеству.",
+    "expertText": "Приглашаем преподавателей, исследователей, переводчиков и специалистов по духовным традициям и педагогике мирного реагирования. Если у тебя есть замечание или идея для совместной работы, напиши нам.",
     "expertAction": "Предложить правку или сотрудничество",
     "expertSubject": "«5» — предложение по практике, переводу или сотрудничеству",
-    "toolsAria": "Вопросы, поддержка и распространение",
+    "toolsAria": "Помощь, поддержка, распространение и конфиденциальность",
     "aiLabel": "Спросить AI",
     "aiAria": "Открыть AI-проводника на русском или английском в новой вкладке",
     "supportLabel": "Поддержать",
@@ -45,15 +35,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Ссылка на «5» скопирована",
     "shareError": "Не удалось скопировать ссылку",
     "shareText": "Пять минут для тренировки мирного мышления.",
-    "doneActionsAria": "Другие действия после тренировки"
+    "doneActionsAria": "Другие действия после тренировки",
+    "choose": "Выбери тренировку",
+    "feedbackNote": "В предпросмотре форма не отправляется. Своими впечатлениями можно поделиться по почте.",
+    "feedbackEmail": "Написать нам",
+    "feedbackSubject": "«5» — отзыв о тренировке"
   },
   "en": {
-    "scale": "7 languages available · more translations planned",
-    "home": "Three practices are just a beginning. We hope to grow a library of peace skills, accessible in people's native languages and, eventually, within traditions they know and value.",
+    "home": "We want to build a library of skills for living more peacefully.",
     "tracks": [
-      "30 new practice ideas",
-      "46 target language variants",
-      "Traditions · future direction"
+      "New exercises and themed programmes",
+      "Translations into native languages",
+      "Tradition-informed practice"
     ],
     "expand": "Explore practices, languages and traditions",
     "langNote": "Our goal is to make «5» available in people's native languages. The web app offers 7 languages (8 variants); another 46 are on the working expansion map. Translations need editorial and cultural review before release. No dates are set.",
@@ -61,17 +54,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Languages for «5» · expansion map",
     "traditionTitle": "Practices and spiritual traditions",
     "traditionStatus": "Looking ahead",
-    "traditionLead": "There is more than one way to learn peaceful action. We hope people can choose a secular practice or, in time, an expression rooted in a tradition close to them.",
+    "traditionLead": "Secular practice remains open to everyone as the shared foundation. In time, we hope to offer optional forms rooted in spiritual and philosophical traditions.",
     "traditionDetail": "We want to develop these practices with people who know their traditions from within: Buddhist, Jain, Christian, Muslim, Jewish, Hindu and other teachers and practitioners. This work is still ahead of us.",
-    "doneEyebrow": "THE HORIZON OF «5»",
-    "doneTitle": "A small practice. A wider path.",
-    "doneNote": "Five minutes are just a beginning. We're developing new exercises, more native-language editions and future practice expressions within different traditions.",
-    "doneTracks": [
-      "New practices · ideas",
-      "Native languages · in stages",
-      "Traditions · expert review first"
-    ],
-    "doneOpen": "Explore the roadmap →",
+    "doneOpen": "Explore the roadmap",
     "ideasNote": "These are early ideas for future practices. We'll develop them with specialists and add them gradually.",
     "waveTitles": [
       "Languages using the Latin script",
@@ -79,12 +64,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Languages written right to left",
       "Further languages on our map"
     ],
-    "expertKicker": "AN INVITATION TO COLLABORATE",
     "expertHeading": "Help make these practices deeper and more accurate",
-    "expertText": "Do you teach, translate, study a spiritual tradition, or notice a wording that needs work? We'd welcome corrections, ideas and offers to collaborate.",
+    "expertText": "We welcome teachers, researchers, translators and specialists in spiritual traditions and peace education. If you have a correction or an idea for working together, please write to us.",
     "expertAction": "Suggest a correction or collaboration",
     "expertSubject": "5 · Practice, translation or expert collaboration",
-    "toolsAria": "Questions, support and sharing",
+    "toolsAria": "Help, support, sharing and privacy",
     "aiLabel": "Ask AI",
     "aiAria": "Open the AI Guide in Russian or English in a new tab",
     "supportLabel": "Support",
@@ -92,15 +76,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Link to 5 copied",
     "shareError": "Couldn't copy the link",
     "shareText": "Five minutes to practise peaceful thinking.",
-    "doneActionsAria": "More actions after practice"
+    "doneActionsAria": "More actions after practice",
+    "choose": "Choose a practice",
+    "feedbackNote": "This preview does not send the form. You can share your experience with us by email.",
+    "feedbackEmail": "Write to us",
+    "feedbackSubject": "5 · Practice feedback"
   },
   "uk": {
-    "scale": "7 мов доступні · більше перекладів у планах",
-    "home": "Три тренування — лише початок. Ми прагнемо створити бібліотеку мирних навичок, доступну рідними мовами та згодом у близьких людям традиціях.",
+    "home": "Ми хочемо зібрати бібліотеку навичок для мирного життя.",
     "tracks": [
-      "30 ідей нових практик",
-      "46 цільових мовних варіантів",
-      "Традиції · у перспективі"
+      "Нові вправи й тематичні програми",
+      "Переклади рідними мовами",
+      "Практики з опорою на традиції"
     ],
     "expand": "Дослідити практики, мови й традиції",
     "langNote": "Наша мета — зробити «5» доступною рідними мовами. У вебверсії є 7 мов (8 варіантів), ще 46 — у робочій карті розширення. Кожен переклад потребує редакторської й культурної перевірки. Дат випуску немає.",
@@ -108,17 +95,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Мови «5» · карта розширення",
     "traditionTitle": "Практики й духовні традиції",
     "traditionStatus": "Довгостроковий план",
-    "traditionLead": "Мирних дій можна вчитися різними шляхами. Ми хочемо, щоб кожен міг практикувати у світській формі або, з часом, спираючись на близьку духовну традицію.",
+    "traditionLead": "Світська практика залишається спільною основою. У майбутньому ми хочемо запропонувати добровільні варіанти з опорою на духовні та філософські традиції.",
     "traditionDetail": "Ми хочемо творити такі практики разом із людьми, які добре знають свої традиції: буддійськими, джайнськими, християнськими, мусульманськими, юдейськими, індуїстськими та іншими вчителями й практиками. Це ще попереду.",
-    "doneEyebrow": "ГОРИЗОНТ «5»",
-    "doneTitle": "Мала практика. Ширший шлях.",
-    "doneNote": "П’ять хвилин — лише початок. Ми готуємо нові вправи, переклади рідними мовами та майбутні форми практики в різних традиціях.",
-    "doneTracks": [
-      "Нові практики · ідеї",
-      "Рідні мови · поступово",
-      "Традиції · експертна перевірка"
-    ],
-    "doneOpen": "Переглянути карту розвитку →",
+    "doneOpen": "Переглянути карту розвитку",
     "ideasNote": "Тут зібрані перші ідеї майбутніх тренувань. Ми розвиватимемо їх разом із фахівцями та поступово додаватимемо до застосунку.",
     "waveTitles": [
       "Мови з латинським письмом",
@@ -126,12 +105,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Мови з письмом справа наліво",
       "Інші мови в планах"
     ],
-    "expertKicker": "ЗАПРОШУЄМО ДО СПІВПРАЦІ",
     "expertHeading": "Допоможи зробити практики глибшими й точнішими",
-    "expertText": "Викладаєш, перекладаєш, досліджуєш духовні традиції або помітив неточність? Напиши нам. Ми відкриті до зауважень, ідей і співпраці.",
+    "expertText": "Запрошуємо викладачів, дослідників, перекладачів і фахівців із духовних традицій та освіти для миру. Якщо маєш зауваження або ідею для співпраці, напиши нам.",
     "expertAction": "Запропонувати правку чи співпрацю",
     "expertSubject": "«5» — пропозиція щодо практики, перекладу або співпраці",
-    "toolsAria": "Запитання, підтримка й поширення",
+    "toolsAria": "Допомога, підтримка, поширення й конфіденційність",
     "aiLabel": "Запитати AI (RU/EN)",
     "aiAria": "Відкрити AI-провідника російською або англійською в новій вкладці",
     "supportLabel": "Підтримати",
@@ -139,15 +117,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Посилання на «5» скопійовано",
     "shareError": "Не вдалося скопіювати посилання",
     "shareText": "П’ять хвилин для тренування мирного мислення.",
-    "doneActionsAria": "Додаткові дії після тренування"
+    "doneActionsAria": "Додаткові дії після тренування",
+    "choose": "Обери тренування",
+    "feedbackNote": "У попередньому перегляді форма не надсилається. Поділися враженнями з нами електронною поштою.",
+    "feedbackEmail": "Написати нам",
+    "feedbackSubject": "«5» — відгук про тренування"
   },
   "es": {
-    "scale": "7 idiomas disponibles · más traducciones previstas",
-    "home": "Tres prácticas son solo el comienzo. Queremos crear una biblioteca de habilidades para la paz en las lenguas maternas y, con el tiempo, en tradiciones cercanas a cada persona.",
+    "home": "Queremos reunir una biblioteca de habilidades para vivir en paz.",
     "tracks": [
-      "30 ideas de nuevas prácticas",
-      "46 variantes lingüísticas objetivo",
-      "Tradiciones · a futuro"
+      "Nuevos ejercicios y programas temáticos",
+      "Traducciones a lenguas maternas",
+      "Prácticas inspiradas en tradiciones"
     ],
     "expand": "Explorar prácticas, idiomas y tradiciones",
     "langNote": "Queremos que «5» esté disponible en las lenguas maternas. La web ofrece 7 idiomas (8 variantes); otras 46 variantes figuran en la hoja de ruta. Cada traducción necesitará revisión editorial y cultural. No hay fechas confirmadas.",
@@ -155,17 +136,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Idiomas de «5» · expansión",
     "traditionTitle": "Prácticas y tradiciones espirituales",
     "traditionStatus": "Plan a largo plazo",
-    "traditionLead": "Hay distintas formas de aprender a actuar en paz. Queremos que cada persona pueda practicar de manera laica o, más adelante, desde una tradición espiritual cercana.",
+    "traditionLead": "La práctica laica sigue siendo nuestra base común. En el futuro queremos ofrecer variantes opcionales inspiradas en tradiciones espirituales y filosóficas.",
     "traditionDetail": "Queremos crear esas prácticas junto a quienes conocen sus tradiciones: docentes y practicantes budistas, jainistas, cristianos, musulmanes, judíos, hindúes y de otras comunidades. Este camino aún está por recorrer.",
-    "doneEyebrow": "HORIZONTE DE «5»",
-    "doneTitle": "Una práctica pequeña. Un camino amplio.",
-    "doneNote": "Cinco minutos son solo el comienzo. Desarrollamos nuevos ejercicios, más lenguas maternas y futuras formas de práctica en distintas tradiciones.",
-    "doneTracks": [
-      "Nuevas prácticas · ideas",
-      "Lenguas maternas · por etapas",
-      "Tradiciones · revisión experta"
-    ],
-    "doneOpen": "Explorar el mapa →",
+    "doneOpen": "Explorar el mapa",
     "ideasNote": "Estas son primeras ideas para futuras prácticas. Las desarrollaremos con especialistas y las añadiremos poco a poco.",
     "waveTitles": [
       "Idiomas con alfabeto latino",
@@ -173,12 +146,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Idiomas escritos de derecha a izquierda",
       "Otros idiomas previstos"
     ],
-    "expertKicker": "INVITACIÓN A COLABORAR",
     "expertHeading": "Ayúdanos a crear prácticas más profundas y precisas",
-    "expertText": "¿Enseñas, traduces, investigas tradiciones espirituales o has visto un error? Agradecemos correcciones, ideas y propuestas de colaboración.",
+    "expertText": "Invitamos a docentes, investigadores, traductores y especialistas en tradiciones espirituales y educación para la paz. Si tienes alguna corrección o una idea para colaborar, escríbenos.",
     "expertAction": "Proponer una corrección o colaboración",
     "expertSubject": "5 · Prácticas, traducciones o colaboración",
-    "toolsAria": "Preguntas, apoyo y difusión",
+    "toolsAria": "Ayuda, apoyo, difusión y privacidad",
     "aiLabel": "Preguntar a AI (RU/EN)",
     "aiAria": "Abrir guía de AI en ruso o inglés en una pestaña nueva",
     "supportLabel": "Apoyar",
@@ -186,15 +158,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Enlace a 5 copiado",
     "shareError": "No se pudo copiar el enlace",
     "shareText": "Cinco minutos para practicar una forma de pensar más pacífica.",
-    "doneActionsAria": "Más acciones después de practicar"
+    "doneActionsAria": "Más acciones después de practicar",
+    "choose": "Elige una práctica",
+    "feedbackNote": "El formulario no se envía en esta vista previa. Puedes contarnos tu experiencia por correo.",
+    "feedbackEmail": "Escríbenos",
+    "feedbackSubject": "5 · Opinión sobre la práctica"
   },
   "pt-br": {
-    "scale": "7 idiomas disponíveis · mais traduções planejadas",
-    "home": "Três práticas são apenas o começo. Queremos criar uma biblioteca de habilidades para a paz em línguas maternas e, no futuro, em tradições próximas de cada pessoa.",
+    "home": "Queremos reunir uma biblioteca de habilidades para viver com mais paz.",
     "tracks": [
-      "30 ideias de novas práticas",
-      "46 variantes de idioma como meta",
-      "Tradições · no futuro"
+      "Novos exercícios e programas temáticos",
+      "Traduções para línguas maternas",
+      "Práticas inspiradas em tradições"
     ],
     "expand": "Explorar práticas, idiomas e tradições",
     "langNote": "Queremos que o «5» esteja disponível nas línguas maternas. A versão web tem 7 idiomas (8 variantes); outros 46 constam do plano de expansão. Cada tradução precisa de revisão editorial e cultural. Não há datas definidas.",
@@ -202,17 +177,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Idiomas do «5» · expansão",
     "traditionTitle": "Práticas e tradições espirituais",
     "traditionStatus": "Plano de longo prazo",
-    "traditionLead": "Há várias maneiras de aprender a agir pacificamente. Queremos que cada pessoa possa praticar de modo secular ou, futuramente, a partir de uma tradição espiritual próxima.",
+    "traditionLead": "A prática laica continua a ser a base comum. No futuro, queremos oferecer formas opcionais inspiradas em tradições espirituais e filosóficas.",
     "traditionDetail": "Queremos construir essas práticas junto de quem conhece as próprias tradições: professores e praticantes budistas, jainistas, cristãos, muçulmanos, judeus, hindus e de outras comunidades. Esse caminho ainda está por vir.",
-    "doneEyebrow": "HORIZONTE DO «5»",
-    "doneTitle": "Uma prática pequena. Um caminho maior.",
-    "doneNote": "Cinco minutos são só o começo. Desenvolvemos novos exercícios, mais línguas maternas e futuras formas de prática ligadas a tradições diversas.",
-    "doneTracks": [
-      "Novas práticas · ideias",
-      "Línguas maternas · por etapas",
-      "Tradições · revisão especializada"
-    ],
-    "doneOpen": "Explorar o mapa →",
+    "doneOpen": "Explorar o mapa",
     "ideasNote": "Estas são as primeiras ideias de práticas futuras. Vamos desenvolvê-las com especialistas e acrescentá-las aos poucos.",
     "waveTitles": [
       "Idiomas de escrita latina",
@@ -220,12 +187,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Idiomas escritos da direita para a esquerda",
       "Outros idiomas nos planos"
     ],
-    "expertKicker": "CONVITE À COLABORAÇÃO",
     "expertHeading": "Ajude a criar práticas mais profundas e precisas",
-    "expertText": "Você ensina, traduz, pesquisa tradições espirituais ou encontrou uma imprecisão? Acolhemos correções, ideias e propostas de colaboração.",
+    "expertText": "Convidamos educadores, pesquisadores, tradutores e especialistas em tradições espirituais e educação para a paz. Se tiver uma correção ou uma ideia para colaborar, escreva para nós.",
     "expertAction": "Sugerir correção ou parceria",
     "expertSubject": "5 · Prática, tradução ou colaboração",
-    "toolsAria": "Perguntas, apoio e compartilhamento",
+    "toolsAria": "Ajuda, apoio, compartilhamento e privacidade",
     "aiLabel": "Perguntar à AI (RU/EN)",
     "aiAria": "Abrir o guia de AI em russo ou inglês em outra aba",
     "supportLabel": "Apoiar",
@@ -233,15 +199,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Link para o 5 copiado",
     "shareError": "Não foi possível copiar o link",
     "shareText": "Cinco minutos para treinar o pensamento pacífico.",
-    "doneActionsAria": "Outras ações após a prática"
+    "doneActionsAria": "Outras ações após a prática",
+    "choose": "Escolha uma prática",
+    "feedbackNote": "O formulário não é enviado nesta prévia. Você pode contar como foi a sua experiência por e-mail.",
+    "feedbackEmail": "Escreva para nós",
+    "feedbackSubject": "5 · Comentário sobre a prática"
   },
   "pt-pt": {
-    "scale": "7 línguas disponíveis · mais traduções planeadas",
-    "home": "Três práticas são apenas o começo. Queremos criar uma biblioteca de competências para a paz em línguas maternas e, no futuro, em tradições próximas de cada pessoa.",
+    "home": "Queremos reunir uma biblioteca de competências para viver com mais paz.",
     "tracks": [
-      "30 ideias de novas práticas",
-      "46 variantes linguísticas como objetivo",
-      "Tradições · no futuro"
+      "Novos exercícios e programas temáticos",
+      "Traduções para línguas maternas",
+      "Práticas inspiradas em tradições"
     ],
     "expand": "Explorar práticas, línguas e tradições",
     "langNote": "Queremos que o «5» esteja disponível nas línguas maternas. A versão web tem 7 línguas (8 variantes); outras 46 constam do plano de expansão. Cada tradução exige revisão editorial e cultural. Não há datas definidas.",
@@ -249,17 +218,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Línguas do «5» · expansão",
     "traditionTitle": "Práticas e tradições espirituais",
     "traditionStatus": "Plano a longo prazo",
-    "traditionLead": "Há vários caminhos para aprender a agir de forma pacífica. Queremos que cada pessoa possa praticar de forma secular ou, mais tarde, a partir de uma tradição espiritual próxima.",
+    "traditionLead": "A prática laica continua a ser a base comum. No futuro, queremos oferecer formas opcionais inspiradas em tradições espirituais e filosóficas.",
     "traditionDetail": "Queremos desenvolver estas práticas com quem conhece bem as suas tradições: professores e praticantes budistas, jainistas, cristãos, muçulmanos, judeus, hindus e de outras comunidades. Esse caminho ainda está por percorrer.",
-    "doneEyebrow": "HORIZONTE DO «5»",
-    "doneTitle": "Uma pequena prática. Um caminho maior.",
-    "doneNote": "Cinco minutos são só o começo. Desenvolvemos novos exercícios, mais línguas maternas e futuras formas de prática em várias tradições.",
-    "doneTracks": [
-      "Novas práticas · ideias",
-      "Línguas maternas · por etapas",
-      "Tradições · revisão especializada"
-    ],
-    "doneOpen": "Explorar o mapa →",
+    "doneOpen": "Explorar o mapa",
     "ideasNote": "Estas são as primeiras ideias de práticas futuras. Vamos desenvolvê-las com especialistas e acrescentá-las gradualmente.",
     "waveTitles": [
       "Línguas de escrita latina",
@@ -267,12 +228,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Línguas escritas da direita para a esquerda",
       "Outras línguas previstas"
     ],
-    "expertKicker": "CONVITE À COLABORAÇÃO",
     "expertHeading": "Ajuda-nos a tornar as práticas mais profundas e rigorosas",
-    "expertText": "Ensinas, traduzes, estudas tradições espirituais ou reparaste numa imprecisão? Agradecemos correções, ideias e propostas de colaboração.",
+    "expertText": "Convidamos docentes, investigadores, tradutores e especialistas em tradições espirituais e educação para a paz. Se tens uma correção ou uma ideia de colaboração, escreve-nos.",
     "expertAction": "Propor uma correção ou colaboração",
     "expertSubject": "5 · Prática, tradução ou colaboração",
-    "toolsAria": "Perguntas, apoio e partilha",
+    "toolsAria": "Ajuda, apoio, partilha e privacidade",
     "aiLabel": "Perguntar à IA (RU/EN)",
     "aiAria": "Abrir guia de IA em russo ou inglês num novo separador",
     "supportLabel": "Apoiar",
@@ -280,15 +240,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Ligação para o 5 copiada",
     "shareError": "Não foi possível copiar a ligação",
     "shareText": "Cinco minutos para treinar o pensamento pacífico.",
-    "doneActionsAria": "Outras ações após a prática"
+    "doneActionsAria": "Outras ações após a prática",
+    "choose": "Escolhe uma prática",
+    "feedbackNote": "O formulário não é enviado nesta pré-visualização. Podes partilhar a tua experiência por e-mail.",
+    "feedbackEmail": "Escreve-nos",
+    "feedbackSubject": "5 · Comentário sobre a prática"
   },
   "fr": {
-    "scale": "7 langues disponibles · d'autres traductions prévues",
-    "home": "Trois pratiques ne sont qu'un début. Nous souhaitons créer une bibliothèque de compétences pour la paix dans les langues maternelles et, un jour, au sein de traditions proches de chacun.",
+    "home": "Nous voulons créer une bibliothèque de savoir-faire pour vivre plus paisiblement.",
     "tracks": [
-      "30 idées de nouvelles pratiques",
-      "46 variantes linguistiques visées",
-      "Traditions · à l'étude"
+      "Nouveaux exercices et parcours thématiques",
+      "Traductions dans les langues maternelles",
+      "Pratiques inspirées des traditions"
     ],
     "expand": "Explorer pratiques, langues et traditions",
     "langNote": "Nous souhaitons rendre «5» accessible dans les langues maternelles. La version web propose 7 langues (8 variantes) ; 46 autres figurent dans le plan d'expansion. Chaque traduction exigera une révision éditoriale et culturelle. Aucune date n'est fixée.",
@@ -296,17 +259,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Langues de «5» · expansion",
     "traditionTitle": "Pratiques et traditions spirituelles",
     "traditionStatus": "Projet à long terme",
-    "traditionLead": "Il existe plusieurs chemins pour apprendre à agir pacifiquement. Nous espérons permettre à chacun de pratiquer de façon laïque ou, plus tard, dans le cadre d'une tradition spirituelle qui lui parle.",
+    "traditionLead": "La pratique laïque reste notre base commune. À terme, nous souhaitons proposer des formes facultatives inspirées de traditions spirituelles et philosophiques.",
     "traditionDetail": "Nous voulons développer ces pratiques avec des personnes qui connaissent leur tradition de l'intérieur : enseignants et pratiquants bouddhistes, jaïns, chrétiens, musulmans, juifs, hindous et autres. Ce travail reste à faire.",
-    "doneEyebrow": "L'HORIZON DE «5»",
-    "doneTitle": "Une petite pratique. Un chemin plus vaste.",
-    "doneNote": "Cinq minutes ne sont qu'un début. Nous développons de nouveaux exercices, des versions en langues maternelles et de futures pratiques ancrées dans diverses traditions.",
-    "doneTracks": [
-      "Nouvelles pratiques · idées",
-      "Langues maternelles · par étapes",
-      "Traditions · expertise préalable"
-    ],
-    "doneOpen": "Explorer la carte →",
+    "doneOpen": "Explorer la carte",
     "ideasNote": "Voici de premières idées de pratiques futures. Nous les développerons avec des spécialistes et les ajouterons progressivement.",
     "waveTitles": [
       "Langues utilisant l'alphabet latin",
@@ -314,12 +269,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Langues écrites de droite à gauche",
       "Autres langues envisagées"
     ],
-    "expertKicker": "INVITATION À COLLABORER",
     "expertHeading": "Aidez-nous à rendre les pratiques plus justes et plus profondes",
-    "expertText": "Vous enseignez, traduisez, étudiez une tradition spirituelle ou avez repéré une imprécision ? Nous accueillons corrections, idées et propositions de collaboration.",
+    "expertText": "Nous invitons les enseignants, chercheurs, traducteurs et spécialistes des traditions spirituelles et de l’éducation à la paix. Écrivez-nous si vous avez une correction ou une idée de collaboration.",
     "expertAction": "Proposer une correction ou collaborer",
     "expertSubject": "5 · Pratique, traduction ou collaboration",
-    "toolsAria": "Questions, soutien et partage",
+    "toolsAria": "Aide, soutien, partage et confidentialité",
     "aiLabel": "Demander à l'IA (RU/EN)",
     "aiAria": "Ouvrir le guide IA en russe ou en anglais dans un nouvel onglet",
     "supportLabel": "Soutenir",
@@ -327,15 +281,18 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Lien vers 5 copié",
     "shareError": "Impossible de copier le lien",
     "shareText": "Cinq minutes pour exercer une pensée pacifique.",
-    "doneActionsAria": "Autres actions après la pratique"
+    "doneActionsAria": "Autres actions après la pratique",
+    "choose": "Choisir une pratique",
+    "feedbackNote": "Le formulaire ne peut pas être envoyé dans cet aperçu. Vous pouvez nous faire part de votre expérience par courriel.",
+    "feedbackEmail": "Nous écrire",
+    "feedbackSubject": "5 · Retour sur la pratique"
   },
   "id": {
-    "scale": "7 bahasa tersedia · lebih banyak terjemahan direncanakan",
-    "home": "Tiga latihan hanyalah awal. Kami ingin membangun perpustakaan keterampilan damai dalam bahasa ibu, dan kelak dalam tradisi yang dekat dengan setiap orang.",
+    "home": "Kami ingin menghimpun berbagai keterampilan untuk hidup lebih damai.",
     "tracks": [
-      "30 ide latihan baru",
-      "46 varian bahasa sasaran",
-      "Tradisi · rencana jangka panjang"
+      "Latihan baru dan program tematik",
+      "Terjemahan ke bahasa ibu",
+      "Latihan yang berakar pada tradisi"
     ],
     "expand": "Jelajahi latihan, bahasa, dan tradisi",
     "langNote": "Kami ingin «5» dapat digunakan dalam bahasa ibu setiap orang. Versi web memiliki 7 bahasa (8 varian); 46 lainnya masuk dalam peta perluasan. Setiap terjemahan perlu tinjauan bahasa dan budaya. Belum ada jadwal rilis.",
@@ -343,17 +300,9 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "menu": "Bahasa «5» · peta perluasan",
     "traditionTitle": "Latihan dan tradisi spiritual",
     "traditionStatus": "Rencana jangka panjang",
-    "traditionLead": "Ada banyak jalan untuk belajar bertindak damai. Kami berharap setiap orang dapat memilih latihan sekuler atau, kelak, bentuk yang berakar pada tradisi spiritual yang dekat dengannya.",
+    "traditionLead": "Latihan sekuler tetap menjadi landasan bersama. Kelak kami ingin menawarkan bentuk latihan pilihan yang berakar pada tradisi spiritual dan filsafat.",
     "traditionDetail": "Kami ingin mengembangkan latihan ini bersama orang-orang yang memahami tradisinya: pengajar dan praktisi Buddhis, Jain, Kristen, Muslim, Yahudi, Hindu, dan komunitas lainnya. Upaya ini masih dalam rencana.",
-    "doneEyebrow": "CAKRAWALA «5»",
-    "doneTitle": "Latihan kecil. Jalan yang lebih luas.",
-    "doneNote": "Lima menit hanyalah awal. Kami mengembangkan latihan baru, bahasa ibu lainnya, dan bentuk latihan di berbagai tradisi di masa depan.",
-    "doneTracks": [
-      "Latihan baru · ide",
-      "Bahasa ibu · bertahap",
-      "Tradisi · tinjauan ahli"
-    ],
-    "doneOpen": "Jelajahi peta →",
+    "doneOpen": "Jelajahi peta",
     "ideasNote": "Ini ide-ide awal untuk latihan mendatang. Kami akan mengembangkannya bersama para ahli dan menambahkannya secara bertahap.",
     "waveTitles": [
       "Bahasa dengan aksara Latin",
@@ -361,12 +310,11 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
       "Bahasa yang ditulis dari kanan ke kiri",
       "Bahasa lainnya dalam rencana"
     ],
-    "expertKicker": "UNDANGAN BERKOLABORASI",
     "expertHeading": "Bantu membuat latihan lebih mendalam dan tepat",
-    "expertText": "Apakah Anda mengajar, menerjemahkan, meneliti tradisi spiritual, atau menemukan kekeliruan? Kami menerima koreksi, ide, dan tawaran kerja sama.",
+    "expertText": "Kami mengundang pengajar, peneliti, penerjemah, dan pakar tradisi spiritual dan pendidikan perdamaian. Jika ada saran perbaikan atau gagasan untuk bekerja sama, silakan hubungi kami.",
     "expertAction": "Usulkan koreksi atau kerja sama",
     "expertSubject": "5 · Latihan, terjemahan, atau kolaborasi",
-    "toolsAria": "Pertanyaan, dukungan, dan berbagi",
+    "toolsAria": "Bantuan, dukungan, berbagi, dan privasi",
     "aiLabel": "Tanya AI (RU/EN)",
     "aiAria": "Buka pemandu AI berbahasa Rusia atau Inggris di tab baru",
     "supportLabel": "Dukung",
@@ -374,6 +322,10 @@ window.PW_WORLD_VISION_COPY = Object.freeze({
     "shareSuccess": "Tautan 5 disalin",
     "shareError": "Tautan tidak dapat disalin",
     "shareText": "Lima menit untuk melatih pikiran yang damai.",
-    "doneActionsAria": "Tindakan lain setelah latihan"
+    "doneActionsAria": "Tindakan lain setelah latihan",
+    "choose": "Pilih latihan",
+    "feedbackNote": "Formulir ini tidak dikirim dalam pratinjau. Ceritakan pengalaman Anda melalui surel.",
+    "feedbackEmail": "Hubungi kami",
+    "feedbackSubject": "5 · Masukan tentang latihan"
   }
 });

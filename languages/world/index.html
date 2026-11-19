@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261119-desktop-tools-v1" />
+  <link rel="stylesheet" href="/languages/world/world.css?v=practice-hierarchy-v1" />
   <title>5 · Peace Practice — Preview</title>
 <style>
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
@@ -97,8 +97,7 @@ html[data-preview-pending="1"] main.app{visibility:hidden}
         </div>
 
         <div class="hero-copy">
-          <p class="subtitle home-headline" data-i18n="home.subtitle">Entrena una forma de pensar
-más pacífica</p>
+          <h1 class="subtitle home-headline" data-i18n="home.subtitle">Train your mind for peace</h1>
         </div>
 
           </div>
@@ -110,13 +109,7 @@ más pacífica</p>
           <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
         </div>
         </div>
-        <div id="pwWorldChoiceHeader" class="pw-world-choice-header">
-          <div class="pw-world-choice-intro">
-            <h2 id="pwModeChoose" class="mode-section-label">ELIGE UNA PRÁCTICA</h2>
-            <p id="pwWorldScaleLine" class="pw-world-scale-line" role="note">7 preview languages · more under consideration</p>
-          </div>
-          <div id="pwWorldDesktopToolsSlot" class="pw-world-desktop-tools-slot"></div>
-        </div>
+        <h2 id="pwModeChoose" class="mode-section-label" tabindex="-1">Choose a practice</h2>
         <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose">
           <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
             <div class="practice-choice-heading">
@@ -137,30 +130,18 @@ más pacífica</p>
           <article class="practice-choice practice-choice--metta" role="listitem" aria-labelledby="pwCardMettaTitle">
             <div class="practice-choice-heading">
               <h3 id="pwCardMettaTitle" class="practice-choice-title">Amabilidad</h3>
-              <span id="pwCardNew" class="practice-new-label">NUEVA</span>
               <button id="pwModeInfoMetta" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
             </div>
             <div class="practice-choice-detail-row"><p id="pwCardMettaDesc" class="practice-choice-description">De ti a todos los seres vivos.</p><span id="pwModeUsageMetta" class="practice-choice-usage" hidden></span></div>
             <button id="pwModeMettaStart" class="practice-card-cta practice-card-cta--metta" type="button"><span id="pwCardMettaAction">Empezar · 5 minutos</span><span aria-hidden="true">→</span></button>
           </article>
         </div>
-        <div id="pwWorldMobileToolsSlot" class="pw-world-mobile-tools-slot">
-          <div id="pwWorldToolsContainer" class="pw-world-tools-container">
-            <nav id="pwWorldTools" class="pw-world-tools" aria-label="Questions, support and sharing">
-              <a id="pwWorldAiHome" class="pw-world-tool pw-world-tool--ai" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer" aria-label="Open the AI guide in Russian or English in a new tab">Ask AI</a>
-              <a id="pwWorldSupportHome" class="pw-world-tool" href="https://peaceful-world.org/help" target="_blank" rel="noopener noreferrer" data-i18n-link="support">Support</a>
-              <button id="pwWorldShareBtn" class="pw-world-tool" type="button">Share</button>
-            </nav>
-            <p id="pwWorldToolsStatus" class="pw-world-tools-status" role="status" aria-live="polite"></p>
-          </div>
-        </div>
         <section id="pwWorldPreview" class="pw-world-section" aria-labelledby="pwWorldTitle">
-          <p id="pwWorldEyebrow" class="pw-world-eyebrow">AN OPEN PRACTICE LIBRARY</p>
-          <h2 id="pwWorldTitle" class="pw-world-title">A small beginning. A much wider map.</h2>
-          <p id="pwWorldDescription" class="pw-world-description">Use the timer today, or explore skills we hope to develop.</p>
-          <div id="pwWorldThemeChips" class="pw-world-chips" role="list" aria-label="Future directions, not available features"></div>
+          <h2 id="pwWorldTitle" class="pw-world-title">A small practice. A wider horizon.</h2>
+          <p id="pwWorldDescription" class="pw-world-description">A library of skills for everyday peace is taking shape.</p>
+          <ul id="pwWorldThemeChips" class="pw-world-tracks" aria-label="Future directions"></ul>
           <button id="pwWorldOpen" class="pw-world-open" type="button" aria-controls="pwWorldDetails" aria-expanded="false">
-            <span id="pwWorldOpenText">Explore practice and language roadmaps</span><span aria-hidden="true">↗</span>
+            <span id="pwWorldOpenText">Explore the roadmap</span><span class="pw-world-chevron" aria-hidden="true"></span>
           </button>
           <div id="pwWorldDetails" class="pw-world-details" hidden>
             <section class="pw-world-atlas-section" aria-labelledby="pwWorldCurriculumTitle">
@@ -186,9 +167,18 @@ más pacífica</p>
             </section>
           </div>
         </section>
+        <div class="pw-world-home-tools">
+          <nav id="pwWorldTools" class="pw-world-tools" aria-label="Help, support, sharing and privacy">
+            <a id="pwWorldAiHome" class="pw-world-tool" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer">Ask AI</a>
+            <a id="pwWorldSupportHome" class="pw-world-tool" href="https://peaceful-world.org/help" target="_blank" rel="noopener noreferrer" data-i18n-link="support">Support</a>
+            <button id="pwWorldShareBtn" class="pw-world-tool" type="button">Share</button>
+            <a class="pw-world-tool" href="/privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Privacy</a>
+          </nav>
+          <p id="pwWorldToolsStatus" class="pw-world-tools-status" role="status"></p>
+        </div>
+
         <section id="pwWorldExpertInvite" class="pw-world-expert-invite" aria-labelledby="pwWorldExpertHeading">
           <div class="pw-world-expert-content">
-            <p id="pwWorldExpertKicker" class="pw-world-expert-kicker">AN INVITATION TO COLLABORATE</p>
             <h2 id="pwWorldExpertHeading">Help make the practices more accurate</h2>
             <p id="pwWorldExpertText">Do you teach, translate or study a tradition? We'd welcome your suggestions and corrections.</p>
           </div>
@@ -221,7 +211,6 @@ más pacífica</p>
             <p class="howto-more-row"><a class="howto-more" href="https://peaceful-world.org/research/peaceful-world-practice" data-i18n-link="article" target="_blank" rel="noopener noreferrer" data-i18n="home.howto.more">Conoce más sobre la práctica (en inglés) →</a></p>
           </div>
         </details>
-        <p class="home-privacy-row"><a class="home-privacy-link" href="/privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Privacidad (en inglés)</a></p>
         <p id="pwWorldPreviewNote" class="pw-world-preview-note" role="note">Предпросмотр. Отзывы, синхронизация и установка отключены.</p>
       </div>
     </section>
@@ -268,23 +257,23 @@ más pacífica</p>
         <section id="pwModeDoneSummary" class="done-summary" aria-label="Результат тренировки">
           <div class="done-summary-eyebrow"><span id="pwModeDoneSummaryHeading">RESUMEN</span></div>
           <h2 id="pwModeDoneSummaryTitle" class="done-summary-title"></h2>
-          <p id="pwModeDoneSummaryTime" class="done-summary-total"></p>
           <p id="pwModeDoneSummaryMode" class="done-summary-mode"></p>
+          <p id="pwModeDoneSummaryTime" class="done-summary-total"></p>
         </section>
         <button id="pwModeBack" class="done-primary-action" type="button"><span id="pwModeDoneBackText">Volver a las prácticas</span><span aria-hidden="true">→</span></button>
-        <section id="pwWorldDoneCTA" class="pw-world-done-cta" aria-labelledby="pwWorldDoneHeading">
-          <p id="pwWorldDoneEyebrow" class="pw-world-done-eyebrow">THE HORIZON OF «5»</p>
-          <h2 id="pwWorldDoneHeading">A small practice. A wider path.</h2>
-          <p id="pwWorldDoneNote">New skills, native-language versions and tradition-informed forms are plans, not exercises available today.</p>
-          <div id="pwWorldDoneTracks" class="pw-world-done-tracks" role="list" aria-label="Future directions, not available features"></div>
-          <button type="button" id="pwWorldDoneOpen">Explore the roadmap →</button>
-        </section>
+        <button id="feedbackBtn" type="button" class="pw-world-tool pw-world-feedback" data-i18n="done.feedback">Share your experience</button>
 
-        <div id="pwWorldDoneActions" class="preview-done-actions" role="group" aria-label="Other actions">
-        <a id="pwWorldAiDone" class="done-action pw-world-ai-done" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer" aria-label="Open the AI guide in Russian or English in a new tab">Ask AI</a>
-        <button id="feedbackBtn" type="button" class="done-action" data-i18n="done.feedback">Compartir tu experiencia</button>
-        <button id="shareBtn" type="button" class="done-action" data-i18n="done.share">Compartir con amistades</button>
-        <a id="supportBtn" class="done-action done-support-action" href="https://peaceful-world.org/help" data-i18n-link="support" target="_blank" rel="noopener noreferrer" data-i18n="done.support">Apoyar el proyecto</a>
+        <div class="pw-world-done-tools">
+          <nav id="pwWorldDoneActions" class="pw-world-tools" aria-label="More actions after practice">
+            <a id="pwWorldAiDone" class="pw-world-tool" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer">Ask AI</a>
+            <a id="supportBtn" class="pw-world-tool" href="https://peaceful-world.org/help" data-i18n-link="support" target="_blank" rel="noopener noreferrer">Support</a>
+            <button id="shareBtn" class="pw-world-tool" type="button">Share</button>
+          </nav>
+          <p id="pwWorldDoneStatus" class="pw-world-tools-status" role="status"></p>
+          <div class="pw-world-done-meta">
+            <button type="button" id="pwWorldDoneOpen" class="pw-world-tool">Explore the roadmap</button>
+            <a class="pw-world-tool" href="/privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Privacy</a>
+          </div>
         </div>
         <div id="installArea" class="install-area" hidden>
           <button id="installBtn" type="button" class="text-action install-action" data-i18n="install.device.fallback">Instalar 5</button>
@@ -315,6 +304,8 @@ más pacífica</p>
           <p class="brand-name feedback-kicker" data-i18n="feedback.kicker">AYÚDANOS A MEJORAR 5</p>
           <h1 id="feedbackTitle" class="feedback-title" tabindex="-1" data-i18n="feedback.title">¿Qué notaste?</h1>
           <p class="feedback-intro" data-i18n="feedback.intro">Escribe o graba tu opinión: qué te resultó claro, qué no funcionó y qué podríamos expresar de otra manera.</p>
+          <p class="feedback-consent-copy" id="pwWorldFeedbackNote">This preview cannot send feedback. You can write to us by email.</p>
+          <a id="pwWorldFeedbackEmail" class="pw-world-tool pw-world-feedback" href="mailto:hello@peaceful-world.org?subject=5%20%E2%80%94%20Practice%20feedback">Write to us</a>
         </div>
 
         <div id="feedbackFields">
@@ -359,7 +350,7 @@ más pacífica</p>
 
             <p class="feedback-privacy" data-i18n="feedback.privacy.short">Al enviar tu opinión, guardamos el texto o la grabación de voz, el idioma, la versión de la aplicación, la versión del texto que viste, el número de la práctica que acabas de completar en este dispositivo y datos técnicos del envío. Usamos esta información únicamente para mejorar 5. Guardamos tu correo solo si aceptas ayudar con las pruebas. Las grabaciones de voz se almacenan de forma privada.</p>
             <p class="feedback-consent-copy feedback-privacy-policy-link"><a class="howto-more" href="/privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="feedback.privacy.link">Política de privacidad (en inglés) →</a></p>
-            <button id="feedbackSubmit" type="submit" class="primary feedback-submit" data-i18n="feedback.submit">Enviar</button>
+            <button id="feedbackSubmit" type="submit" hidden disabled class="primary feedback-submit" data-i18n="feedback.submit">Enviar</button>
             <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -696,7 +687,7 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/vision-copy.js?v=20261119-utilities-v1"></script>
-  <script src="/languages/world/world.js?v=20261119-desktop-tools-v1"></script>
+  <script src="/languages/world/vision-copy.js?v=practice-hierarchy-v1"></script>
+  <script src="/languages/world/world.js?v=practice-hierarchy-v1"></script>
 </body>
 </html>
