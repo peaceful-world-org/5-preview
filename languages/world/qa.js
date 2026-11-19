@@ -222,6 +222,25 @@
           return true;
         });
         assert(overflowing<=4 && widths.every(Boolean),'Viewport '+width+' px: no horizontal overflow, four primary actions in bounds');
+        const tools=d.getElementById('pwWorldTools');
+        const cards=d.getElementById('pwModeCards');
+        const heading=d.getElementById('pwWorldChoiceHeader');
+        const atlas=d.getElementById('pwWorldPreview');
+        const rt=tools?.getBoundingClientRect();
+        const rc=cards?.getBoundingClientRect();
+        const rh=heading?.getBoundingClientRect();
+        const ra=atlas?.getBoundingClientRect();
+        const desktop=width>=700;
+        const correctlyPlaced=Boolean(rt && rc && rh && ra &&
+          (desktop
+            ? (tools.parentElement?.parentElement?.id==='pwWorldDesktopToolsSlot' &&
+               rt.top>=rh.top-2 && rt.bottom<=rh.bottom+2 &&
+               rt.right<=viewport+3 && rt.left>=rh.left-2)
+            : (tools.parentElement?.parentElement?.id==='pwWorldMobileToolsSlot' &&
+               rt.top>=rc.bottom-2 && rt.bottom<=ra.top+2 &&
+               rt.left>=-2 && rt.right<=viewport+3)));
+        assert(correctlyPlaced,'Viewport '+width+' px: secondary toolbar is in its intended '+(desktop?'heading':'post-card')+' slot without overlap');
+
         assert(chipsInside&&rowClear,'Viewport '+width+' px: expanded language chips wrap without collisions');
       }
     } else throw new Error('Unknown QA flow '+flow);
