@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261119-utilities-v1" />
+  <link rel="stylesheet" href="/languages/world/world.css?v=20261119-desktop-tools-v1" />
   <title>5 · Peace Practice — Preview</title>
 <style>
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
@@ -110,8 +110,13 @@ más pacífica</p>
           <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
         </div>
         </div>
-        <h2 id="pwModeChoose" class="mode-section-label">ELIGE UNA PRÁCTICA</h2>
-        <p id="pwWorldScaleLine" class="pw-world-scale-line" role="note">7 preview languages · more under consideration</p>
+        <div id="pwWorldChoiceHeader" class="pw-world-choice-header">
+          <div class="pw-world-choice-intro">
+            <h2 id="pwModeChoose" class="mode-section-label">ELIGE UNA PRÁCTICA</h2>
+            <p id="pwWorldScaleLine" class="pw-world-scale-line" role="note">7 preview languages · more under consideration</p>
+          </div>
+          <div id="pwWorldDesktopToolsSlot" class="pw-world-desktop-tools-slot"></div>
+        </div>
         <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose">
           <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
             <div class="practice-choice-heading">
@@ -139,12 +144,16 @@ más pacífica</p>
             <button id="pwModeMettaStart" class="practice-card-cta practice-card-cta--metta" type="button"><span id="pwCardMettaAction">Empezar · 5 minutos</span><span aria-hidden="true">→</span></button>
           </article>
         </div>
-        <nav id="pwWorldTools" class="pw-world-tools" aria-label="Questions, support and sharing">
-          <a id="pwWorldAiHome" class="pw-world-tool pw-world-tool--ai" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer" aria-label="Open the AI guide in Russian or English in a new tab">Ask AI</a>
-          <a id="pwWorldSupportHome" class="pw-world-tool" href="https://peaceful-world.org/help" target="_blank" rel="noopener noreferrer" data-i18n-link="support">Support</a>
-          <button id="pwWorldShareBtn" class="pw-world-tool" type="button">Share</button>
-        </nav>
-        <p id="pwWorldToolsStatus" class="pw-world-tools-status" role="status" aria-live="polite"></p>
+        <div id="pwWorldMobileToolsSlot" class="pw-world-mobile-tools-slot">
+          <div id="pwWorldToolsContainer" class="pw-world-tools-container">
+            <nav id="pwWorldTools" class="pw-world-tools" aria-label="Questions, support and sharing">
+              <a id="pwWorldAiHome" class="pw-world-tool pw-world-tool--ai" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4701m19eebbhe8zr9vq8afq0r51k" target="_blank" rel="noopener noreferrer" aria-label="Open the AI guide in Russian or English in a new tab">Ask AI</a>
+              <a id="pwWorldSupportHome" class="pw-world-tool" href="https://peaceful-world.org/help" target="_blank" rel="noopener noreferrer" data-i18n-link="support">Support</a>
+              <button id="pwWorldShareBtn" class="pw-world-tool" type="button">Share</button>
+            </nav>
+            <p id="pwWorldToolsStatus" class="pw-world-tools-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
         <section id="pwWorldPreview" class="pw-world-section" aria-labelledby="pwWorldTitle">
           <p id="pwWorldEyebrow" class="pw-world-eyebrow">AN OPEN PRACTICE LIBRARY</p>
           <h2 id="pwWorldTitle" class="pw-world-title">A small beginning. A much wider map.</h2>
@@ -688,6 +697,6 @@ más pacífica</p>
     })();
   </script>
   <script src="/languages/world/vision-copy.js?v=20261119-utilities-v1"></script>
-  <script src="/languages/world/world.js?v=20261119-utilities-v1"></script>
+  <script src="/languages/world/world.js?v=20261119-desktop-tools-v1"></script>
 </body>
 </html>

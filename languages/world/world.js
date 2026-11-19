@@ -242,6 +242,23 @@
     }catch(_){put('pwWorldToolsStatus',c.shareError||'Could not copy the link');}
   }
   el('pwWorldShareBtn')?.addEventListener('click',()=>{void shareLiveApp()});
+  // Same real controls on every screen, relocated rather than duplicated.
+  // Desktop/tablet: discreet actions beside "Choose a practice".
+  // Phone: reachable actions after the practice cards, never before Start.
+  const toolsDesktopSlot=el('pwWorldDesktopToolsSlot');
+  const toolsMobileSlot=el('pwWorldMobileToolsSlot');
+  const toolsContainer=el('pwWorldToolsContainer');
+  const toolsBreakpoint=matchMedia('(min-width:700px)');
+  function placeTools(){
+    const destination=toolsBreakpoint.matches?toolsDesktopSlot:toolsMobileSlot;
+    if(destination && toolsContainer && toolsContainer.parentNode!==destination){
+      destination.appendChild(toolsContainer);
+    }
+  }
+  if(toolsBreakpoint.addEventListener)toolsBreakpoint.addEventListener('change',placeTools);
+  else toolsBreakpoint.addListener?.(placeTools);
+  placeTools();
+
   document.addEventListener('pw:locale-changed',update);
   document.addEventListener('pw:locale-ready',update);
   if(window.PW_I18N?.ready)window.PW_I18N.ready.then(update,update);
