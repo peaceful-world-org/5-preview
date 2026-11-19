@@ -37,6 +37,7 @@ jobs:
           mkdir -p "$TMP/sources"
           cp -R "$ROOT/_stage/scripts" "$TMP/sources/scripts"
           cp -R "$ROOT/_stage/web-vnext" "$TMP/sources/web-vnext"
+          cp "$ROOT/web-vnext/world.css" "$ROOT/web-vnext/world.js" "$ROOT/web-vnext/roadmap.json" "$TMP/sources/web-vnext/"
           node --check "$TMP/sources/scripts/prepare-web-vnext.mjs"
           node --check "$TMP/sources/scripts/prepare-pages-preview.mjs"
           mkdir -p "$TMP/build"
