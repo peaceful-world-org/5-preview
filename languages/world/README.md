@@ -26,3 +26,7 @@ User link: https://preview-5.peaceful-world.org/languages/world/?lang=ru
 ## Language-map UX correction (2026-11-19)
 
 The previous prototype incorrectly tied future app languages to the editions of an unrelated peace-research document. This association has been removed from the UI and roadmap metadata. The 46 exploratory target variants are now explicitly presented as unapproved translation possibilities for 5, not existing translated app versions. All eight preview locales have updated copy. Expanded chips have explicit row gaps, wrapping and separation from section dividers across screen sizes. No changes to timers, runtime locale registry or production.
+
+## Future voluntary tradition expressions (19 Nov 2026)
+
+The World concept now describes three **future** dimensions on Home and Done: reviewed Focus Practices, translations into native languages, and optional tradition-informed practice expressions. Secular practice remains universal and the only default. The expanded informational traditions section never presents an actual tradition mode selector; experts and sources would be required before a specific reviewed expression could launch. End-screen roadmap button returns to Home and opens that atlas. Eight locale variants have reviewed-draft copy in a separate preview-only `vision-copy.js`. No user religious affiliation is requested, recorded or sent to analytics. See production planning issue https://github.com/peaceful-world-org/5/issues/189. All changes remain isolated from `5/main`.

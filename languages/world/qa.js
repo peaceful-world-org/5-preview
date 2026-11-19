@@ -56,6 +56,25 @@
       click('pwModeBack');
       await wait(()=>active('home'),'return from completion');
       assert(active('home'),'Back from completion returns Home');
+    } else if(flow==='vision'){
+      await wait(()=>Boolean(d.getElementById('pwWorldTraditionTitle')?.textContent),'vision copy ready');
+      assert(d.querySelectorAll('#pwWorldThemeChips [role="listitem"]').length===3,'Home shows three future directions');
+      click('pwWorldOpen');
+      await wait(()=>!d.getElementById('pwWorldDetails')?.hidden,'roadmap open');
+      assert(d.querySelector('#pwWorldTradition button,#pwWorldTradition select')===null,'No religious or tradition mode offered as available');
+      assert((d.getElementById('pwWorldTraditionLead')?.textContent||'').length>35,'Tradition section explains future availability');
+      click('pwWorldOpen');
+      click('pwModeFreeStart');
+      await wait(()=>active('pwFreeTimerScreen'),'Free mode started');
+      click('pwFreePrimary');
+      await sleep(1200);
+      click('pwFreeFinish');
+      await wait(()=>active('done'),'completion screen');
+      assert(d.querySelectorAll('#pwWorldDoneTracks [role="listitem"]').length===3,'Completion screen shows three future directions');
+      assert((d.getElementById('pwWorldDoneNote')?.textContent||'').length>35,'Completion explains planned status');
+      click('pwWorldDoneOpen');
+      await wait(()=>active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'return to expanded Home roadmap');
+      assert(active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'Completion roadmap button opens Home atlas');
     } else if(flow==='foundation'||flow==='metta'){
       const id=flow==='foundation'?'pwModeBaseStart':'pwModeMettaStart';
       click(id);
@@ -137,6 +156,8 @@
       await wait(()=>d.querySelectorAll('.pw-world-atlas-group').length===6,'atlas data');
       assert(d.querySelectorAll('.pw-world-atlas-group').length===6,'Six curriculum categories');
       assert(d.querySelectorAll('.pw-world-wave-code').length===46,'46 tentative localization variants');
+      assert(Boolean(d.getElementById('pwWorldTraditionTitle')),'Future traditions section exists');
+      assert(d.querySelector('#pwWorldTradition button,#pwWorldTradition select')===null,'No selectable future religion options');
       assert(!d.querySelector('#pwWorldSourceLink'),'Unrelated research link removed from language roadmap');
       assert(!/Seville Statement|Севильск|Севільськ|Declaración de Sevilla|Declaração de Sevilha|Déclaration de Séville|Pernyataan Sevilla/i.test(d.getElementById('pwWorldLanguagesNote')?.textContent||''),'Language note describes the app, not another publication');
       click('pwWorldOpen');

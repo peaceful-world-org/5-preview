@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <link rel="stylesheet" href="/languages/world/world.css?v=20261119-language-v2" />
+  <link rel="stylesheet" href="/languages/world/world.css?v=20261119-vision-v1" />
   <title>5 · Peace Practice — Preview</title>
 <style>
 #homeInstallArea,#installBtn,#installHelp,#homeInstallHelp{display:none!important}
@@ -143,7 +143,7 @@ más pacífica</p>
           <p id="pwWorldEyebrow" class="pw-world-eyebrow">AN OPEN PRACTICE LIBRARY</p>
           <h2 id="pwWorldTitle" class="pw-world-title">A small beginning. A much wider map.</h2>
           <p id="pwWorldDescription" class="pw-world-description">Use the timer today, or explore skills we hope to develop.</p>
-          <div id="pwWorldThemeChips" class="pw-world-chips" aria-label="Future directions"></div>
+          <div id="pwWorldThemeChips" class="pw-world-chips" role="list" aria-label="Future directions, not available features"></div>
           <button id="pwWorldOpen" class="pw-world-open" type="button" aria-controls="pwWorldDetails" aria-expanded="false">
             <span id="pwWorldOpenText">Explore practice and language roadmaps</span><span aria-hidden="true">↗</span>
           </button>
@@ -162,6 +162,11 @@ más pacífica</p>
                 <summary id="pwWorldCandidateSummary">Explore 46 possible language variants</summary>
                 <div id="pwWorldCandidateList" class="pw-world-candidate-list"></div>
               </details>
+            </section>
+            <section id="pwWorldTradition" class="pw-world-atlas-section pw-world-tradition" aria-labelledby="pwWorldTraditionTitle">
+              <div class="pw-world-section-line"><h3 id="pwWorldTraditionTitle">Practices and spiritual traditions</h3><span id="pwWorldTraditionStatus">Long-term plan</span></div>
+              <p id="pwWorldTraditionLead" class="pw-world-note">The secular practice remains the universal foundation. Tradition-informed forms are a future direction, not available exercises.</p>
+              <p id="pwWorldTraditionDetail" class="pw-world-tradition-detail">Each tradition will need qualified reviewers. No religious affiliation is required.</p>
             </section>
           </div>
         </section>
@@ -243,6 +248,14 @@ más pacífica</p>
           <p id="pwModeDoneSummaryMode" class="done-summary-mode"></p>
         </section>
         <button id="pwModeBack" class="done-primary-action" type="button"><span id="pwModeDoneBackText">Volver a las prácticas</span><span aria-hidden="true">→</span></button>
+        <section id="pwWorldDoneCTA" class="pw-world-done-cta" aria-labelledby="pwWorldDoneHeading">
+          <p id="pwWorldDoneEyebrow" class="pw-world-done-eyebrow">THE HORIZON OF «5»</p>
+          <h2 id="pwWorldDoneHeading">A small practice. A wider path.</h2>
+          <p id="pwWorldDoneNote">New skills, native-language versions and tradition-informed forms are plans, not exercises available today.</p>
+          <div id="pwWorldDoneTracks" class="pw-world-done-tracks" role="list" aria-label="Future directions, not available features"></div>
+          <button type="button" id="pwWorldDoneOpen">Explore the roadmap →</button>
+        </section>
+
         <div class="preview-done-actions" role="group" aria-label="Другие действия">
         <button id="feedbackBtn" type="button" class="done-action" data-i18n="done.feedback">Compartir tu experiencia</button>
         <button id="shareBtn" type="button" class="done-action" data-i18n="done.share">Compartir con amistades</button>
@@ -266,11 +279,6 @@ más pacífica</p>
             <div class="practice-roadmap-item"><strong id="pwModeRoadmapAnger">Trabajar con la ira</strong><span id="pwModeRoadmapAngerStatus">Próximamente</span></div>
           </div>
           <a id="pwModeRoadmapLink" class="practice-roadmap-link" href="https://peaceful-world.org/research/peaceful-world-practice" target="_blank" rel="noopener noreferrer"><span id="pwModeRoadmapLinkText">Conoce las próximas prácticas (en inglés) →</span></a>
-        </section>
-        <section id="pwWorldDoneCTA" class="pw-world-done-cta" aria-labelledby="pwWorldDoneHeading">
-          <h2 id="pwWorldDoneHeading">More practice paths are being explored</h2>
-          <p id="pwWorldDoneNote">The ideas are not available exercises yet.</p>
-          <button type="button" id="pwWorldDoneOpen">Explore the roadmap →</button>
         </section>
       </div>
     </section>
@@ -663,6 +671,7 @@ más pacífica</p>
       }
     })();
   </script>
-  <script src="/languages/world/world.js?v=20261119-language-v2"></script>
+  <script src="/languages/world/vision-copy.js?v=20261119-vision-v1"></script>
+  <script src="/languages/world/world.js?v=20261119-vision-v1"></script>
 </body>
 </html>
