@@ -1,0 +1,281 @@
+{
+  "schema": "pw-5-practice-atlas/v1",
+  "source": {
+    "product": "peaceful-world-org/5#186",
+    "localization": "Exploratory product-specific candidate list for 5; language priorities require independent review",
+    "date": "2026-11-19"
+  },
+  "note": "30 proposed practice ideas and 46 tentative language variants for future localization of the 5 app. None is a scheduled translation, confirmed release, or language rollout commitment.",
+  "counts": {
+    "currentLocales": 8,
+    "currentLanguages": 7,
+    "newCandidates": 46,
+    "practiceIdeas": 30
+  },
+  "available": [
+    {
+      "code": "ru",
+      "label": "Русский"
+    },
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "uk",
+      "label": "Українська"
+    },
+    {
+      "code": "es",
+      "label": "Español"
+    },
+    {
+      "code": "pt-br",
+      "label": "Português (Brasil)"
+    },
+    {
+      "code": "pt-pt",
+      "label": "Português (Portugal)"
+    },
+    {
+      "code": "fr",
+      "label": "Français"
+    },
+    {
+      "code": "id",
+      "label": "Bahasa Indonesia"
+    }
+  ],
+  "groups": [
+    {
+      "id": "attention",
+      "ru": "Внимание и ясность",
+      "en": "Attention & clarity",
+      "ideas": [
+        {
+          "ru": "Остановиться перед ответом",
+          "en": "Pause before replying"
+        },
+        {
+          "ru": "Вернуть внимание",
+          "en": "Return attention"
+        },
+        {
+          "ru": "Замечать телесное напряжение",
+          "en": "Notice tension"
+        },
+        {
+          "ru": "Выдержать минуту неопределённости",
+          "en": "Stay with uncertainty"
+        },
+        {
+          "ru": "Внимательно слушать",
+          "en": "Listen with attention"
+        }
+      ]
+    },
+    {
+      "id": "care",
+      "ru": "Доброжелательность и отношения",
+      "en": "Care & relationships",
+      "ideas": [
+        {
+          "ru": "Сострадание",
+          "en": "Compassion"
+        },
+        {
+          "ru": "Благодарность",
+          "en": "Gratitude"
+        },
+        {
+          "ru": "Увидеть человека за ярлыком",
+          "en": "See beyond labels"
+        },
+        {
+          "ru": "Тёплое отношение без принуждения",
+          "en": "Goodwill without forced feelings"
+        },
+        {
+          "ru": "Уважение различий",
+          "en": "Respect differences"
+        }
+      ]
+    },
+    {
+      "id": "conflict",
+      "ru": "Конфликт и речь",
+      "en": "Conflict & speech",
+      "ideas": [
+        {
+          "ru": "Работа с гневом",
+          "en": "Working with anger"
+        },
+        {
+          "ru": "Невраждебная речь",
+          "en": "Non-hostile speech"
+        },
+        {
+          "ru": "Не отвечать унижением",
+          "en": "Respond without humiliation"
+        },
+        {
+          "ru": "Проверить импульс мести",
+          "en": "Notice revenge impulse"
+        },
+        {
+          "ru": "Начать трудный разговор",
+          "en": "Begin a hard conversation"
+        }
+      ]
+    },
+    {
+      "id": "boundaries",
+      "ru": "Границы и защита",
+      "en": "Boundaries & protection",
+      "ideas": [
+        {
+          "ru": "Сказать «нет» без агрессии",
+          "en": "Say no without aggression"
+        },
+        {
+          "ru": "Дистанция и безопасность",
+          "en": "Distance and safety"
+        },
+        {
+          "ru": "Защитить уязвимого",
+          "en": "Protect someone vulnerable"
+        },
+        {
+          "ru": "Не путать доброту с уступчивостью",
+          "en": "Kindness without surrender"
+        },
+        {
+          "ru": "Остановить эскалацию",
+          "en": "Interrupt escalation"
+        }
+      ]
+    },
+    {
+      "id": "repair",
+      "ru": "Ответственность и восстановление",
+      "en": "Responsibility & repair",
+      "ideas": [
+        {
+          "ru": "Уменьшить повседневный вред",
+          "en": "Reduce everyday harm"
+        },
+        {
+          "ru": "Признать ошибку",
+          "en": "Acknowledge harm"
+        },
+        {
+          "ru": "Извиниться без оправданий",
+          "en": "Apologise without excuses"
+        },
+        {
+          "ru": "Сделать шаг к возмещению",
+          "en": "Take one step toward repair"
+        },
+        {
+          "ru": "Прощение как право, не обязанность",
+          "en": "Forgiveness as an option"
+        }
+      ]
+    },
+    {
+      "id": "life",
+      "ru": "Живой мир и взаимозависимость",
+      "en": "Life & interdependence",
+      "ideas": [
+        {
+          "ru": "Замечать отдельную жизнь",
+          "en": "Notice another life"
+        },
+        {
+          "ru": "Взаимозависимость",
+          "en": "Interdependence"
+        },
+        {
+          "ru": "Забота о животных",
+          "en": "Care for animals"
+        },
+        {
+          "ru": "Бережный выбор в быту",
+          "en": "Everyday less-harm choice"
+        },
+        {
+          "ru": "Забота о будущем",
+          "en": "Care for future generations"
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "id": "next",
+      "codes": [
+        "de",
+        "it",
+        "nl",
+        "pl",
+        "tr",
+        "sw"
+      ]
+    },
+    {
+      "id": "scripts",
+      "codes": [
+        "hi",
+        "bn",
+        "zh-Hans",
+        "ja",
+        "ko",
+        "vi"
+      ]
+    },
+    {
+      "id": "rtl",
+      "codes": [
+        "ar",
+        "fa",
+        "he",
+        "ur",
+        "ps"
+      ]
+    },
+    {
+      "id": "later",
+      "codes": [
+        "ha",
+        "si",
+        "ta",
+        "zh-Hant",
+        "my",
+        "am",
+        "ti",
+        "hy",
+        "az",
+        "ka",
+        "so",
+        "om",
+        "ms",
+        "kmr",
+        "th",
+        "fil",
+        "ne",
+        "te",
+        "rw",
+        "fi",
+        "sv",
+        "nb",
+        "da",
+        "et",
+        "lv",
+        "lt",
+        "be",
+        "ro-MD",
+        "el"
+      ]
+    }
+  ]
+}
