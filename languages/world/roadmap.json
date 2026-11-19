@@ -2,15 +2,13 @@
   "schema": "pw-5-world-practice-preview/atlas-v1",
   "source": {
     "product": "peaceful-world-org/5#186",
-    "languages": "peaceful-world-org/website-lab/config/seville-1986-served-54-identity-lock.json",
-    "date": "2026-11-18"
+    "localization": "Exploratory product-specific candidate list for 5; language priorities require independent review",
+    "date": "2026-11-19"
   },
-  "note": "Study concepts and Seville-edition candidates. Not released app languages or published focus practices.",
+  "note": "30 proposed practice ideas and 46 tentative language variants for future localization of the 5 app. None is a scheduled translation, confirmed release, or language rollout commitment.",
   "counts": {
     "currentLocales": 8,
     "currentLanguages": 7,
-    "sevilleEditions": 54,
-    "sevilleDistinctLanguages": 52,
     "newCandidates": 46,
     "practiceIdeas": 30
   },

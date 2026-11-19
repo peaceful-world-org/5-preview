@@ -136,10 +136,17 @@
       assert(d.getElementById('pwWorldOpen')?.getAttribute('aria-expanded')==='true','Atlas open and accessible');
       await wait(()=>d.querySelectorAll('.pw-world-atlas-group').length===6,'atlas data');
       assert(d.querySelectorAll('.pw-world-atlas-group').length===6,'Six curriculum categories');
-      assert(d.querySelectorAll('.pw-world-wave-code').length===46,'46 candidate locale variants');
+      assert(d.querySelectorAll('.pw-world-wave-code').length===46,'46 tentative localization variants');
+      assert(!d.querySelector('#pwWorldSourceLink'),'Unrelated research link removed from language roadmap');
+      assert(!/Seville Statement|Севильск|Севільськ|Declaración de Sevilla|Declaração de Sevilha|Déclaration de Séville|Pernyataan Sevilla/i.test(d.getElementById('pwWorldLanguagesNote')?.textContent||''),'Language note describes the app, not another publication');
       click('pwWorldOpen');
       assert(d.getElementById('pwWorldDetails')?.hidden,'Atlas closes');
     } else if(flow==='layout'){
+      click('pwWorldOpen');
+      await wait(()=>!d.getElementById('pwWorldDetails')?.hidden,'atlas expanded for layout');
+      const disclosure=d.getElementById('pwWorldCandidateDisclosure');
+      disclosure?.querySelector('summary')?.click();
+      assert(disclosure?.open,'Language candidates expanded for layout QA');
       for(const width of [320,375,430,768,1280]){
         frame.style.width=width+'px';frame.style.maxWidth='none';
         await sleep(85);
@@ -150,7 +157,24 @@
           const r=d.getElementById(id)?.getBoundingClientRect();
           return r&&r.width>80&&r.left>=-2&&r.right<=viewport+3;
         });
+        const waveLists=[...d.querySelectorAll('.pw-world-wave-code-list')];
+        const allChips=[...d.querySelectorAll('.pw-world-wave-code')];
+        const chipsInside=allChips.every(node=>{const r=node.getBoundingClientRect();return r.width>0&&r.left>=-2&&r.right<=viewport+3});
+        const rowClear=waveLists.every(list=>{
+          const chips=[...list.children];let previous=null;
+          for(const chip of chips){
+            const r=chip.getBoundingClientRect();
+            if(previous){
+              const sameRow=Math.abs(r.top-previous.top)<3;
+              if(sameRow && r.left<previous.right+2)return false;
+              if(!sameRow && r.top<previous.bottom+3)return false;
+            }
+            previous=r;
+          }
+          return true;
+        });
         assert(overflowing<=4 && widths.every(Boolean),'Viewport '+width+' px: no horizontal overflow, four primary actions in bounds');
+        assert(chipsInside&&rowClear,'Viewport '+width+' px: expanded language chips wrap without collisions');
       }
     } else throw new Error('Unknown QA flow '+flow);
     update('PASS · '+flow.toUpperCase()+' · '+entries.length+' checks','pass');
