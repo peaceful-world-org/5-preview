@@ -75,6 +75,33 @@
       click('pwWorldDoneOpen');
       await wait(()=>active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'return to expanded Home roadmap');
       assert(active('home')&&!d.getElementById('pwWorldDetails')?.hidden,'Completion roadmap button opens Home atlas');
+    } else if(flow==='actions'){
+      const ai=d.getElementById('pwWorldAiHome'),support=d.getElementById('pwWorldSupportHome');
+      const share=d.getElementById('pwWorldShareBtn'),expert=d.getElementById('pwWorldExpertLink');
+      assert(Boolean(ai?.href && ai.href.includes('elevenlabs.io/app/talk-to?agent_id=')),'Ask AI links to the existing Guide, not a mock widget');
+      assert(ai?.target==='_blank' && ai?.rel.includes('noopener'),'External Guide opens in separate safe tab');
+      assert(Boolean(support?.href.includes('peaceful-world.org/help')),'Support links to the published support page');
+      assert(Boolean(expert?.href.startsWith('mailto:hello@peaceful-world.org?subject=')),'Expert invitation opens a prefilled email');
+      assert(d.getElementById('pwWorldExpertInvite')?.querySelector('h2'),'Expert invitation visible on Home');
+      let shared=null;
+      Object.defineProperty(w.navigator,'share',{configurable:true,value:async value=>{shared=value}});
+      click('pwWorldShareBtn');
+      await wait(()=>Boolean(shared),'native Share dialog handler');
+      assert(shared.url==='https://5.peaceful-world.org/','Share sends the real published app URL');
+      click('pwWorldOpen');
+      await wait(()=>!d.getElementById('pwWorldDetails')?.hidden,'expanded atlas');
+      assert(Boolean(d.getElementById('pwWorldExpertInAtlas')?.href.startsWith('mailto:hello@peaceful-world.org')),'Expert contact also available in the atlas');
+      const note=d.getElementById('pwWorldTraditionDetail')?.textContent||'';
+      assert(!/раскрытия религии|disclosing (a )?religio|declarar (una )?religión|declaração de uma religião/i.test(note),'Tradition copy avoids internal policy phrasing');
+      click('pwWorldOpen');
+      click('pwModeFreeStart');
+      await wait(()=>active('pwFreeTimerScreen'),'Free practice');
+      click('pwFreePrimary');
+      await sleep(1100);
+      click('pwFreeFinish');
+      await wait(()=>active('done'),'completion');
+      assert(Boolean(d.getElementById('pwWorldAiDone')?.href.includes('elevenlabs.io/app/talk-to')),'AI Guide also available after practice');
+      assert(Boolean(d.getElementById('supportBtn')?.href.includes('peaceful-world.org/help')),'Existing completion support preserved');
     } else if(flow==='foundation'||flow==='metta'){
       const id=flow==='foundation'?'pwModeBaseStart':'pwModeMettaStart';
       click(id);
@@ -173,7 +200,7 @@
         await sleep(85);
         const viewport=d.documentElement.clientWidth||w.innerWidth;
         const overflowing=d.documentElement.scrollWidth-viewport;
-        const visibleIds=['pwModeFreeStart','pwModeBaseStart','pwModeMettaStart','pwWorldOpen'];
+        const visibleIds=['pwModeFreeStart','pwModeBaseStart','pwModeMettaStart','pwWorldOpen','pwWorldAiHome','pwWorldSupportHome','pwWorldShareBtn','pwWorldExpertLink'];
         const widths=visibleIds.map(id=>{
           const r=d.getElementById(id)?.getBoundingClientRect();
           return r&&r.width>80&&r.left>=-2&&r.right<=viewport+3;

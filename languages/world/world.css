@@ -307,3 +307,56 @@ html[data-pw-theme="dark"][data-world-concept="1"] #home .pw-world-tradition-det
 #done #pwWorldDoneOpen{display:block;box-sizing:border-box;width:100%;margin-top:11px;padding:10px 12px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);text-align:center;font:700 .79rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:anywhere}
 #done #pwWorldDoneOpen:focus-visible{outline:3px solid #82A58A;outline-offset:3px}
 @media(max-width:390px){#home .pw-world-tradition-detail{padding:10px;font-size:.76rem}#done .pw-world-done-cta{padding:13px 14px}}
+
+/* 2026-11-19: available actions and an invitation for qualified contributors.
+   Actions use real links; tradition-informed exercises are still only future work. */
+#home .pw-world-tools{
+ box-sizing:border-box;width:min(100%,384px);max-width:100%;margin:12px auto 0;
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+}
+#home .pw-world-tool{
+ box-sizing:border-box;display:flex;align-items:center;justify-content:center;min-width:0;min-height:45px;
+ padding:9px 9px;margin:0;border:1px solid var(--line);border-radius:12px;
+ background:var(--surface);color:var(--text);font:650 .78rem/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;
+ text-align:center;text-decoration:none;white-space:normal;overflow-wrap:anywhere;cursor:pointer;
+}
+#home .pw-world-tool--ai{background:var(--accent-soft);border-color:var(--line)}
+#home .pw-world-tool:hover,#home .pw-world-tool:focus-visible{background:var(--accent-soft)}
+#home .pw-world-tool:focus-visible,
+#home .pw-world-expert-action:focus-visible,
+#home .pw-world-expert-in-atlas:focus-visible,
+#done .pw-world-ai-done:focus-visible{outline:3px solid #82A58A;outline-offset:3px}
+#home .pw-world-tools-status{box-sizing:border-box;width:min(100%,384px);max-width:100%;margin:5px auto 0;
+ color:var(--muted);font:500 .74rem/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center}
+#home .pw-world-tools-status:empty{display:none}
+#home .pw-world-expert-invite{
+ box-sizing:border-box;display:flex;flex-direction:column;gap:12px;
+ width:min(100%,384px);max-width:100%;margin:14px auto 0;padding:18px 20px;
+ border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--text);
+}
+#home .pw-world-expert-kicker{margin:0 0 6px;font-size:.65rem;line-height:1.4;letter-spacing:.1em;font-weight:760;color:var(--muted)}
+#home .pw-world-expert-invite h2{margin:0;font-size:1.05rem;line-height:1.32;font-weight:720;text-wrap:balance}
+#home .pw-world-expert-invite p:not(.pw-world-expert-kicker){margin:8px 0 0;color:var(--muted);
+ font-size:.81rem;line-height:1.6;max-width:73ch;overflow-wrap:anywhere}
+#home .pw-world-expert-action{box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ min-height:45px;padding:10px 15px;max-width:100%;border-radius:999px;
+ background:var(--accent-soft);border:1px solid var(--line);color:var(--text);
+ font:700 .79rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none;text-align:center;overflow-wrap:anywhere}
+#home .pw-world-expert-action:hover,#home .pw-world-expert-in-atlas:hover{filter:brightness(.96)}
+#home .pw-world-expert-in-atlas{display:inline-flex;align-items:center;min-height:44px;margin:12px 0 0;
+ padding:9px 0;color:inherit;font:700 .8rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;
+ text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+#home .pw-world-expert-in-atlas::after{content:"↗";margin-inline-start:7px}
+#done .preview-done-actions>.pw-world-ai-done{grid-column:1/-1;background:var(--accent-soft)}
+#done .preview-done-actions>.pw-world-ai-done:hover{filter:brightness(.97)}
+@media(min-width:700px){
+ #home .pw-world-tools,#home .pw-world-tools-status,#home .pw-world-expert-invite{width:100%;max-width:none;align-self:stretch}
+ #home .pw-world-expert-invite{flex-direction:row;align-items:center;justify-content:space-between;gap:24px;padding:21px 25px}
+ #home .pw-world-expert-content{min-width:0;flex:1}
+ #home .pw-world-expert-action{flex:0 0 auto;max-width:270px;min-width:185px}
+}
+@media(max-width:480px){
+ #home .pw-world-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #home #pwWorldAiHome{grid-column:1/-1}
+ #home .pw-world-expert-invite{padding:16px 17px}
+}
