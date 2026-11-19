@@ -447,6 +447,8 @@ html[data-world-concept="1"] #practice #stepCount {color:var(--text);opacity:.94
   #home .practice-choice-title {font-size: 1.17rem}
 }
 @media(max-width: 480px) {
+  #home .home-stack--cards {padding-top: clamp(44px, 6dvh, 54px)}
+  #home .mode-section-label {margin-top: 14px}
   #home .pw-world-tools {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   #done .pw-world-tools {display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
   #home .pw-world-candidate-list {padding-inline:12px}
