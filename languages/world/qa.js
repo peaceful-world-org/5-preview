@@ -82,6 +82,9 @@
       const source=w.performance.now.bind(w.performance);
       let synthetic=source();
       Object.defineProperty(w.performance,'now',{configurable:true,value:()=>synthetic});
+      // Bypass animation delays inside this disposable test frame only.
+      // The unchanged practice state machine still receives every manual tick.
+      w.eval('CONFIG.transitionOutMs=0;CONFIG.transitionInMs=0;CONFIG.phaseChangeMs=0');
       assert(typeof w.tick==='function','Guided timer tick is exposed to the test frame');
       click(mode==='foundation'?'pwModeBaseStart':'pwModeMettaStart');
       await wait(()=>active('practice'),'guided demo practice');
