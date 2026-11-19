@@ -1,0 +1,129 @@
+{
+  "es-preview.js": [
+    [
+      "Próximamente",
+      "En los planes",
+      1
+    ],
+    [
+      "PRÓXIMAMENTE",
+      "EN LOS PLANES",
+      1
+    ],
+    [
+      "Más prácticas en camino",
+      "Hay más prácticas previstas",
+      1
+    ],
+    [
+      "\"title\": \"A un conocido\"",
+      "\"title\": \"A alguien que apenas conoces\"",
+      1
+    ],
+    [
+      "\"history\": \"Tiempo total\"",
+      "\"history\": \"Total histórico\"",
+      1
+    ],
+    [
+      "\"totalTime\": \"Tiempo acumulado\"",
+      "\"totalTime\": \"Tiempo total de práctica\"",
+      1
+    ]
+  ],
+  "pt-br-preview.js": [
+    [
+      "\"planned\": \"Em breve\"",
+      "\"planned\": \"Previsto\"",
+      1
+    ],
+    [
+      "\"plannedHeader\": \"EM BREVE\"",
+      "\"plannedHeader\": \"PREVISTO\"",
+      1
+    ],
+    [
+      "Outras abordagens estão a caminho.",
+      "Outras abordagens estão previstas.",
+      1
+    ],
+    [
+      "Bondade amorosa",
+      "Benevolência",
+      5
+    ]
+  ],
+  "pt-pt-preview.js": [
+    [
+      "\"planned\": \"Em breve\"",
+      "\"planned\": \"Previsto\"",
+      1
+    ],
+    [
+      "\"plannedHeader\": \"EM BREVE\"",
+      "\"plannedHeader\": \"PREVISTO\"",
+      1
+    ],
+    [
+      "Bondade amorosa",
+      "Benevolência",
+      5
+    ],
+    [
+      "\"title\": \"A um conhecido\"",
+      "\"title\": \"A quem mal conheces\"",
+      1
+    ]
+  ],
+  "fr-preview.js": [
+    [
+      "\"planned\": \"À venir\"",
+      "\"planned\": \"Envisagé\"",
+      1
+    ],
+    [
+      "\"plannedHeader\": \"À VENIR\"",
+      "\"plannedHeader\": \"ENVISAGÉ\"",
+      1
+    ],
+    [
+      "\"new\": \"NOUVEAU\"",
+      "\"new\": \"NOUVELLE\"",
+      1
+    ],
+    [
+      "\"statusNew\": \"Nouveau\"",
+      "\"statusNew\": \"Nouvelle\"",
+      1
+    ],
+    [
+      "Apprivoiser la colère",
+      "Travailler avec la colère",
+      1
+    ]
+  ],
+  "id-preview.js": [
+    [
+      "Welas asih",
+      "Belas kasih",
+      1
+    ],
+    [
+      "Menghadapi kemarahan",
+      "Menyikapi kemarahan",
+      1
+    ],
+    [
+      "\"title\": \"Untuk kenalan\"",
+      "\"title\": \"Untuk seseorang yang hampir tidak kamu kenal\"",
+      1
+    ]
+  ],
+  "metta-focus.js": [
+    [
+      "\"title\": \"Незнакомому\"",
+      "\"title\": \"Малознакомому\"",
+      1
+    ]
+  ]
+}

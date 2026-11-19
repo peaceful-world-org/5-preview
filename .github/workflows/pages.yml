@@ -28,6 +28,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Assemble isolated Web vNext RC from frozen PR 193
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="web-vnext-rc-20261119"
+          TMP="$(mktemp -d)"
+          mkdir -p "$TMP/sources"
+          cp -R "$ROOT/_stage/scripts" "$TMP/sources/scripts"
+          cp -R "$ROOT/_stage/web-vnext" "$TMP/sources/web-vnext"
+          node --check "$TMP/sources/scripts/prepare-web-vnext.mjs"
+          node --check "$TMP/sources/scripts/prepare-pages-preview.mjs"
+          mkdir -p "$TMP/build"
+          cp -R "$ROOT/." "$TMP/build/"
+          rm -rf "$TMP/build/_stage"
+          node "$TMP/sources/scripts/prepare-web-vnext.mjs" "$TMP/build"
+          node "$TMP/sources/scripts/prepare-pages-preview.mjs" "$TMP/build"
+          for file in index.html app.js i18n.js sw.js step-number.js web-vnext/world.js; do
+            test -s "$TMP/build/$file"
+          done
+          test -s "$TMP/build/preview-rc-meta.json"
+          rm -rf "$ROOT"
+          mv "$TMP/build" "$ROOT"
+          echo "Assembled isolated Web RC (048dbcc4); no production or native workflows."
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

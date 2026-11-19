@@ -1,0 +1,76 @@
+/* 5 by Peaceful World — Feedback Alpha */
+.feedback-screen{justify-content:flex-start!important;padding-block:32px 28px!important}
+.feedback-stack{width:min(100%,460px)!important;margin:0 auto!important;padding-bottom:24px}
+.feedback-header{width:100%}
+.feedback-form{display:flex;flex-direction:column;gap:0}
+.feedback-back{margin-bottom:18px!important}
+.feedback-kicker{margin-bottom:14px!important}
+.feedback-title{font-size:clamp(2.5rem,8vw,3.6rem)!important;line-height:1.02!important}
+.feedback-intro{margin:16px auto 24px!important;max-width:420px!important}
+.feedback-text:focus-visible,.feedback-email:focus-visible{outline:none;border-color:#7B8D7B;box-shadow:0 0 0 2px rgba(103,118,106,.16) inset,0 8px 24px rgba(33,41,36,.025)}
+.feedback-audio{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.72);box-shadow:0 8px 24px rgba(33,41,36,.02);transition:border-color .2s ease,background .2s ease}
+.feedback-audio.recording{background:#FCF7F6;border-color:#E5CECA}
+.feedback-audio.recorded{background:#FBFCFA}
+.audio-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.audio-title{margin:0;color:var(--text);font-size:.84rem;font-weight:650}
+.audio-record-btn{min-height:42px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--text);font-size:.88rem;font-weight:600;cursor:pointer;transition:transform .15s ease,background .2s ease,border-color .2s ease}
+.audio-record-btn:active{transform:scale(.985)}
+.audio-record-btn.recording{background:#F6EDEC;border-color:#E7CFCC;color:#7B4843}
+.audio-record-btn[disabled]{opacity:.5;cursor:not-allowed}
+.audio-status{margin:10px 0 0;color:var(--muted);font-size:.8rem;line-height:1.45}
+.feedback-audio.recording .audio-status{color:#7B4843;font-weight:600}
+.audio-preview{margin-top:14px;display:grid;gap:11px}
+.audio-preview[hidden]{display:none!important}
+.audio-preview audio{display:none}
+.audio-player-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.audio-play-btn{width:42px;height:42px;flex:0 0 42px;border:1px solid var(--line);border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:grid;place-items:center;font:inherit;font-weight:700;cursor:pointer}
+.audio-player-main{flex:1;min-width:0}
+.audio-player-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;color:var(--muted);font-size:.76rem}
+.audio-player-meta span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.audio-seek{width:100%;height:4px;accent-color:var(--accent-text);cursor:pointer}
+.audio-actions{display:flex;justify-content:flex-end}
+.audio-delete-btn{border:0;background:transparent;color:var(--muted);font-size:.82rem;text-decoration:underline;text-decoration-color:rgba(107,113,109,.35);text-underline-offset:3px;cursor:pointer}
+.feedback-consent-copy{margin:8px 0 0 27px;color:var(--muted);font-size:.78rem;line-height:1.45}
+.feedback-privacy{margin:16px 4px 0;color:var(--muted);font-size:.76rem;line-height:1.5;text-align:center}
+.feedback-submit{width:min(100%,340px);align-self:center;margin-top:20px}
+.feedback-submit[disabled]{opacity:.55;cursor:not-allowed}
+.feedback-status{min-height:22px;margin:12px 4px 0;text-align:center;color:var(--muted);font-size:.82rem;line-height:1.45}
+.feedback-status.error{color:#8A4C46}
+.feedback-status.success{color:var(--accent-text)}
+.feedback-success{width:100%;min-height:calc(100dvh - 110px);padding:24px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.feedback-success[hidden]{display:none!important}
+.feedback-success-mark{width:62px;height:62px;margin:0 auto 20px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--accent-text);font-size:1.45rem;box-shadow:0 10px 26px rgba(33,41,36,.035)}
+.feedback-success h2{margin:0;font-size:clamp(2.3rem,8vw,3rem);line-height:1.05}
+.feedback-success p{margin:15px auto 0;max-width:360px;color:var(--muted);line-height:1.55}
+.feedback-success-done{width:min(100%,300px);margin-top:26px}
+.feedback-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.feedback-screen.success-mode{padding-block:18px!important}
+
+@media(max-width:520px){
+  .feedback-screen{padding-block:18px 24px!important}
+  .feedback-stack{padding-bottom:12px}
+  .feedback-title{font-size:clamp(2.25rem,11vw,3rem)!important}
+  .feedback-intro{font-size:.94rem!important}
+}
+
+@media(max-height:720px){
+  .feedback-screen{padding-top:14px!important}
+  .feedback-audio{margin-top:14px;padding:13px}
+  .feedback-intro{margin-bottom:18px!important}
+  .feedback-text{min-height:120px}
+  .feedback-submit{margin-top:16px}
+}
+
+@media(orientation:landscape) and (max-height:520px){
+  .feedback-screen{justify-content:flex-start!important;padding-top:8px!important}
+  .feedback-back{margin-bottom:8px!important}
+  .feedback-title{font-size:1.9rem!important}
+  .feedback-intro{margin:8px auto 12px!important}
+  .feedback-text{min-height:90px}
+  .feedback-audio{margin-top:8px;padding:10px}
+  .audio-status{margin-top:6px}
+  .research-optin{margin-top:10px}
+  .feedback-privacy{margin-top:8px}
+  .feedback-submit{margin-top:10px;min-height:42px}
+  .feedback-success{min-height:calc(100dvh - 30px)}
+}

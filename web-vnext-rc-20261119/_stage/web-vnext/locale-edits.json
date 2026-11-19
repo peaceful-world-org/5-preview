@@ -1,0 +1,72 @@
+{
+  "ru": {
+    "done.share": "Поделиться",
+    "done.support": "Поддержать",
+    "practice.timer.prep.aria": "Подготовка, осталось {seconds}",
+    "practice.timer.run.aria": "Тренировка, осталось {seconds}",
+    "feedback.audio.pause.aria": "Приостановить воспроизведение",
+    "share.title": "5 · Практика мира от Peaceful World",
+    "share.copied.announce": "Ссылка на «5» скопирована.",
+    "share.copied.button": "Ссылка на «5» скопирована"
+  },
+  "en": {
+    "done.share": "Share",
+    "done.support": "Support",
+    "done.feedback": "Give feedback",
+    "practice.timer.prep.aria": "Get ready. {seconds} left.",
+    "practice.timer.run.aria": "Practice. {seconds} left.",
+    "brand.aria": "5, five"
+  },
+  "uk": {
+    "done.share": "Поділитися",
+    "done.support": "Підтримати",
+    "practice.step2.guide": "Почни із себе. Зверни увагу: як і ти, кожна жива істота хоче жити й не хоче страждати. Протягом хвилини побудь із цією думкою.",
+    "share.title": "5 · Практика миру від Peaceful World"
+  },
+  "es": {
+    "done.share": "Compartir",
+    "done.support": "Apoyar",
+    "done.subtitle": "Cierra la aplicación\ny sigue con tu día.",
+    "ai.guide.cta": "Preguntar a la IA",
+    "ai.guide.cta.aria": "Hacer una pregunta al guía de IA",
+    "done.roadmap.title": "Hay más prácticas previstas",
+    "ios.guide.sr": "En Safari, toca Compartir. Elige «Agregar a la pantalla de inicio» o «Add to Home Screen». Toca Agregar. El ícono de 5 aparecerá en tu pantalla de inicio."
+  },
+  "pt-br": {
+    "done.share": "Compartilhar",
+    "done.support": "Apoiar",
+    "done.title": "Agora coloque isso em prática.",
+    "done.subtitle": "Feche o aplicativo\ne siga com o seu dia.",
+    "ai.guide.cta": "Perguntar à IA",
+    "done.roadmap.kicker": "A SEGUIR",
+    "share.text": "O 5 é uma prática de cinco minutos do Peaceful World. Cinco exercícios simples, um minuto cada.",
+    "feedback.label": "Sua opinião",
+    "feedback.success.body": "Sua opinião foi salva. Ela nos ajudará a tornar o 5 mais claro e a melhorar as traduções.",
+    "feedback.privacy.short": "Quando você envia sua opinião, salvamos o texto ou a gravação de voz, o idioma, a versão do aplicativo, a versão do texto exibido, o número da prática que você acabou de concluir neste dispositivo e dados técnicos do envio. Usamos essas informações apenas para melhorar o 5. Só salvamos seu e-mail se você concordar em ajudar nos testes. As gravações de voz são armazenadas de forma privada.",
+    "feedback.success.title": "Agradecemos.",
+    "ios.guide.sr": "No Safari, toque em Compartilhar. Escolha “Adicionar à Tela de Início” ou “Add to Home Screen”. Toque em Adicionar. O ícone do 5 aparecerá na Tela de Início."
+  },
+  "pt-pt": {
+    "done.share": "Partilhar",
+    "done.support": "Apoiar",
+    "done.title": "Agora põe isso em prática.",
+    "done.subtitle": "Fecha a aplicação\ne retoma o teu dia.",
+    "ai.guide.cta": "Perguntar à IA",
+    "feedback.success.title": "Agradecemos.",
+    "ios.guide.sr": "No Safari, toca em Partilhar. Escolhe «Adicionar ao ecrã principal» ou «Add to Home Screen». Toca em Adicionar. O ícone do 5 aparece no ecrã principal."
+  },
+  "fr": {
+    "done.share": "Partager",
+    "done.support": "Soutenir",
+    "ai.guide.cta": "Interroger l’IA",
+    "ai.guide.cta.aria": "Poser une question au guide IA",
+    "ios.guide.sr": "Dans Safari, touchez Partager. Choisissez « Sur l’écran d’accueil » ou « Add to Home Screen ». Touchez Ajouter. L'icône de 5 apparaîtra sur votre écran d'accueil."
+  },
+  "id": {
+    "done.share": "Bagikan",
+    "done.support": "Dukung",
+    "done.title": "Sekarang, lakukan.",
+    "practice.step3.guide": "Pikirkan seseorang yang dengan tulus ingin kamu lihat bahagia. Selama satu menit, kembalilah pada harapan sederhana agar ia baik-baik saja.",
+    "ios.guide.sr": "Di Safari, ketuk Bagikan. Pilih “Tambahkan ke Layar Utama” atau “Add to Home Screen”. Ketuk Tambahkan. Ikon 5 akan muncul di layar utama."
+  }
+}
