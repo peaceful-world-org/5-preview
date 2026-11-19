@@ -6,7 +6,7 @@ html[data-world-home="1"] main.app {
 #home .home-stack--cards {
   max-width: 960px;
   margin-inline: auto;
-  padding-top: clamp(62px, 9dvh, 76px);
+  padding-top: clamp(56px, 8dvh, 68px);
   padding-bottom: 26px;
 }
 #home .pw-world-hero {
@@ -14,45 +14,58 @@ html[data-world-home="1"] main.app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  text-align: center;
 }
 #home .pw-world-brandline {
+  width: 100%;
   min-width: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(13px, 4vw, 26px);
-  text-align: start;
+  gap: 7px;
 }
 #home .pw-world-hero .five-brand {
   flex: none;
   margin: 0;
 }
 #home .pw-world-hero .five-brand .five-mark {
-  width: clamp(2.4rem, 10vw, 4.1rem);
-  height: clamp(4.18rem, 17.4vw, 7.13rem);
+  width: auto;
+  height: clamp(5.6rem, min(24vw, 14dvh), 8.75rem);
+  aspect-ratio: 811 / 1382;
 }
 #home .pw-world-hero .hero-copy {
   min-width: 0;
   margin: 0;
 }
 #home .pw-world-hero .home-headline {
-  font-size: clamp(1.08rem, 4.6vw, 1.75rem);
-  line-height: 1.25;
-  letter-spacing: -.02em;
+  font-size: clamp(1.22rem, 4.2vw, 1.82rem);
+  line-height: 1.17;
+  max-width: 25ch;
+}
+#home .pw-world-hero .home-headline,
+#done .done-title {
+  letter-spacing: -.025em;
   text-wrap: balance;
-  max-width: 23ch;
 }
 #home #pwModeProgress {
-  width: min(100%, 310px);
+  width: min(100%, 264px);
   margin: 0;
-  padding-bottom: 0;
+  padding: 0;
+}
+#home .preview-progress-cell {min-width: 0}
+#home .preview-progress-number {
+  font-size: clamp(1.15rem, 3.8vw, 1.35rem);
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 #home .mode-section-label {
   width: min(100%, 416px);
-  margin: 20px 0 0;
+  margin: clamp(16px, 2.5dvh, 24px) 0 0;
   padding: 13px 0 0;
   border-top: 1px solid var(--line);
-  text-align: start;
+  text-align: center;
   text-transform: none;
   font-size: .94rem;
   letter-spacing: 0;
@@ -390,14 +403,6 @@ html[data-world-concept="1"] #practice #stepCount {color:var(--text);opacity:.94
 }
 
 @media (min-width: 700px) {
-  #home .pw-world-hero {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    min-height: 100px;
-  }
-  #home .pw-world-hero:has(#pwModeProgress[hidden]) {justify-content: center}
-  #home #pwModeProgress {flex: 0 1 254px}
   #home .mode-section-label,
   #home .practice-card-list,
   #home .pw-world-section,
