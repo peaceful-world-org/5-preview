@@ -43,7 +43,7 @@
       const elapsed=d.getElementById('pwFreeTime')?.textContent||'';
       assert(elapsed!=='00:00','Free timer counts actual elapsed time ('+elapsed+')');
       click('pwFreeHint');
-      const overlay=d.querySelector('.pw-practice-hint-overlay');
+      const overlay=d.querySelector('.pw-free-hint-card')?.closest('.pw-practice-hint-overlay');
       assert(overlay && !overlay.hidden,'Free optional hint opens');
       d.querySelector('.pw-free-hint-card .pw-practice-hint-continue')?.click();
       await wait(()=>overlay?.hidden,'hint close');
@@ -75,6 +75,39 @@
       assert(d.getElementById('pwModeInfoDialog')?.open,'Information dialog opens');
       click('pwModeInfoClose');
       assert(!d.getElementById('pwModeInfoDialog')?.open,'Information dialog closes');
+    } else if(flow==='foundation-complete'||flow==='metta-complete'){
+      // Simulated clock in a disposable iframe; tests timer state transitions,
+      // not real elapsed five-minute timing, OS haptics or background behavior.
+      const mode=flow==='foundation-complete'?'foundation':'metta';
+      const source=w.performance.now.bind(w.performance);
+      let synthetic=source();
+      Object.defineProperty(w.performance,'now',{configurable:true,value:()=>synthetic});
+      assert(typeof w.tick==='function','Guided timer tick is exposed to the test frame');
+      click(mode==='foundation'?'pwModeBaseStart':'pwModeMettaStart');
+      await wait(()=>active('practice'),'guided demo practice');
+      assert(active('practice'),'Guided demo started');
+      await sleep(40);
+      const tickForward=()=>{synthetic+=950;w.tick()};
+      const stepCount=()=>d.getElementById('stepCount')?.textContent||'';
+      for(let step=0;step<5;step++){
+        for(let n=0;n<3;n++)tickForward();
+        await wait(()=>d.getElementById('timerShell')?.classList.contains('is-practice') &&
+          !d.getElementById('timerShell')?.classList.contains('phase-change'),'step '+(step+1)+' practice phase',3000);
+        for(let n=0;n<6;n++)tickForward();
+        if(step<4){
+          await wait(()=>stepCount().includes(String(step+2)),'transition to step '+(step+2),3500);
+          record(true,'Demo advanced to step '+(step+2)+' of 5');
+        }else{
+          await wait(()=>active('done'),'guided demo completion',4000);
+        }
+      }
+      assert(active('done'),'Guided demo reaches completion screen');
+      const summary=d.getElementById('pwModeDoneSummaryMode')?.textContent||'';
+      assert(summary.trim().length>0,'Completion summary shows mode: '+summary);
+      click('pwModeBack');
+      await wait(()=>active('home'),'return from completed practice');
+      assert(active('home'),'Completion return action works');
+      Object.defineProperty(w.performance,'now',{configurable:true,value:source});
     } else if(flow==='locale'){
       const btn=d.querySelector('.pw-language-button');
       assert(Boolean(btn)&&!btn.hidden,'Language switcher available');
