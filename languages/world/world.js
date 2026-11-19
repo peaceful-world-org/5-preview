@@ -17,6 +17,7 @@
     }
   }
   const el = id => document.getElementById(id);
+  const vision = window.PW_WORLD_VISION_COPY || {};
   const texts = {
     ru:{scale:'7 языков в предпросмотре · ещё больше — в планах',eye:'КАРТА ПРАКТИК',title:'Маленькая практика. Большой горизонт.',desc:'Свободный таймер — простой вход. За ним — навыки внимания, доброжелательности и мирного действия.',expand:'Исследовать карту практик и языков',collapse:'Свернуть карту',atlas:'Направления практик',ideas:'30 идей',ideasNote:'Это идеи для изучения и экспертной проверки, а не доступные тренировки или обещанные релизы.',untranslated:'',languages:'Языки приложения «5»',live:'7 языков · 8 вариантов',langNote:'Это план локализации самого приложения «5». В предпросмотре доступны 7 языков (8 вариантов). Ниже — возможные будущие переводы, которые ещё нужно подготовить и проверить. Сроки выпуска не утверждены.',showCandidates:'Посмотреть 46 возможных языковых вариантов',done:'Практика мира будет расти',doneNote:'Новые направления пока только на стадии идей.',doneOpen:'Посмотреть карту развития →',menu:'Языки «5» · возможные локализации',waves:['Следующие кандидаты (латиница)','Другие письменности','RTL: требуется отдельная проверка','Дальнейшая карта'],groups:['Внимание и ясность','Забота и отношения','Конфликт и речь','Границы и защита','Ответственность и восстановление','Живой мир']},
     en:{scale:'7 preview languages · more under consideration',eye:'THE PRACTICE ATLAS',title:'A small practice. A wider horizon.',desc:'An open timer is one simple entry. Beyond it: attention, goodwill and practical nonviolence.',expand:'Explore practice and language roadmaps',collapse:'Close the roadmap',atlas:'Practice paths',ideas:'30 concepts',ideasNote:'Ideas for study and expert review — not available practices or promised releases.',untranslated:'',languages:'Languages for «5»',live:'7 languages · 8 variants',langNote:'This is the localization plan for the «5» app itself. This preview has 7 languages (8 variants). The others are possible future translations that still need writing and review; no release dates are confirmed.',showCandidates:'Explore 46 possible language variants',done:'This practice library may grow',doneNote:'The next themes are concepts, not available exercises.',doneOpen:'Explore the roadmap →',menu:'«5» languages · possible translations',waves:['Next Latin-script candidates','Other writing systems','RTL: separate review needed','Longer-term candidates'],groups:['Attention and clarity','Care and relationships','Conflict and speech','Boundaries and safety','Responsibility and repair','Life and interdependence']},
@@ -96,43 +97,62 @@
     }
   }
   function update() {
-    const c=t();
+    const c=t(),v=vision[currentCode()]||vision.en||{};
     put('pwWorldPreviewNote', previewNotes[currentCode()] || previewNotes.en);
-    put('pwWorldScaleLine',c.scale);
+    put('pwWorldScaleLine',v.scale||c.scale);
     put('pwWorldEyebrow',c.eye);
     put('pwWorldTitle',c.title);
-    put('pwWorldDescription',c.desc);
-    put('pwWorldOpenText',opened?c.collapse:c.expand);
+    put('pwWorldDescription',v.home||c.desc);
+    put('pwWorldOpenText',opened?c.collapse:(v.expand||c.expand));
     put('pwWorldCurriculumTitle',c.atlas);
     put('pwWorldCurriculumCount',c.ideas);
     put('pwWorldCurriculumNote',c.ideasNote);
     put('pwWorldUntranslatedNote',c.untranslated);
     put('pwWorldLanguagesTitle',c.languages);
     put('pwWorldLanguagesCount',c.live);
-    put('pwWorldLanguagesNote',c.langNote);
-    put('pwWorldCandidateSummary',c.showCandidates);
-    put('pwWorldDoneHeading',c.done);
-    put('pwWorldDoneNote',c.doneNote);
-    put('pwWorldDoneOpen',c.doneOpen);
+    put('pwWorldLanguagesNote',v.langNote||c.langNote);
+    put('pwWorldCandidateSummary',v.langSummary||c.showCandidates);
+    put('pwWorldTraditionTitle',v.traditionTitle||'Practices and spiritual traditions');
+    put('pwWorldTraditionStatus',v.traditionStatus||'Long-term plan');
+    put('pwWorldTraditionLead',v.traditionLead||'Not available yet.');
+    put('pwWorldTraditionDetail',v.traditionDetail||'Expert review will be required.');
+    put('pwWorldDoneEyebrow',v.doneEyebrow||'THE HORIZON OF 5');
+    put('pwWorldDoneHeading',v.doneTitle||c.done);
+    put('pwWorldDoneNote',v.doneNote||c.doneNote);
+    put('pwWorldDoneOpen',v.doneOpen||c.doneOpen);
+    const doneTracks=el('pwWorldDoneTracks');
+    if(doneTracks){
+      doneTracks.replaceChildren();
+      for(const label of (v.doneTracks||[])){
+        const item=make('span','pw-world-done-track',label);
+        item.setAttribute('role','listitem');
+        doneTracks.appendChild(item);
+      }
+      doneTracks.setAttribute('aria-label','Future development, not available features');
+    }
     const chips=el('pwWorldThemeChips');
     if(chips){
       chips.replaceChildren();
-      for(const label of [c.groups[0],c.groups[2],c.groups[5]])chips.appendChild(make('span','pw-world-chip',label));
-      chips.setAttribute('aria-label',c.atlas);
+      for(const label of (v.tracks||[c.groups[0],c.groups[2],c.groups[5]])){
+        const item=make('span','pw-world-chip',label);
+        item.setAttribute('role','listitem');
+        chips.appendChild(item);
+      }
+      chips.setAttribute('aria-label','Future development, not available features');
     }
     const note=el('pwWorldUntranslatedNote');
     if(note)note.hidden=!c.untranslated;
     atlasCategories();atlasLanguages();
     const panel=document.querySelector('.pw-language-panel');
     const link=panel?.querySelector('.pw-world-menu-entry');
-    if(link)link.textContent=c.menu;
+    if(link)link.textContent=v.menu||c.menu;
   }
   function setOpen(next,focusTitle=false){
     opened=Boolean(next);
     const d=el('pwWorldDetails'),b=el('pwWorldOpen');
     if(d)d.hidden=!opened;
     if(b)b.setAttribute('aria-expanded',String(opened));
-    put('pwWorldOpenText',opened?t().collapse:t().expand);
+    put('pwWorldOpenText',opened?t().collapse:((vision[currentCode()]||vision.en||{}).expand||t().expand));
     if(opened && focusTitle){
       el('pwWorldPreview')?.scrollIntoView({block:'start',behavior:'auto'});
       const title=el('pwWorldCurriculumTitle');
