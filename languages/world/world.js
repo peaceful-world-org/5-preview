@@ -79,7 +79,7 @@
   }
   function atlasLanguages() {
     if(!atlas)return;
-    const live=el('pwWorldLiveLocales'),rest=el('pwWorldCandidateList'),c=t();
+    const live=el('pwWorldLiveLocales'),rest=el('pwWorldCandidateList'),c=t(),v=vision[currentCode()]||vision.en||{};
     if(live){
       live.replaceChildren();
       for(const entry of atlas.available) live.appendChild(make('span','pw-world-language-live',entry.label));
@@ -88,9 +88,9 @@
       rest.replaceChildren();
       for(const [n,wave] of atlas.waves.entries()){
         const section=make('section','pw-world-wave');
-        section.appendChild(make('h4','',c.waves[n]+' · '+wave.codes.length));
+        section.appendChild(make('h4','',(v.waveTitles?.[n]||c.waves[n])+' · '+wave.codes.length));
         const line=make('div','pw-world-wave-code-list');
-        for(const code of wave.codes)line.appendChild(make('span','pw-world-wave-code',displayName(code)+' · '+code));
+        for(const code of wave.codes)line.appendChild(make('span','pw-world-wave-code',displayName(code)));
         section.appendChild(line);
         rest.appendChild(section);
       }
@@ -106,7 +106,7 @@
     put('pwWorldOpenText',opened?c.collapse:(v.expand||c.expand));
     put('pwWorldCurriculumTitle',c.atlas);
     put('pwWorldCurriculumCount',c.ideas);
-    put('pwWorldCurriculumNote',c.ideasNote);
+    put('pwWorldCurriculumNote',v.ideasNote||c.ideasNote);
     put('pwWorldUntranslatedNote',c.untranslated);
     put('pwWorldLanguagesTitle',c.languages);
     put('pwWorldLanguagesCount',c.live);
@@ -116,6 +116,34 @@
     put('pwWorldTraditionStatus',v.traditionStatus||'Long-term plan');
     put('pwWorldTraditionLead',v.traditionLead||'Not available yet.');
     put('pwWorldTraditionDetail',v.traditionDetail||'Expert review will be required.');
+    put('pwWorldExpertKicker',v.expertKicker||'AN INVITATION TO COLLABORATE');
+    put('pwWorldExpertHeading',v.expertHeading||'Help make the practices better');
+    put('pwWorldExpertText',v.expertText||'We welcome ideas and corrections.');
+    const emailHref='mailto:hello@peaceful-world.org?subject='+encodeURIComponent(v.expertSubject||'5 · Practice suggestions');
+    for(const id of ['pwWorldExpertLink','pwWorldExpertInAtlas']){
+      const link=el(id);
+      if(link){link.href=emailHref;link.textContent=v.expertAction||'Suggest an improvement';}
+    }
+    const guideId=String(window.PW_I18N?.registry?.locales?.ru?.ai?.agentId||'').trim();
+    const guideUrl=guideId?'https://elevenlabs.io/app/talk-to?agent_id='+encodeURIComponent(guideId):'';
+    for(const id of ['pwWorldAiHome','pwWorldAiDone']){
+      const link=el(id);
+      if(link){
+        link.hidden=!guideUrl;
+        if(guideUrl)link.href=guideUrl;
+        link.textContent=v.aiLabel||'Ask AI';
+        link.setAttribute('aria-label',v.aiAria||'Open the AI Guide in Russian or English in a new tab');
+      }
+    }
+    const support=el('pwWorldSupportHome');
+    if(support){
+      support.textContent=v.supportLabel||'Support';
+      support.href=window.PW_I18N?.config?.links?.support||'https://peaceful-world.org/help';
+    }
+    put('pwWorldShareBtn',v.shareLabel||'Share');
+    el('pwWorldTools')?.setAttribute('aria-label',v.toolsAria||'Questions, support and sharing');
+    el('pwWorldDoneActions')?.setAttribute('aria-label',v.doneActionsAria||'Other actions');
+
     put('pwWorldDoneEyebrow',v.doneEyebrow||'THE HORIZON OF 5');
     put('pwWorldDoneHeading',v.doneTitle||c.done);
     put('pwWorldDoneNote',v.doneNote||c.doneNote);
@@ -189,6 +217,31 @@
     };
     new MutationObserver(adjustMenu).observe(panel,{childList:true});
   }
+
+  // These are real voluntary actions. Shared QA staging never embeds a live
+  // AI agent: the guide opens only when the visitor follows the external link.
+  async function shareLiveApp(){
+    const c=vision[currentCode()]||vision.en||{};
+    const payload={url:'https://5.peaceful-world.org/',title:'5 · Peace Practice',text:c.shareText||'Five minutes to practise peaceful thinking.'};
+    if(typeof navigator.share==='function'){
+      try{await navigator.share(payload);return;}
+      catch(error){if(error?.name==='AbortError')return;}
+    }
+    try{
+      if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(payload.url);}
+      else{
+        const input=document.createElement('textarea');
+        input.value=payload.url;
+        input.setAttribute('readonly','');
+        input.style.cssText='position:fixed;left:-10000px;top:0;opacity:0';
+        document.body.appendChild(input);input.select();
+        const success=document.execCommand('copy');input.remove();
+        if(!success)throw Error('Copy unavailable');
+      }
+      put('pwWorldToolsStatus',c.shareSuccess||'Link copied');
+    }catch(_){put('pwWorldToolsStatus',c.shareError||'Could not copy the link');}
+  }
+  el('pwWorldShareBtn')?.addEventListener('click',()=>{void shareLiveApp()});
   document.addEventListener('pw:locale-changed',update);
   document.addEventListener('pw:locale-ready',update);
   if(window.PW_I18N?.ready)window.PW_I18N.ready.then(update,update);
