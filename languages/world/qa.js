@@ -45,7 +45,7 @@
       click('pwFreeHint');
       const overlay=d.querySelector('.pw-practice-hint-overlay');
       assert(overlay && !overlay.hidden,'Free optional hint opens');
-      click('pwFreeHintContinue');
+      d.querySelector('.pw-free-hint-card .pw-practice-hint-continue')?.click();
       await wait(()=>overlay?.hidden,'hint close');
       assert(overlay.hidden,'Free hint closes and returns to timer');
       click('pwFreeFinish');
