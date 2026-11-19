@@ -450,7 +450,7 @@ html[data-world-concept="1"] #practice #stepCount {color:var(--text);opacity:.94
   #home .home-stack--cards {padding-top: clamp(44px, 6dvh, 54px)}
   #home .mode-section-label {margin-top: 14px}
   #home .pw-world-tools {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  #done .pw-world-tools {display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  #done .pw-world-tools .pw-world-tool {padding-inline:4px}
   #home .pw-world-candidate-list {padding-inline:12px}
   #home .pw-world-wave {padding-block:14px 17px}
   #home .pw-world-wave-code-list {column-gap:7px}
