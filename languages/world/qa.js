@@ -92,13 +92,14 @@
       await sleep(40);
       const tickForward=()=>{synthetic+=950;w.tick()};
       const stepCount=()=>d.getElementById('stepCount')?.textContent||'';
+      const currentStep=()=>Number.parseInt(stepCount(),10);
       for(let step=0;step<5;step++){
         for(let n=0;n<3;n++)tickForward();
         await wait(()=>d.getElementById('timerShell')?.classList.contains('is-practice') &&
           !d.getElementById('timerShell')?.classList.contains('phase-change'),'step '+(step+1)+' practice phase',3000);
         for(let n=0;n<6;n++)tickForward();
         if(step<4){
-          await wait(()=>stepCount().includes(String(step+2)),'transition to step '+(step+2),3500);
+          await wait(()=>currentStep()===step+2,'transition to step '+(step+2),3500);
           record(true,'Demo advanced to step '+(step+2)+' of 5');
         }else{
           await wait(()=>active('done'),'guided demo completion',4000);
