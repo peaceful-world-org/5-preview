@@ -212,7 +212,7 @@ html{scroll-behavior:smooth}body{margin:0;color:var(--eco-ink);background:var(--
 #pw-practice-v2 .eco-section--roadmap .eco-status-guide .eco-status-legend[data-status="development"]::before{background:#b08530}
 #pw-practice-v2 .eco-section--roadmap .eco-status-guide .eco-status-legend[data-status="planned"]::before{background:#8b9d90}
 #pw-practice-v2 .eco-practice-group li{display:flex;align-items:center;justify-content:flex-start;gap:11px;padding:11px 0;font-size:16px;color:#2c4733}
-#pw-practice-v2 .eco-practice-group li>.eco-item-state{display:inline-block;box-sizing:border-box;flex:0 0 10px;width:10px;height:10px;min-width:10px;min-height:10px;padding:0;margin:0;border:0;border-radius:50%;font-size:0;line-height:0;background:#8b9d90;box-shadow:0 0 0 2px rgba(139,157,144,.10)}
+#pw-practice-v2 .eco-practice-group li>.eco-item-state:first-child{display:inline-block;box-sizing:border-box;flex:0 0 10px;width:10px;height:10px;min-width:10px;min-height:10px;max-width:10px;max-height:10px;padding:0;margin:0;border:0;border-radius:50%;font-size:0;line-height:0;background:#8b9d90;box-shadow:0 0 0 2px rgba(139,157,144,.10)}
 #pw-practice-v2 .eco-practice-group li>.eco-item-state[data-status="available"]{background:#218351;box-shadow:0 0 0 2px rgba(33,131,81,.13)}
 #pw-practice-v2 .eco-practice-group li>.eco-item-state[data-status="development"]{background:#b08530;box-shadow:0 0 0 2px rgba(176,133,48,.13)}
 #pw-practice-v2 .eco-practice-group li>.eco-item-state[data-status="planned"]{background:#8b9d90;box-shadow:0 0 0 2px rgba(139,157,144,.12)}
