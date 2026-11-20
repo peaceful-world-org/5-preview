@@ -257,3 +257,36 @@ html{scroll-behavior:smooth}body{margin:0;color:var(--eco-ink);background:var(--
  #pw-practice-v2 .eco-hero-proof a strong{font-size:25px}
 }
 @media(max-width:355px){#pw-practice-v2 .eco-hero-proof a{padding-inline:7px}#pw-practice-v2 .eco-hero-proof a strong{font-size:24px}}
+
+/* Hero copy & proof refinement: a human reason to practise, with one durable data-backed signal. */
+#pw-practice-v2 .pw-practice-hero{padding-top:clamp(40px,5vw,84px);padding-bottom:clamp(44px,6vw,91px)}
+#pw-practice-v2 .pw-practice-hero h1 .eco-hero-emphasis{color:#235f3f}
+#pw-practice-v2 .pw-practice-hero .pw-hero-lead{margin-top:24px;max-width:550px;font-size:inherit;line-height:1.52}
+#pw-practice-v2 .pw-practice-hero .pw-hero-lead .eco-hero-hook{display:block;color:#254735;font-size:clamp(19px,1.6vw,22px);font-weight:730;line-height:1.38;letter-spacing:-.02em}
+#pw-practice-v2 .pw-practice-hero .pw-hero-lead .eco-hero-support{display:block;margin-top:9px;color:#4a5d4f;font-size:clamp(16px,1.3vw,18px);font-weight:440;line-height:1.55;letter-spacing:0}
+#pw-practice-v2 .pw-practice-hero .pw-hero-meta{margin-top:16px;font-size:13px;line-height:1.75;font-weight:720;color:#3c6547}
+#pw-practice-v2 .eco-hero-proof-card{max-width:520px;margin-top:20px;padding:13px 17px 17px;background:rgba(255,255,255,.74);border:1px solid #d9e5d7;border-radius:16px;box-shadow:0 9px 28px rgba(24,63,37,.04);box-sizing:border-box}
+#pw-practice-v2 .eco-hero-proof-overline{margin:0 0 13px;color:#4c7757;font-size:11px;line-height:1.4;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof{margin:0;padding:0;max-width:none;border:0;gap:0}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a{gap:5px;padding-inline:14px;border-color:#dde7db}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a:first-child{padding-left:0}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a:last-child{padding-right:0}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a strong{font-size:clamp(29px,2.7vw,34px);font-weight:800;letter-spacing:-.045em;color:#24533b}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a:nth-child(2) strong{color:#766039}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a span{font-size:12px;line-height:1.38;color:#4e6254;font-weight:620}
+#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a:hover strong,#pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a:hover span{color:#148451}
+@media(max-width:640px){
+ #pw-practice-v2 .pw-practice-hero{padding-top:52px;padding-bottom:54px}
+ #pw-practice-v2 .pw-practice-hero .pw-hero-lead .eco-hero-hook{font-size:19px}
+ #pw-practice-v2 .pw-practice-hero .pw-hero-lead .eco-hero-support{font-size:16px}
+ #pw-practice-v2 .eco-hero-proof-card{margin-top:19px;padding:13px 13px 15px;border-radius:14px}
+ #pw-practice-v2 .eco-hero-proof-overline{font-size:10px;margin-bottom:11px;letter-spacing:.11em}
+ #pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a{padding-inline:9px}
+ #pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a strong{font-size:28px}
+ #pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a span{font-size:11px}
+}
+@media(max-width:350px){
+ #pw-practice-v2 .eco-hero-proof-card{padding-inline:10px}
+ #pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a{padding-inline:7px}
+ #pw-practice-v2 .eco-hero-proof-card .eco-hero-proof a strong{font-size:26px}
+}
