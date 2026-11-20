@@ -44,8 +44,8 @@ if(root){
   const validLocales=data=>data?.locales&&typeof data.locales==='object';
   const statusNames={
     available:say('Доступно','Available'),
-    development:say('В разработке','In development'),
-    planned:say('Концепция','Concept')
+    development:say('В работе','In progress'),
+    planned:say('Идея','Idea')
   };
   const allowedStatuses=new Set(['available','development','planned']);
   const ideaStatus=idea=>allowedStatuses.has(idea?.status)?idea.status:'planned';
@@ -56,11 +56,8 @@ if(root){
     }catch(_){return null;}
   };
   const stampStatus=status=>{
-    const span=create('span','eco-item-state');
-    const dot=create('span','eco-dot');
-    dot.dataset.status=status;
-    dot.setAttribute('aria-hidden','true');
-    span.append(dot,create('span','eco-visually-hidden',statusNames[status]));
+    const span=create('span','eco-item-state',statusNames[status]);
+    span.dataset.status=status;
     return span;
   };
   function drawRoadmap(data){
@@ -70,6 +67,8 @@ if(root){
     $('eco-idea-count').textContent=String(ideas.length);
     $('eco-category-count').textContent=String(groups.length);
     container.replaceChildren();
+    const modeCount=$('eco-live-mode-count');
+    if(modeCount)modeCount.textContent=String(root.querySelectorAll('.pw-mode-card').length);
     groups.forEach(group=>{
       const section=create('section','eco-practice-group');
       section.append(create('h3','',group[lang]||group.en||group.ru||''));
