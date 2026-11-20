@@ -67,11 +67,16 @@ if(root){
     const groups=data.groups;
     const container=$('eco-practice-catalog');
     const ideas=groups.flatMap(g=>g.ideas||[]);
-    $('eco-idea-count').textContent=String(ideas.length);
+    const futureCount=ideas.filter(idea=>ideaStatus(idea)!=='available').length;
+    $('eco-idea-count').textContent=String(futureCount);
+    const heroFuture=$('eco-hero-idea-count');
+    if(heroFuture)heroFuture.textContent=String(futureCount);
     $('eco-category-count').textContent=String(groups.length);
     container.replaceChildren();
     const modeCount=$('eco-live-mode-count');
     if(modeCount)modeCount.textContent=String(root.querySelectorAll('.pw-mode-card').length);
+    const heroModes=$('eco-hero-mode-count');
+    if(heroModes)heroModes.textContent=String(root.querySelectorAll('.pw-mode-card').length);
     groups.forEach(group=>{
       const section=create('section','eco-practice-group');
       section.append(create('h3','',group[lang]||group.en||group.ru||''));
@@ -120,6 +125,8 @@ if(root){
     const current=$('eco-locales-live');
     current.replaceChildren(...released.map(({label})=>create('span','',label)));
     $('eco-live-count').textContent=String(released.length);
+    const heroLocales=$('eco-hero-locale-count');
+    if(heroLocales)heroLocales.textContent=String(released.length);
     const planned=[...new Set(roadmap.waves.flatMap(wave=>wave.codes||[]))]
       .filter(code=>!releasedCodes.has(code.toLowerCase()))
       .map(code=>({code,label:resolveName(code,roadmap)}))

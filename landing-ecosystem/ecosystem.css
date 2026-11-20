@@ -235,3 +235,25 @@ html{scroll-behavior:smooth}body{margin:0;color:var(--eco-ink);background:var(--
 #pw-practice-v2 .eco-final .eco-final-platforms>.pw-btn:first-child{grid-column:1/-1}
 #pw-practice-v2 .eco-final .eco-final-platforms .pw-btn{min-height:54px}
 @media(max-width:350px){#pw-practice-v2 .eco-final .eco-final-platforms{grid-template-columns:minmax(0,1fr)}#pw-practice-v2 .eco-final .eco-final-platforms>.pw-btn:first-child{grid-column:auto}}
+
+/* Hero vNext: a concrete promise + a quiet, auto-synchronized glimpse of the live ecosystem. */
+#pw-practice-v2 .pw-practice-hero{background:radial-gradient(circle at 78% 47%,rgba(219,234,218,.49),transparent 42%),linear-gradient(180deg,#fdfdf9 0%,#f2f7f1 100%)}
+#pw-practice-v2 .pw-practice-hero .pw-kicker{color:#345e43;font-weight:780;letter-spacing:.055em}
+#pw-practice-v2 .pw-practice-hero .pw-hero-lead{max-width:560px;color:#34483c;line-height:1.54;font-size:clamp(18px,1.65vw,21px);font-weight:470;letter-spacing:-.008em}
+#pw-practice-v2 .pw-practice-hero .pw-hero-meta{color:#345844;font-size:13px;line-height:1.65;font-weight:710}
+#pw-practice-v2 .eco-hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;max-width:520px;margin-top:24px;padding-top:17px;border-top:1px solid #ccdacc;align-items:start}
+#pw-practice-v2 .eco-hero-proof a{display:flex;flex-direction:column;gap:5px;min-width:0;padding:0 13px 0 15px;text-decoration:none;color:#325a42;border-left:1px solid #dce6dc;outline-offset:4px}
+#pw-practice-v2 .eco-hero-proof a:first-child{border-left:0;padding-left:0}
+#pw-practice-v2 .eco-hero-proof a:last-child{padding-right:0}
+#pw-practice-v2 .eco-hero-proof a strong{color:#214632;font-size:clamp(24px,2.5vw,29px);font-weight:780;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+#pw-practice-v2 .eco-hero-proof a span{max-width:170px;font-size:12px;color:#4f6556;line-height:1.42;font-weight:600}
+#pw-practice-v2 .eco-hero-proof a:hover strong,#pw-practice-v2 .eco-hero-proof a:hover span{color:#127047}
+#pw-practice-v2 .eco-hero-proof a:focus-visible{outline:3px solid #ad872d;outline-offset:4px;border-radius:3px}
+@media(max-width:640px){
+ #pw-practice-v2 .pw-practice-hero .pw-hero-lead{font-size:17px;line-height:1.52}
+ #pw-practice-v2 .eco-hero-proof{margin-top:21px;padding-top:15px}
+ #pw-practice-v2 .eco-hero-proof a{padding-inline:10px}
+ #pw-practice-v2 .eco-hero-proof a span{font-size:11px;line-height:1.4}
+ #pw-practice-v2 .eco-hero-proof a strong{font-size:25px}
+}
+@media(max-width:355px){#pw-practice-v2 .eco-hero-proof a{padding-inline:7px}#pw-practice-v2 .eco-hero-proof a strong{font-size:24px}}
