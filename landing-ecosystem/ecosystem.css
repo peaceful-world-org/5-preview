@@ -197,3 +197,11 @@ html{scroll-behavior:smooth}body{margin:0;color:var(--eco-ink);background:var(--
 @media(prefers-reduced-motion:reduce){
  #pw-practice-v2 .eco-hero-actions .pw-btn-primary:hover{transform:none}
 }
+
+/* Design QA follow-up: small-screen metric grid avoids single-item wrapping. */
+@media(max-width:640px){
+ #pw-practice-v2 .eco-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;align-items:start}
+ #pw-practice-v2 .eco-stats li{min-width:0;width:auto}
+ #pw-practice-v2 .eco-stats li span{font-size:12px;line-height:1.42;overflow-wrap:anywhere}
+ #pw-practice-v2 .eco-section--languages .eco-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+}
