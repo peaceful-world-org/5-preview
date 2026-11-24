@@ -53,6 +53,23 @@ jobs:
           mv "$TMP/build" "$ROOT"
           echo "Assembled isolated Web RC (048dbcc4); no production or native workflows."
 
+      - name: Assemble guest-only My Progress review from PR 206
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="progress-v2-review-20261124"
+          TMP="$(mktemp -d)"
+          node "$ROOT/_stage/build-review.mjs" "$TMP/build"
+          for file in index.html progress-v2/preview-runtime.mjs progress-v2/my-progress.mjs progress-v2/local-ledger.mjs review-storage.js review-meta.json; do
+            test -s "$TMP/build/$file"
+          done
+          test ! -e "$TMP/build/sw.js"
+          test ! -e "$TMP/build/progress-sync.js"
+          test ! -e "$TMP/build/_stage"
+          rm -rf "$ROOT"
+          mv "$TMP/build" "$ROOT"
+          echo "Assembled isolated guest-only My Progress review (261073b). No cloud Auth, analytics, production writes or new service worker."
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

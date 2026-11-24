@@ -1,0 +1,3 @@
+#pwReviewBanner{position:fixed;z-index:9998;top:0;left:0;right:0;text-align:center;pointer-events:none;padding:3px 8px;font:11px/1.35 system-ui,sans-serif;background:var(--bg,#f9f8f4);color:var(--muted,#657069);border-bottom:1px solid var(--line,#d8ded7)}
+#pwModeDoneInstall,#pwModeInstall,#pwWorldShareBtn,#shareBtn,#feedbackBtn,#pwWebAiHome,#pwWebAiDone,.done-install-area{display:none!important}
+html[data-pw-progress-product] #home .pw-my-progress{margin-top:12px}

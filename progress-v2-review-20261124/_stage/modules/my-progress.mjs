@@ -1,0 +1,79 @@
+// One product entry on Home. Reuse the existing tested controls and listeners.
+import {progressView,durationText} from './my-progress-view.mjs';
+import {t,progressLocale,localizeProgress} from './progress-copy.mjs';
+
+function rememberOpen(details,key){
+  const storageKey='pw-my-progress-ui-'+key;
+  try{details.open=sessionStorage.getItem(storageKey)==='1';}catch(_){}
+  details.addEventListener('toggle',()=>{
+    try{sessionStorage.setItem(storageKey,details.open?'1':'0');}catch(_){}
+  });
+}
+export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
+  const root=document.createElement('details');
+  root.id='pwMyProgress';
+  root.className='pw-my-progress';
+  root.innerHTML=
+    '<summary><span data-progress-copy="My progress">My progress</span><span id="pwMyProgressBrief" class="pw-my-progress-brief"></span></summary>'+
+    '<div class="pw-my-progress-body">'+
+      '<p id="pwMyProgressEmpty" role="status" hidden></p>'+
+      '<div id="pwMyProgressHistory" hidden>'+
+        '<div class="pw-my-progress-totals">'+
+          '<div><strong id="pwMyProgressTime"></strong><span data-progress-copy="Time in practice">Time in practice</span></div>'+
+          '<div><strong id="pwMyProgressCount"></strong><span data-progress-copy="Completed practices">Completed practices</span></div>'+
+        '</div>'+
+        '<dl id="pwMyProgressModes" class="pw-my-progress-modes"></dl>'+
+      '</div>'+
+      '<div id="pwMyProgressControls"></div>'+
+    '</div>';
+  const el=id=>root.querySelector('#'+id);
+  const cards=document.getElementById('pwModeCards');
+  const controls=el('pwMyProgressControls');
+  const account=document.getElementById('pwV2AccountPanel'),settings=document.getElementById('pwV2TrackingPanel');
+  const adopt=document.getElementById('pwV2AdoptLegacy');
+  if(!cards||!account||!settings||!adopt)throw Error('Missing progress interface');
+  cards.after(root);
+  for(const panel of [account,settings])panel.removeAttribute('style');
+  controls.append(adopt,settings,account);
+  const calendar=document.getElementById('pwV2Calendar');
+  el('pwMyProgressHistory').after(calendar);
+  rememberOpen(root,'main');rememberOpen(settings,'settings');rememberOpen(account,'account');
+  if(!adopt.hidden)root.open=true; // Explicit choice is visible; never auto-adopt.
+  const titleIds={foundation:'pwCardBaseTitle',metta:'pwCardMettaTitle',free:'pwCardFreeTitle'};
+  function render(){
+    localizeProgress(root);
+    const state=getAccount(),prefs=getPreferences();
+    const view=progressView(getSnapshot(),state,prefs);
+    const locale=progressLocale(),nf=new Intl.NumberFormat(locale);
+    const history=el('pwMyProgressHistory'),empty=el('pwMyProgressEmpty');
+    history.hidden=!view.visible;
+    root.dataset.historyVisible=String(view.visible);
+    empty.hidden=view.visible;
+    const brief=el('pwMyProgressBrief');
+    if(!view.visible){
+      // Clear all old owner values, not merely hide the previous account.
+      el('pwMyProgressTime').textContent='';el('pwMyProgressCount').textContent='';
+      el('pwMyProgressModes').replaceChildren();brief.textContent=t(view.reason==='paused'?'Recording paused':'Verify account');
+      empty.textContent=t(view.reason==='paused'?'Recording paused. You can still practise.':'History is protected until the account is verified.');
+      return;
+    }
+    const cloud=document.getElementById('pwV2AccountState')?.dataset.state;
+    brief.textContent=t(({synced:'Cloud synchronized',syncing:'Synchronizing…',pending:'Saved locally · cloud not confirmed',unavailable:'Verify account'})[cloud]||'On this device');
+    el('pwMyProgressTime').textContent=durationText(view.seconds,locale);
+    el('pwMyProgressCount').textContent=nf.format(view.practices);
+    const list=el('pwMyProgressModes');list.replaceChildren();
+    for(const row of view.modes){
+      const label=document.createElement('dt'),value=document.createElement('dd');
+      label.textContent=document.getElementById(titleIds[row.mode])?.textContent||row.mode;
+      value.textContent=durationText(row.seconds,locale)+' · '+nf.format(row.practices);
+      value.setAttribute('aria-label',t('Time in practice')+': '+durationText(row.seconds,locale)+'; '+t('Completed practices')+': '+nf.format(row.practices));
+      list.append(label,value);
+    }
+  }
+  document.addEventListener('pw:progress-restored',render);
+  document.addEventListener('pw:v2-account-state',render);
+  document.addEventListener('pw:locale-changed',render);
+  document.addEventListener('pw:locale-ready',render);
+  render();
+  return Object.freeze({render});
+}
