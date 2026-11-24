@@ -1,0 +1,72 @@
+
+/* Only Focus catalog and QA controls are new. Web RC supplies all shared UI. */
+[hidden]{display:none!important}
+#home .pilot-mode{width:min(100%,416px);margin:13px auto 0}
+#home .pilot-build{font-size:.72rem;color:var(--muted);margin:0 0 8px}
+.pilot-switch,.pilot-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:4px;border:1px solid var(--line);background:var(--surface);border-radius:15px}
+.pilot-switch a,.pilot-categories button{display:flex;align-items:center;justify-content:center;min-height:44px;padding:6px 5px;text-align:center;font-size:.78rem;line-height:1.25;text-decoration:none;font-weight:650;color:var(--muted);background:transparent;border:0;border-radius:11px;cursor:pointer}
+.pilot-switch a[aria-current="page"],.pilot-categories button[aria-pressed="true"]{color:var(--ink);background:var(--accent-soft)}
+#home .pilot-mode-note{font-size:.7rem;color:var(--muted);margin:7px 0 0;line-height:1.4}
+#home #pwModeCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#home #pwModeCards>.practice-choice{display:flex;flex-direction:column;grid-column:auto;min-height:0;min-width:0;padding:12px}
+#home #pwModeCards .practice-choice-heading{min-height:44px;padding-inline-end:26px;align-items:center}
+#home #pwModeCards .practice-choice-title{font-size:clamp(.94rem,3.6vw,1.17rem);text-wrap:balance}
+#home #pwModeCards .practice-card-info{right:-8px;width:38px;height:44px}
+#home #pwModeCards .practice-choice-detail-row{min-height:2.6em;margin:4px 0 10px;align-items:flex-start}
+#home #pwModeCards .practice-choice-description{flex-basis:auto;font-size:.77rem;line-height:1.4}
+#home #pwModeCards .practice-card-cta{min-height:44px;margin-top:auto;padding-inline:9px;font-size:.78rem}
+#home .pilot-library{width:min(100%,416px);margin:16px auto 0;padding:15px;border-radius:20px;border:1px solid var(--line);background:var(--surface);text-align:left;min-width:0}
+.pilot-library-header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 12px}
+.pilot-library-header h2{margin:0;font-size:1.05rem;line-height:1.3;color:var(--ink);font-weight:720}
+.pilot-library-header>span{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.pilot-categories{grid-template-columns:repeat(3,minmax(0,1fr));background:var(--bg)}
+.pilot-categories button{font-size:.76rem}
+.pilot-group[data-active="false"]{display:none}
+.pilot-group-title{margin:14px 0 5px;font-weight:660;font-size:.77rem;color:var(--accent-text)}
+.pilot-list{min-width:0}
+.pilot-skill{display:flex;width:100%;min-height:57px;padding:10px 5px;gap:10px;align-items:center;justify-content:space-between;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--line);font:inherit;text-align:left;cursor:pointer}
+.pilot-skill:last-child{border-bottom:0}
+.pilot-skill:hover,.pilot-skill:focus-visible{border-radius:9px;background:var(--accent-soft)}
+.pilot-skill-label{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:3px}
+.pilot-skill-name{font-size:.92rem;font-weight:690;line-height:1.3;overflow-wrap:anywhere}
+.pilot-skill-desc{font-size:.74rem;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+.pilot-arrow{font-size:1rem;color:var(--accent-text);flex:0 0 auto}
+.pilot-step-nav{width:min(100%,350px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px auto 0;padding:4px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.pilot-step-nav button{min-height:44px;flex:1 1 0;border:0;background:transparent;color:var(--text);font-size:.82rem;font-weight:650;border-radius:10px;cursor:pointer}
+.pilot-step-nav button:hover{background:var(--accent-soft)}
+.pilot-step-nav button:disabled{opacity:.35;cursor:default}
+.pilot-step-nav span{color:var(--muted);font-size:.75rem;white-space:nowrap}
+#practice .practice-topbar,#practice .practice-footer{flex-shrink:0}
+#practice .practice-card{min-height:min-content}
+#practice .pw-practice-hint-trigger{min-height:44px}
+#home #pwWorldTools,#home #pwWorldExpertInvite,#home .pw-world-home-tools,#home #homeInstallArea,#done #installArea,#done .pw-world-done-tools,#home .home-privacy-row{display:none!important}
+#home .practice-choice--metta[hidden]{display:none!important}
+@media(min-width:700px){
+ #home .pilot-library{width:100%;max-width:none;padding:18px}
+ #home #pwModeCards>.practice-choice{padding:15px 18px}
+ #home #pwModeCards .practice-choice-heading{min-height:34px}
+ #home #pwModeCards .practice-choice-detail-row{min-height:0}
+ #home .pilot-mode{width:min(100%,416px)}
+}
+@media(min-width:900px){
+ .pilot-categories{display:none}
+ .pilot-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+ .pilot-group[data-active="false"]{display:block}
+ .pilot-group+.pilot-group{border-left:1px solid var(--line);padding-left:15px}
+ .pilot-group-title{margin-top:0}
+}
+@media(max-width:350px){
+ #home #pwModeCards .practice-choice-heading{min-height:54px}
+ #home #pwModeCards .practice-card-cta{font-size:.7rem}
+ #home .pilot-library{padding:12px}
+ .pilot-categories button{font-size:.68rem}
+}
+@media(max-height:720px){
+ #practice .practice-card{grid-template-rows:70px 1fr;padding-block:12px;margin-block:10px}
+ #practice .step-guide{margin-top:12px}
+ #practice .timer-shell{width:88px;height:88px}
+}
+@media(orientation:landscape) and (max-height:520px){
+ #practice .practice-card{grid-template-rows:38px 1fr;padding-block:8px}
+ .pilot-step-nav{margin-top:3px}
+}

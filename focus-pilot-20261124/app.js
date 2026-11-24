@@ -38,8 +38,7 @@ if (REDUCED_MOTION) {
   CONFIG.phaseChangeMs = 60;
 }
 
-const IS_DEMO = new URLSearchParams(location.search).has('demo') ||
-  location.pathname.endsWith('demo.html');
+const IS_DEMO = new URLSearchParams(location.search).get('mode') !== 'practice';
 const PREP = IS_DEMO ? CONFIG.demoPrepSeconds : CONFIG.prepSeconds;
 const PRACTICE = IS_DEMO ? CONFIG.demoPracticeSeconds : CONFIG.practiceSeconds;
 const CIRC = 2 * Math.PI * CONFIG.ringRadius;
@@ -89,20 +88,24 @@ function selectPracticeSteps() {
     console.warn('Copy rotation unavailable; using locale fallback copy.', error);
   }
 
-  return false; // Pilot must never fall back to unrelated Foundation copy.
+  if(window.PW_FOCUS_PILOT.some(p=>p.id===window.PW_TRAINING_MODES?.mode))return false;
+  const fallback = localizedFallbackSteps();
+  if (!validPracticeSteps(fallback)) return false;
+  STEPS = fallback;
+  return true;
 }
 
 const store = {
   get(key, fallback) {
     try {
-      const value = localStorage.getItem('pw-focus-pilot-'+key);
+      const value = localStorage.getItem('pw-focus-v2-'+key);
       return value === null ? fallback : value;
     } catch (_) {
       return fallback;
     }
   },
   set(key, value) {
-    try { localStorage.setItem('pw-focus-pilot-'+key, value); } catch (_) {}
+    try { localStorage.setItem('pw-focus-v2-'+key, value); } catch (_) {}
   }
 };
 
@@ -468,7 +471,7 @@ function updatePhaseVisual() {
 function writeStep() {
   const step = STEPS[stepIndex];
   stepCount.textContent = `${stepIndex + 1} / ${STEPS.length}`;
-  $('stepNumber').textContent = String(stepIndex + 1);
+  $('stepNumber').textContent=String(stepIndex+1);
   stepTitle.textContent = step.title;
   stepGuide.textContent = step.guide;
   updateDots();
@@ -588,7 +591,7 @@ async function startPractice() {
     ensureAudio();
     document.dispatchEvent(new CustomEvent('pw:practice-started', {
       detail: {
-        mode: window.PW_TRAINING_MODES?.mode === 'metta' ? 'metta' : 'guided',
+        mode: window.PW_TRAINING_MODES?.mode || 'foundation',
         locale: window.PW_COPY_ROTATION?.currentLocale || currentLocale(),
         copyVersion: window.PW_COPY_ROTATION?.copyVersion || window.PW_I18N?.config?.copyVersion || ''
       }
@@ -706,7 +709,7 @@ function exit() {
   stopSession();
   show(home);
   announce(i18nText('practice.sr.ended', 'Тренировка завершена.'));
-  window.PW_PILOT_VIEW?.focusLast();
+  focusQuietly($('pwModeChoose'));
 }
 
 function markFinalHidden() {
@@ -719,7 +722,7 @@ function maybeResetCompletedView() {
   finalHiddenAt = 0;
   if (hiddenFor < FINAL_RETURN_RESET_MS || !done.classList.contains('active')) return;
   show(home);
-  window.PW_PILOT_VIEW?.focusLast();
+  focusQuietly($('pwModeChoose'));
 }
 
 startBtn.addEventListener('click', startPractice);
@@ -745,7 +748,7 @@ function backFromFeedback() {
   if (feedback?.dataset) delete feedback.dataset.pwReturn;
   if (target === 'home') {
     show(home);
-    window.PW_PILOT_VIEW?.focusLast();
+    focusQuietly($('pwModeChoose'));
     return;
   }
   backToDone();
