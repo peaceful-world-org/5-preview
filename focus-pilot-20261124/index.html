@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F4" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="5 — пятиминутный тренажёр мирного ума от Peaceful World." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="5" />
+  <script>
+    (() => {
+      const syncViewportHeight = () => {
+        const height = window.visualViewport?.height || window.innerHeight;
+        if (!Number.isFinite(height) || height <= 0) return;
+        document.documentElement.style.setProperty('--pw-viewport-height', `${Math.round(height)}px`);
+      };
+      syncViewportHeight();
+      requestAnimationFrame(syncViewportHeight);
+      setTimeout(syncViewportHeight, 120);
+      window.addEventListener('pageshow', syncViewportHeight, { passive:true });
+      window.addEventListener('resize', syncViewportHeight, { passive:true });
+      window.addEventListener('orientationchange', () => setTimeout(syncViewportHeight, 120), { passive:true });
+      window.visualViewport?.addEventListener('resize', syncViewportHeight, { passive:true });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) requestAnimationFrame(syncViewportHeight);
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      const THEME_KEY = 'pw-focus-pilot-theme';
+      let preference = 'system';
+      try {
+        const saved = localStorage.getItem(THEME_KEY);
+        if (saved === 'light' || saved === 'dark') preference = saved;
+      } catch (_) {}
+      const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
+      const theme = preference === 'dark' || (preference === 'system' && systemDark) ? 'dark' : 'light';
+      document.documentElement.dataset.pwTheme = theme;
+      document.documentElement.dataset.pwThemePreference = preference;
+      document.documentElement.style.colorScheme = theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = theme === 'dark' ? '#171A18' : '#F9F8F4';
+    })();
+  </script>
+
+  <link rel="icon" href="icon.svg?v=0.18.59" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="feedback.css" />
+  <link rel="stylesheet" href="brand.css" />
+  <link rel="stylesheet" href="install.css" />
+  <link rel="stylesheet" href="step-number.css" />
+  <link rel="stylesheet" href="completion-polish.css" />
+  <link rel="stylesheet" href="practice-modes.css" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>5 · Новые практики — пилот RU</title>
+  <link rel="stylesheet" href="pilot.css?v=1" />
+</head>
+<body>
+<main class="app">
+<section id="home" class="screen active home-screen home-screen--cards">
+  <div class="home-stack home-stack--cards">
+    <a class="pw-origin-mark" href="../" aria-label="Вернуться к основному превью"><img src="peaceful-world-logo.png" alt="" width="128" height="128"></a>
+    <div class="five-brand" aria-label="5"><span class="five-mark" aria-hidden="true">5</span></div>
+    <div class="hero-copy"><p class="subtitle home-headline">Новые практики</p></div>
+    <p class="pilot-note">RU · Педагогический пилот · 24.11.2026</p>
+    <button id="themeToggle" type="button" class="secondary pilot-theme">Тёмная тема</button>
+    <p id="demoLabel" class="pilot-note" hidden>Демо: ускоренное время для проверки интерфейса.</p>
+    <details class="howto" id="pilotHowto"><summary>Как проходит тренировка</summary><div class="howto-body">
+      <p>На каждом шаге сначала 5 секунд на чтение и подготовку, затем одна полная минута тренировки.</p>
+      <p>Не спеши. Если мысль или ответ уже найдены, просто побудь с ними. Не нужно заполнять каждую секунду новыми мыслями.</p>
+      <p>Пример доступен по нажатию и приостанавливает таймер. Ты можешь остановить тренировку в любой момент.</p>
+    </div></details>
+    <h2 id="pwModeChoose" class="mode-section-label">ВЫБЕРИ ТРЕНИРОВКУ</h2>
+    <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose"></div>
+    <button id="startBtn" type="button" hidden tabindex="-1" aria-hidden="true">Начать</button>
+    <p class="pilot-note">Тестовые тексты. Не финальная версия. Аналитика, синхронизация и отправка отзывов отключены.</p>
+    <a class="home-privacy-link" href="../web-vnext-rc-20261119/">Вернуться к Web RC →</a>
+  </div>
+</section>
+<section id="practice" class="screen practice-screen">
+      <div class="practice-topbar">
+        <button id="closeBtn" type="button" class="round-btn" aria-label="Завершить тренировку" data-i18n-aria-label="practice.close.aria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+        <div class="step-meta"><span id="stepCount">1 / 5</span><small id="pilotPracticeLabel">ТРЕНИРОВКА</small></div>
+        <button id="soundToggle" type="button" class="round-btn sound-on" aria-pressed="true" aria-label="Тиканье включено" data-i18n-aria-label="practice.sound.on.aria">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.2 1.8"></path><path class="sound-slash" d="M5.5 18.5l13-13"></path></svg>
+        </button>
+      </div>
+      <div id="dots" class="progress-dots" aria-hidden="true"></div>
+      <div id="practiceContent" class="practice-card">
+        <div id="stepNumber" class="step-number" aria-hidden="true">1</div>
+        <p class="kicker" data-i18n="practice.kicker">СЕЙЧАС</p>
+        <div class="step-copy">
+          <h2 id="stepTitle" tabindex="-1"></h2>
+          <p id="stepGuide" class="step-guide"></p>
+        </div>
+      </div>
+      <div class="practice-footer">
+        <div id="timerShell" class="timer-shell preparing" role="timer" aria-label="Подготовка, осталось 5 секунд">
+          <svg viewBox="0 0 120 120" class="timer-ring" aria-hidden="true">
+            <circle class="timer-track" cx="60" cy="60" r="49"></circle>
+            <circle id="progressRing" class="timer-progress" cx="60" cy="60" r="49"></circle>
+          </svg>
+          <div class="timer-center" aria-hidden="true"><div id="timer" class="timer">5</div><div id="timerCaption" class="timer-caption" data-i18n="practice.preparing">ПОДГОТОВКА</div></div>
+        </div>
+        <button id="pauseBtn" type="button" class="secondary pause-btn" data-i18n="practice.pause">Пауза</button>
+      </div>
+    </section>
+<section id="done" class="screen done-screen done-screen--cards">
+  <div class="done-stack pilot-done">
+    <div class="done-mark" aria-hidden="true">✓</div>
+    <p id="doneKicker" class="brand-name done-kicker">Тренировка завершена</p>
+    <h1 id="doneTitle" class="done-title" tabindex="-1">Тренировка завершена</h1>
+    <p id="donePractice" class="done-subtitle"></p>
+    <button id="pilotBack" class="primary" type="button">К списку практик</button>
+    <button id="pilotRepeat" class="secondary" type="button">Повторить</button>
+  </div>
+</section>
+<div id="srStatus" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+</main>
+<script src="pilot-data.js?v=1"></script>
+<script src="pilot-adapter.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script src="sound-v1.js"></script>
+<script src="pilot-ui.js?v=1"></script>
+</body>
+</html>
