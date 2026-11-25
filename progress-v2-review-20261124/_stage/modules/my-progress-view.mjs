@@ -23,3 +23,11 @@ export function durationText(seconds,locale){
   }
   return parts.join(' ');
 }
+
+// Cumulative progress is displayed in whole elapsed minutes, without rounding up.
+// The underlying ledger and exports retain exact seconds.
+export function minutesText(seconds,locale){
+  if(!natural(seconds))throw Error('Invalid displayed duration');
+  const format=new Intl.NumberFormat(locale,{style:'unit',unit:'minute',unitDisplay:'short'});
+  return seconds>0&&seconds<60?'<'+format.format(1):format.format(Math.floor(seconds/60));
+}

@@ -1,5 +1,5 @@
 // One product entry on Home. Reuse the existing tested controls and listeners.
-import {progressView,durationText} from './my-progress-view.mjs';
+import {progressView,minutesText} from './my-progress-view.mjs';
 import {t,progressLocale,localizeProgress} from './progress-copy.mjs';
 
 function rememberOpen(details,key){
@@ -36,7 +36,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
   for(const panel of [account,settings])panel.removeAttribute('style');
   controls.append(adopt,settings,account);
   const calendar=document.getElementById('pwV2Calendar');
-  el('pwMyProgressHistory').after(calendar);
+  el('pwMyProgressHistory').before(calendar);
   rememberOpen(root,'main');rememberOpen(settings,'settings');rememberOpen(account,'account');
   if(!adopt.hidden)root.open=true; // Explicit choice is visible; never auto-adopt.
   const titleIds={foundation:'pwCardBaseTitle',metta:'pwCardMettaTitle',free:'pwCardFreeTitle'};
@@ -59,7 +59,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
     }
     const cloud=document.getElementById('pwV2AccountState')?.dataset.state;
     brief.textContent=t(({synced:'Cloud synchronized',syncing:'Synchronizing…',pending:'Saved locally · cloud not confirmed',unavailable:'Verify account'})[cloud]||'On this device');
-    el('pwMyProgressTime').textContent=durationText(view.seconds,locale);
+    el('pwMyProgressTime').textContent=minutesText(view.seconds,locale);
     el('pwMyProgressCount').textContent=nf.format(view.practices);
     const list=el('pwMyProgressModes');list.replaceChildren();
     for(const row of view.modes){
@@ -67,7 +67,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
       const label=document.createElement('th'),time=document.createElement('td'),count=document.createElement('td');
       label.scope='row';
       label.textContent=document.getElementById(titleIds[row.mode])?.textContent||row.mode;
-      time.textContent=durationText(row.seconds,locale);
+      time.textContent=minutesText(row.seconds,locale);
       count.textContent=nf.format(row.practices);
       line.append(label,time,count);list.append(line);
     }

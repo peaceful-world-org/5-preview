@@ -32,7 +32,7 @@ html[data-pw-progress-product] #home .pw-my-progress{
 .pw-my-progress input[type="checkbox"]{width:20px;height:20px;accent-color:var(--accent);flex:none}
 .pw-my-progress label{font-size:.86rem;line-height:1.5}
 #pwV2TrackingPanel label{display:flex;align-items:center;gap:9px;min-height:44px}
-#pwV2Calendar{border-top:1px solid var(--line);padding-top:12px;margin:12px 0}
+#pwV2Calendar{border-bottom:1px solid var(--line);padding:8px 0 12px;margin:0 0 12px}
 #pwV2MonthGrid>span{padding:6px 0;min-width:0;font-size:.78rem;line-height:1.4}
 #pwV2MonthGrid>span[data-day]{box-sizing:border-box;justify-self:center;display:grid;place-items:center;width:min(100%,34px);aspect-ratio:1;padding:0;border:1px solid transparent;border-radius:50%}
 #pwV2MonthGrid>span.pw-calendar-practised{background:var(--text);color:var(--bg);font-weight:650}
