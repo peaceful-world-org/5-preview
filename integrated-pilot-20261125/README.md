@@ -9,3 +9,7 @@ Scoped Home-only CSS: unified content width, one shared desktop catalog surface,
 ## Revision 3
 
 Align both information buttons on a single right-side rail, reserve independent action space, and preserve mobile full-width Foundation CTA. Fast review does not await the guest ledger, so another tab holding the write lock cannot prevent reviewing all practice steps. Full practice remains guarded by the original ledger initialization. The preview Pages workflow now waits for the uniquely named artifact to appear in the Actions API before deploying. No history is reset or cleared.
+
+## Revision 4
+
+Restore the existing Free practice start button as an explicit gold CTA; share the Foundation grid, desktop action dimensions, info-button rail and mobile full-width CTA. No changes to timers, event bindings, text, progress history or release behavior.
