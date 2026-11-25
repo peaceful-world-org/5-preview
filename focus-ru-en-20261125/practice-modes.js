@@ -264,12 +264,12 @@
     }
     const webText=window.PW_WEB_COPY[locale()]||window.PW_WEB_COPY.ru;
     const demo=last?.demo||IS_DEMO;
-    if(doneLabel&&demo)doneLabel.textContent='Быстрый просмотр завершён';
+    if(doneLabel&&demo)doneLabel.textContent=locale()==='ru'?'Быстрый просмотр завершён':'Quick review complete';
     const duration=demo?null:last?.durationSeconds;
     set('pwModeDoneSummaryHeading',c.outcome);
     set('pwModeDoneSummaryTitle',modeTitle(c,mode));
     set('pwModeDoneSummaryTime',Number.isFinite(duration)?webText.sessionTime+': '+formatTime(duration,true):'');
-    set('pwModeDoneSummaryMode',demo?'Просмотр не учитывается в статистике':window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?'Запись прогресса отключена':c.totalTime+': '+formatTime(d.seconds));
+    set('pwModeDoneSummaryMode',demo?(locale()==='ru'?'Просмотр не учитывается в статистике':'Quick review is not recorded'):window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?(locale()==='ru'?'Запись прогресса отключена':'Progress recording is paused'):c.totalTime+': '+formatTime(d.seconds));
     $('pwModeDoneSummary')?.setAttribute('aria-label',webText.outcomeAria);
     updateHome();
   }

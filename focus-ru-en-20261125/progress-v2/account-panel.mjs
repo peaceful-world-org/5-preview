@@ -14,7 +14,7 @@ export async function mountAccountPanel({ledger,show,canSwitch,settle}){
     el('pwV2AccountState').textContent=ru()?'История сохраняется отдельно в этом браузере':'History is saved separately in this browser';
     el('pwReviewAccountNote').textContent=ru()?'Это гостевой предпросмотр. Email, Google, облачная синхронизация и удаление аккаунта отключены. Данные действующего приложения не используются.':'Guest review only. Email, Google, cloud sync and account deletion are disabled. Released-app data is not used.';
     el('pwV2Export').textContent=ru()?'Скачать историю (JSON)':'Export saved progress (JSON)';
-    el('pwReviewBanner').textContent=ru()?'Объединённый пилот · RU · локальная история':'Review build · separate local history';
+    el('pwReviewBanner').textContent=ru()?'Двуязычный пилот · локальная история':'Bilingual pilot · local history';
     show('local',el('pwV2AccountState').textContent);
   }
   el('pwV2Export').onclick=async()=>{
@@ -24,7 +24,7 @@ export async function mountAccountPanel({ledger,show,canSwitch,settle}){
       await settle();
       const data=formatProgressExport(await ledger.read(),null);
       const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)+'\n'],{type:'application/json'}));
-      const link=document.createElement('a');link.href=url;link.download='5-progress-integrated-pilot.json';document.body.append(link);link.click();link.remove();
+      const link=document.createElement('a');link.href=url;link.download='5-progress-focus-ru-en.json';document.body.append(link);link.click();link.remove();
       setTimeout(()=>URL.revokeObjectURL(url),1000);
       el('pwReviewExportStatus').textContent=ru()?'Локальная копия готова.':'Local copy prepared.';
     }catch(_){el('pwReviewExportStatus').textContent=ru()?'Не удалось скачать историю.':'Could not export history.';}

@@ -22,5 +22,5 @@
   "production_changed": false,
   "demo_opens_ledger": false,
   "guided_exit_confirmation_full": true,
-  "browser_qa": "Canonical parity, syntax and mocked locale/catalog checks; interactive browser QA pending"
+  "browser_qa": "Canonical parity, syntax and mocked catalog/language/session tests: 36 Focus selections/completions and 180 displayed steps/hints across demo/full and RU/EN. Real browser/device QA pending."
 }

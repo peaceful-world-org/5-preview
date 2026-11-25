@@ -1,3 +1,5 @@
 # 5 · RU/EN Focus content pilot
 
 Independent guest preview based on audited `dac3f2df880c50f769cb27b56378b391c184c749` and the reviewed bilingual v3 catalog. All 12 modes, F01–F09 exact in both languages, 306 text fields. Foundation, Free and Loving-kindness inherited (English shell from `8c125808c4b7e9646c2dc9437dc4a2cf188d0b86`). Language changes update names, descriptions, steps, hints and history labels. Language locked during a practice. No account/cloud/analytics, new worker or production/native changes. Independent local storage and IndexedDB. Quick review records no sessions; full practice stores local history. No migration of other preview history. Russian diff: F05/5/title, F05/5/guide, F06/3/guide, F09/2/hint. Static checks and mocked catalog validation passed; interactive browser and device QA pending. Not a release approval.
+
+Revision 2: localize demo/completion and local-history banner. Exercised the actual mode module against a controlled DOM double, all 9 Focus modes in both locales and demo/full (36 sessions, 180 step/guide/hint assertions, per-mode completion locale and copy version). This is not interactive browser or real timer/ledger QA.
