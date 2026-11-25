@@ -151,8 +151,9 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
     await synchronize();
   },'Transfer not confirmed; the original records remain protected.',{transition:true});
   const callback = window.PW_PILOT_CALLBACK;
-  const result = callback?.code ? await sdk.auth.exchangeCodeForSession(callback.code).catch(() => ({error:true})) : null;
-  const failed = !!(callback?.failed || (callback?.code && !result?.data?.session));
+  const code = callback?.takeCode();
+  const result = code ? await sdk.auth.exchangeCodeForSession(code).catch(() => ({error:true})) : null;
+  const failed = !!(callback?.failed || (code && !result?.data?.session));
   const callbackResult = failed ? 'failed' : 'none';
   await account.start({blockSession:callbackResult==='blocked'});
   if(callbackResult==='cancelled')notice('Google sign-in cancelled. You can still practise without an account.');

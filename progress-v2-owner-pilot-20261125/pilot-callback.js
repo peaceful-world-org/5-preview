@@ -6,9 +6,16 @@
   if (!fields.some(key => url.searchParams.has(key) || fragment.has(key))) return;
   const values = url.searchParams.getAll('code');
   const failed = fields.slice(1).some(key => url.searchParams.has(key) || fragment.has(key));
-  const code = values.length === 1 && /^[a-zA-Z0-9_-]{20,128}$/.test(values[0]) ? values[0] : null;
+  let code = !failed && values.length === 1 && /^[a-zA-Z0-9_-]{20,128}$/.test(values[0]) ? values[0] : null;
   for (const key of fields) url.searchParams.delete(key);
   url.hash = '';
   history.replaceState(null, '', url);
-  Object.defineProperty(window, 'PW_PILOT_CALLBACK', {value:Object.freeze({code, failed: failed || !code})});
+  Object.defineProperty(window, 'PW_PILOT_CALLBACK', {value:Object.freeze({
+    failed: failed || !code,
+    takeCode() {
+      const value = code;
+      code = null;
+      return value;
+    },
+  })});
 })();
