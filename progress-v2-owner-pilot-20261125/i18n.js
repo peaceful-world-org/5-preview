@@ -249,6 +249,7 @@
     }
 
     const nextPack = await loadPack(next);
+    if (locked) return false; // A practice may have started while the locale was loading.
     locale = next;
     localeConfig = registry.locales[next];
     pack = nextPack;

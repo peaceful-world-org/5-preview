@@ -109,7 +109,9 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
   el('pwV2Google').onclick=()=>action(async()=>{await google.begin();googleNavigating=true;render();},'Google sign-in unavailable. You can still use email.',{transition:true});
   el('pwV2Send').onclick=()=>action(async()=>{
     await account.send(el('pwV2Email').value.trim());
-    location.replace(new URL('check-email.html',location.href));
+    const next=new URL('check-email.html',location.href);
+    next.searchParams.set('lang',document.documentElement.lang==='en'?'en':'ru');
+    location.replace(next);
   },'Could not send a sign-in link. Check your address and wait before trying again.');
   el('pwV2SignOut').onclick=()=>action(()=>account.signOut(),'Sign-out not confirmed. Reload before retrying.',{transition:true});
   el('pwV2Reload').onclick=()=>{if(canSwitch())location.reload();};

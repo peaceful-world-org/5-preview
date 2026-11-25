@@ -67,7 +67,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
       const line=document.createElement('tr');
       const label=document.createElement('th'),time=document.createElement('td'),count=document.createElement('td');
       label.scope='row';
-      label.textContent=document.getElementById(titleIds[row.mode])?.textContent||window.PW_FOCUS_PILOT?.find(p=>p.id===row.mode)?.name||row.mode;
+      label.textContent=document.getElementById(titleIds[row.mode])?.textContent||(locale==='en'?window.PW_FOCUS_PILOT_EN:window.PW_FOCUS_PILOT)?.find(p=>p.id===row.mode)?.name||row.mode;
       time.textContent=minutesText(row.seconds,locale);
       count.textContent=nf.format(row.practices);
       line.append(label,time,count);list.append(line);

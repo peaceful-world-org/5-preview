@@ -5,10 +5,10 @@
     "localization": "Exploratory product-specific candidate list for 5; language priorities require independent review",
     "date": "2026-11-19"
   },
-  "note": "30 proposed practice ideas and 46 tentative language variants for future localization of the 5 app. None is a scheduled translation, confirmed release, or language rollout commitment.",
+  "note": "30 proposed practice ideas and 46 tentative language variants for future localization of the 5 app. None is a scheduled translation, confirmed release, or language rollout commitment. Availability counts refer to this RU/EN pilot only.",
   "counts": {
-    "currentLocales": 8,
-    "currentLanguages": 7,
+    "currentLocales": 2,
+    "currentLanguages": 2,
     "newCandidates": 46,
     "practiceIdeas": 30
   },
@@ -20,30 +20,6 @@
     {
       "code": "en",
       "label": "English"
-    },
-    {
-      "code": "uk",
-      "label": "Українська"
-    },
-    {
-      "code": "es",
-      "label": "Español"
-    },
-    {
-      "code": "pt-br",
-      "label": "Português (Brasil)"
-    },
-    {
-      "code": "pt-pt",
-      "label": "Português (Portugal)"
-    },
-    {
-      "code": "fr",
-      "label": "Français"
-    },
-    {
-      "code": "id",
-      "label": "Bahasa Indonesia"
     }
   ],
   "groups": [

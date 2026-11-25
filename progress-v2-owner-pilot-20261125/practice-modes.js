@@ -15,8 +15,10 @@
   }
   const rotation = window.PW_COPY_ROTATION;
   const focus = new Map(window.PW_FOCUS_PILOT.map(p=>[p.id,p]));
+  const focusEn = new Map(window.PW_FOCUS_PILOT_EN.map(p=>[p.id,p]));
+  if (focus.size!==9 || focusEn.size!==focus.size || [...focus.keys()].some(id=>!focusEn.has(id))) throw Error('Focus locale catalog mismatch');
   const focusKey = id => 'focus-count-'+id;
-  let focusMeta=null, focusDemo=true, focusFinished=false;
+  let focusMeta=null, focusDemo=true, focusFinished=false, focusSessionLocale=null;
   if (!copy?.ru?.steps || !copy?.en?.steps || !rotation) {
     console.error('[5] Required practice copy is unavailable');
     return;
@@ -90,7 +92,8 @@
   // Storage mode ID is 'foundation', while the approved copy key is 'base'.
   // Never render "undefined" in the details title, screen-reader label or history.
   const modeCopyKey = mode => mode === 'foundation' ? 'base' : mode;
-  const modeTitle = (c, mode) => focus.get(mode)?.name || c[modeCopyKey(mode)];
+  const focusPack = (id,code=locale()) => (code==='en'?focusEn:focus).get(id);
+  const modeTitle = (c, mode) => focusPack(mode)?.name || c[modeCopyKey(mode)];
   const mettaCopyVersion = () => window.PW_DRAFT_LOCALES?.[locale()]
     ? (window.PW_I18N?.config?.copyVersion || copy.version) : copy.version;
   let selected = 'foundation';
@@ -261,12 +264,12 @@
     }
     const webText=window.PW_WEB_COPY[locale()]||window.PW_WEB_COPY.ru;
     const demo=last?.demo||IS_DEMO;
-    if(doneLabel&&demo)doneLabel.textContent='Быстрый просмотр завершён';
+    if(doneLabel&&demo)doneLabel.textContent=locale()==='ru'?'Быстрый просмотр завершён':'Quick review complete';
     const duration=demo?null:last?.durationSeconds;
     set('pwModeDoneSummaryHeading',c.outcome);
     set('pwModeDoneSummaryTitle',modeTitle(c,mode));
     set('pwModeDoneSummaryTime',Number.isFinite(duration)?webText.sessionTime+': '+formatTime(duration,true):'');
-    set('pwModeDoneSummaryMode',demo?'Просмотр не учитывается в статистике':window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?'Запись прогресса отключена':c.totalTime+': '+formatTime(d.seconds));
+    set('pwModeDoneSummaryMode',demo?(locale()==='ru'?'Просмотр не учитывается в статистике':'Quick review is not recorded'):window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?(locale()==='ru'?'Запись прогресса отключена':'Progress recording is paused'):c.totalTime+': '+formatTime(d.seconds));
     $('pwModeDoneSummary')?.setAttribute('aria-label',webText.outcomeAria);
     updateHome();
   }
@@ -279,8 +282,8 @@
   }
   rotation.startSession=function(opts={}){
     if(focus.has(selected)){
-      focusDemo=Boolean(opts.demo);focusFinished=false;focusMeta=null;
-      return focus.get(selected).steps.map(s=>({title:s.title,guide:s.guide}));
+      focusDemo=Boolean(opts.demo);focusFinished=false;focusMeta=null;focusSessionLocale=locale();
+      return focusPack(selected,focusSessionLocale).steps.map(s=>({title:s.title,guide:s.guide}));
     }
     if(selected!=='metta')return originalStart(opts);
     mettaDemo=Boolean(opts.demo);mettaActive=true;mettaFinished=false;mettaMeta=null;
@@ -291,7 +294,7 @@
       if(focusFinished)return focusMeta;
       focusFinished=true;
       const n=focusDemo||window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?null:safeInt(focusKey(selected));
-      focusMeta={practiceNumber:n===null?null:stats().guided,modeNumber:n,copyVersion:focus.get(selected).version,setId:selected,locale:'ru',demo:focusDemo};
+      focusMeta={practiceNumber:n===null?null:stats().guided,modeNumber:n,copyVersion:focusPack(selected,focusSessionLocale).version,setId:selected,locale:focusSessionLocale,demo:focusDemo};
       window.PW_LAST_COMPLETION={mode:selected,practiceNumber:focusMeta.practiceNumber,durationSeconds:focusDemo?null:300,demo:focusDemo};
       document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       return focusMeta;
@@ -333,8 +336,8 @@
     if(!orig?.configurable)continue;
     Object.defineProperty(rotation,prop,{configurable:true,enumerable:true,get(){
       if(focus.has(selected)){
-        const current=focus.get(selected);
-        const fields={lastCompletedPracticeNumber:focusMeta?.practiceNumber??null,lastCompletedCopyVersion:focusMeta?.copyVersion??null,lastCompletedSetId:focusMeta?.setId??null,lastCompletedLocale:focusMeta?.locale??null,lastCompletedWasDemo:focusMeta?.demo??false,copyVersion:current.version,currentSetId:selected,currentLocale:'ru'};
+        const current=focusPack(selected,focusSessionLocale||locale());
+        const fields={lastCompletedPracticeNumber:focusMeta?.practiceNumber??null,lastCompletedCopyVersion:focusMeta?.copyVersion??null,lastCompletedSetId:focusMeta?.setId??null,lastCompletedLocale:focusMeta?.locale??null,lastCompletedWasDemo:focusMeta?.demo??false,copyVersion:current.version,currentSetId:selected,currentLocale:focusSessionLocale||locale()};
         return fields[prop];
       }
       return selected==='metta'?fn(mettaMeta):(typeof orig.get==='function'?orig.get.call(rotation):orig.value);
@@ -375,7 +378,7 @@
     isMetta(){return selected==='metta';},
     getMettaSteps,
     example(step){
-      if(focus.has(selected))return focus.get(selected).steps[step-1]?.hint||'';
+      if(focus.has(selected))return focusPack(selected,focusSessionLocale||locale()).steps[step-1]?.hint||'';
       if(selected!=='metta')return '';
       return copy[locale()]?.steps?.[step-1]?.example||'';
     },

@@ -7,5 +7,14 @@
   "hostedAcceptance": "pending",
   "candidate": "64468fb26fe800d75eec8a9f1e60474ac1ccfe2e",
   "emailAuth": "magic-link-pkce",
-  "accountDeletionEnabled": false
+  "accountDeletionEnabled": false,
+  "contentRevision": "focus-ru-en-v3-20261125",
+  "contentSource": "2a8bf915c3a4ec961e2d7f0464415bb2098f94c2",
+  "locales": [
+    "ru",
+    "en"
+  ],
+  "modes": 12,
+  "focusTextFields": 306,
+  "contentAcceptance": "canonical guest source parity and syntax checks; real hosted browser and cross-device acceptance pending"
 }
