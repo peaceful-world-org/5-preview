@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>5 · Peace Practice pilot</title>
+  <style>body{font:1rem/1.5 system-ui,sans-serif;max-width:34rem;margin:10vh auto;padding:0 1.5rem;color:#1e2822;background:#f9f8f4}a{color:inherit}</style>
+</head>
+<body>
+  <main id="ru">
+    <h1>Проверь почту</h1>
+    <p>Открой последнюю ссылку из письма Supabase в том же браузере и профиле, где ты её запросил. На втором устройстве запроси отдельную ссылку.</p>
+    <p><a href="./?lang=ru">Вернуться к тренировкам</a></p>
+  </main>
+  <main id="en" hidden>
+    <h1>Check your email</h1>
+    <p>Open the latest Supabase email link in the same browser and profile that requested it. Request a separate link on your second device.</p>
+    <p><a href="./?lang=en">Return to practice</a></p>
+  </main>
+  <script>
+    if (new URLSearchParams(location.search).get('lang') === 'en') {
+      document.documentElement.lang = 'en';
+      document.getElementById('ru').hidden = true;
+      document.getElementById('en').hidden = false;
+    }
+  </script>
+</body>
+</html>
