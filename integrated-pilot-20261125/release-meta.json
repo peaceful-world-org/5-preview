@@ -7,8 +7,9 @@
   "focus_steps": 45,
   "copy_checksum": 1315413488,
   "ledger_checks": 67,
-  "browser_qa": "pending",
+  "browser_qa": "pending after layout correction",
   "cloud_enabled": false,
   "offline_install": false,
-  "production_changed": false
+  "production_changed": false,
+  "layout_revision": 2
 }

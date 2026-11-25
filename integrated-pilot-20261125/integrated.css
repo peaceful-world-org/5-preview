@@ -5,3 +5,140 @@ html[data-pw-progress-product] #home .pw-my-progress {margin-top:10px}
 #pwV2PreviewPanel:not(:has(#pwV2PreviewStatus[data-state="error"],#pwV2LegacyRecovery:not([hidden]),#pwV2Retry:not([hidden]))) {display:none}
 #pwModeDoneInstall,#pwModeInstall,#pwWorldShareBtn,#shareBtn,#feedbackBtn,#pwWebAiHome,#pwWebAiDone,.done-install-area {display:none!important}
 @media(min-width:700px){html[data-pw-progress-product] #home .pw-my-progress{width:100%;max-width:none}}
+
+/* Integrated pilot — home layout correction. Keep every practice and the
+   progress component intact. Use a common content rail at each breakpoint. */
+html[data-pw-progress-product][data-pw-focus-layout="scroll"]:has(#home.active) main.app {
+  width:min(100%,940px);
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+  width:100%;max-width:880px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home :is(.mode-section-label,#pwModeCards,#pwMyProgress,#pilotLibrary,#pwWorldPreview) {
+  box-sizing:border-box;width:100%;max-width:none;min-width:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-world-hero {
+  width:100%;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-world-hero .five-mark {
+  height:clamp(5.1rem,min(20vw,12dvh),6.4rem);
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .mode-section-label {
+  margin:16px 0 0;padding-top:12px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards {
+  margin-top:9px;gap:10px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+  border-radius:18px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {
+  min-height:46px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+  display:flex;position:relative;min-height:74px;
+  padding:12px 90px 12px 16px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-heading {
+  position:static;min-height:0;padding-inline-end:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-title {
+  overflow-wrap:break-word;text-wrap:balance;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-info {
+  position:absolute;top:50%;right:44px;width:44px;height:44px;z-index:2;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  grid-area:auto;inset:0;width:100%;height:100%;margin:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress {
+  margin:10px 0 0;border-radius:17px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary {
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) 10px;
+  align-items:center;gap:10px;min-height:48px;padding:12px 15px;
+  font-size:1rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary::after {
+  margin-inline-start:0;justify-self:end;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgressBrief {
+  margin:0;max-width:100%;justify-self:end;font-size:.8rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-my-progress-body {
+  width:100%;max-width:580px;box-sizing:border-box;margin:0 auto;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwV2Calendar {
+  width:100%;max-width:420px;margin-inline:auto;box-sizing:border-box;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pilotLibrary {
+  margin:22px 0 0;padding:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-library-header {
+  padding-inline:2px;margin-bottom:11px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group-title {
+  min-width:0;line-height:1.35;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-skill {
+  min-width:0;min-height:58px;
+}
+@media(max-width:979px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"]:has(#home.active) main.app {
+    width:min(100%,600px);
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+    max-width:540px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-groups {
+    grid-template-columns:minmax(0,1fr);gap:10px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+    display:flex;flex-direction:column;align-items:stretch;
+    padding:13px 15px 14px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-detail-row {
+    margin:3px 0 12px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {
+    margin-top:auto;
+  }
+}
+@media(max-width:699px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+    max-width:416px;
+  }
+}
+@media(min-width:980px) {
+  /* One shared catalog surface, rather than three disconnected cards of
+     unequal heights. All categories and launch targets remain visible. */
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-groups {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;gap:0;
+    padding:13px 0 11px;box-sizing:border-box;
+    border:1px solid var(--line);border-radius:18px;background:var(--surface);
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group {
+    border:0;border-radius:0;background:transparent;padding:0 13px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group+.pilot-group {
+    border-inline-start:1px solid var(--line);padding-inline-start:13px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group-title {
+    min-height:42px;padding:0 1px 8px;box-sizing:border-box;margin:0 0 3px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-skill {
+    min-height:68px;padding:9px 2px;
+  }
+}
+@media(max-width:359px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 10px;gap:7px;padding-inline:12px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgressBrief {
+    font-size:.75rem;overflow-wrap:anywhere;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+    padding-inline-start:12px;
+  }
+}
