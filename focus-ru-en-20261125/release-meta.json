@@ -1,0 +1,26 @@
+{
+  "kind": "isolated RU/EN guest content pilot",
+  "version": "focus-ru-en-v3-20261125",
+  "source_commit": "dac3f2df880c50f769cb27b56378b391c184c749",
+  "focus_source_blob": "8df9b3becc60c2595e438d820ebbad56ad3baa34",
+  "editorial_revision": 3,
+  "locales": [
+    "ru",
+    "en"
+  ],
+  "modes": 12,
+  "focus_steps": 45,
+  "text_fields": 306,
+  "ru_changed_fields": [
+    "F05/5/title",
+    "F05/5/guide",
+    "F06/3/guide",
+    "F09/2/hint"
+  ],
+  "cloud_enabled": false,
+  "offline_install": false,
+  "production_changed": false,
+  "demo_opens_ledger": false,
+  "guided_exit_confirmation_full": true,
+  "browser_qa": "Canonical parity, syntax and mocked locale/catalog checks; interactive browser QA pending"
+}
