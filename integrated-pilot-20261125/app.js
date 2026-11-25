@@ -831,7 +831,7 @@ soundToggle.addEventListener('click', () => {
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
   if (exitDialog?.open) return;
-  if (practice.classList.contains('active')) requestExit();
+  if (practice.classList.contains('active')) { event.preventDefault(); requestExit(); }
   else if (feedback && feedback.classList.contains('active')) backFromFeedback();
 });
 
