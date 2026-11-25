@@ -124,6 +124,7 @@ let lastObservedRemainingMs = 0;
 let deferredInstallPrompt = null;
 let finalHiddenAt = 0;
 let startingPractice = false;
+let resumeAfterExitDialog = false;
 
 const $ = id => document.getElementById(id);
 const home = $('home');
@@ -132,6 +133,9 @@ const done = $('done');
 const feedback = $('feedback');
 const startBtn = $('startBtn');
 const closeBtn = $('closeBtn');
+const exitDialog = $('pwExitDialog');
+const exitStayBtn = $('pwExitStay');
+const exitLeaveBtn = $('pwExitLeave');
 const pauseBtn = $('pauseBtn');
 const feedbackBtn = $('feedbackBtn');
 const shareBtn = $('shareBtn');
@@ -729,6 +733,7 @@ async function finish() {
 
 async function exit() {
   if (v2GuidedSaving) return;
+  if (exitDialog?.open) exitDialog.close();
   v2GuidedSaving = true;
   stopSession();
   try { if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).abandonGuided(); }
@@ -752,8 +757,31 @@ function maybeResetCompletedView() {
   focusQuietly($('pwModeChoose'));
 }
 
+function requestExit() {
+  if (v2GuidedSaving || !practice.classList.contains('active') || exitDialog?.open) return;
+  if (IS_DEMO) { void exit(); return; }
+  resumeAfterExitDialog = Boolean(interval) && !paused;
+  if (resumeAfterExitDialog) pausePractice();
+  if (!exitDialog?.showModal) {
+    answerExitDialog(window.confirm(i18nText('practice.exit.title', 'Прервать тренировку?') + '\n\n' + i18nText('practice.exit.body', 'Текущий сеанс не сохранится. Следующий начнётся с первого шага.')));
+    return;
+  }
+  exitDialog.showModal();
+  exitStayBtn?.focus({ preventScroll:true });
+}
+function answerExitDialog(shouldLeave) {
+  if (exitDialog?.open) exitDialog.close();
+  if (shouldLeave) { resumeAfterExitDialog = false; void exit(); return; }
+  if (resumeAfterExitDialog && paused && interval && !document.hidden) pausePractice();
+  resumeAfterExitDialog = false;
+  closeBtn.focus({ preventScroll:true });
+}
+exitStayBtn?.addEventListener('click', () => answerExitDialog(false));
+exitLeaveBtn?.addEventListener('click', () => answerExitDialog(true));
+exitDialog?.addEventListener('cancel', e => { e.preventDefault(); answerExitDialog(false); });
+
 startBtn.addEventListener('click', startPractice);
-closeBtn.addEventListener('click', exit);
+closeBtn.addEventListener('click', requestExit);
 pauseBtn.addEventListener('click', pausePractice);
 
 if (feedbackBtn) {
@@ -802,7 +830,8 @@ soundToggle.addEventListener('click', () => {
 
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
-  if (practice.classList.contains('active')) exit();
+  if (exitDialog?.open) return;
+  if (practice.classList.contains('active')) requestExit();
   else if (feedback && feedback.classList.contains('active')) backFromFeedback();
 });
 

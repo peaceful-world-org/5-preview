@@ -55,7 +55,7 @@ const CORE_ASSETS = [
   '/demo.html'
 ];
 
-const NETWORK_FIRST_EXTENSIONS = new Set(['.html', '.js', '.css', '.json', '.webmanifest']);
+const NETWORK_FIRST_EXTENSIONS = new Set(['.html', '.js', '.mjs', '.css', '.json', '.webmanifest']);
 
 async function fetchWithTimeout(request, options = {}) {
   const controller = new AbortController();

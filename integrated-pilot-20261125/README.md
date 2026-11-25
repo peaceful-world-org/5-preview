@@ -13,3 +13,7 @@ Align both information buttons on a single right-side rail, reserve independent 
 ## Revision 4
 
 Restore the existing Free practice start button as an explicit gold CTA; share the Foundation grid, desktop action dimensions, info-button rail and mobile full-width CTA. No changes to timers, event bindings, text, progress history or release behavior.
+
+## Revision 5 — independent QA remediation (2026-11-25)
+
+Claude reported ~70 local Chromium/Playwright scenarios on 9cd2593, including all 12 modes and corrected progress labels; the live host was not accessible to that reviewer. Gemini performed a static HTML/UX review, not a rendered mobile test. Fast review now skips the guest ledger completely (no My Progress panel in demo); open Full practice to review history. Full-practice single-writer protection remains unchanged. The preview-origin root service worker uses network-first for .mjs. The existing guided-practice exit confirmation is restored for Full practice; cancel resumes only a previously running timer. No changes to pedagogy, data schema, v4 Home layout, cloud, or production. Post-change checks: local syntax and focused mocked Node.js handler tests passed; full browser regression and published preview verification remain pending. No manual or native workflows.

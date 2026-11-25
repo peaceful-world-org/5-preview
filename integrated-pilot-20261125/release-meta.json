@@ -7,12 +7,16 @@
   "focus_steps": 45,
   "copy_checksum": 1315413488,
   "ledger_checks": 67,
-  "browser_qa": "pending after CTA alignment",
+  "browser_qa": "Claude local Chromium baseline 9cd2593: conditional GO; full post-remediation and live/mobile QA pending",
   "cloud_enabled": false,
   "offline_install": false,
   "production_changed": false,
   "layout_revision": 4,
   "demo_progress_failure_independent": true,
   "deployment_revision": 2,
-  "deployment_method": "verified upload artifact ID via official Pages REST API"
+  "deployment_method": "verified upload artifact ID via official Pages REST API",
+  "audit_remediation_revision": 1,
+  "audit_baseline": "9cd25933ff47752856218eedbb7d62b1e9b56b75",
+  "demo_opens_ledger": false,
+  "guided_exit_confirmation_full": true
 }

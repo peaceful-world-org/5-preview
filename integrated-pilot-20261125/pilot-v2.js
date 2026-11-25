@@ -55,7 +55,7 @@
   select('care');
   const fast=IS_DEMO;
   el(fast?'pilotFast':'pilotFull').setAttribute('aria-current','page');
-  el('pilotModeNote').textContent=fast?'2 секунды подготовки · 5 секунд на шаг · ручное переключение':'5 секунд подготовки · 60 секунд на шаг';
+  el('pilotModeNote').textContent=fast?'2 секунды подготовки · 5 секунд на шаг · ручное переключение · прогресс не сохраняется':'5 секунд подготовки · 60 секунд на шаг';
   const nav=el('pilotStepNav'),prev=el('pilotPrev'),next=el('pilotNext');
   nav.hidden=!fast;
   function syncNav(){
