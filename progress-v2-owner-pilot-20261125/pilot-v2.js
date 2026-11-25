@@ -5,7 +5,7 @@
   const el=id=>document.getElementById(id);
   const locale=()=>window.PW_I18N?.locale==='en'?'en':'ru';
   const catalog=()=>new Map((locale()==='en'?window.PW_FOCUS_PILOT_EN:window.PW_FOCUS_PILOT).map(p=>[p.id,p]));
-  const words={ru:{metta:{name:'Доброжелательность',description:'От себя ко всем живым.'},care:['Отношение','Отношение к другим'],thinking:['Мышление','Ясность мышления'],action:['Действие','Осознанное действие'],start:'Начать: ',fast:'2 секунды подготовки · 5 секунд на шаг · ручное переключение · прогресс не сохраняется',full:'5 секунд подготовки · 60 секунд на шаг',next:'Дальше →',finish:'Завершить →'},en:{metta:{name:'Loving-kindness',description:'From yourself to all living beings.'},care:['Care','Care for others'],thinking:['Thinking','Clarity of thought'],action:['Action','Mindful action'],start:'Start: ',fast:'2 seconds to prepare · 5 seconds per step · manual navigation · no progress saved',full:'5 seconds to prepare · 60 seconds per step',next:'Next →',finish:'Finish →'}};
+  const words={ru:{metta:{name:'Доброжелательность',description:'От себя ко всем живым.'},care:['Отношение','Отношение к другим'],thinking:['Мышление','Ясность мышления'],action:['Действие','Осознанное действие'],start:'Начать: ',fast:'2 секунды подготовки · 5 секунд на шаг · ручное переключение · прогресс не сохраняется',next:'Дальше →',finish:'Завершить →'},en:{metta:{name:'Loving-kindness',description:'From yourself to all living beings.'},care:['Care','Care for others'],thinking:['Thinking','Clarity of thought'],action:['Action','Mindful action'],start:'Start: ',fast:'2 seconds to prepare · 5 seconds per step · manual navigation · no progress saved',next:'Next →',finish:'Finish →'}};
   const copy=()=>words[locale()];
   const practiceCopy=id=>id==='metta'?copy().metta:catalog().get(id);
   const groups=[{"id":"care","label":"Отношение","heading":"Отношение к другим","ids":["metta","F01","F02","F03","F08"]},{"id":"thinking","label":"Мышление","heading":"Ясность мышления","ids":["F07","F09"]},{"id":"action","label":"Действие","heading":"Осознанное действие","ids":["F04","F05","F06"]}];
@@ -71,7 +71,9 @@
       b.querySelector('.pilot-skill-desc').textContent=p.description;
       b.setAttribute('aria-label',c.start+p.name);
     }
-    el('pilotModeNote').textContent=fast?c.fast:c.full;
+    const note=el('pilotModeNote');
+    note.hidden=!fast;
+    note.textContent=fast?c.fast:'';
     document.title=locale()==='en'?'5 — Personal RU/EN pilot':'5 — Персональный пилот RU/EN';
     syncNav();
   }
