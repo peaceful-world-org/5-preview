@@ -1,0 +1,722 @@
+/* 5 · Official web PWA cards/styles: approved v6, source-proven from owner preview.
+ * Existing practice screens, Free stopwatch, AI guide and feedback are preserved.
+ */
+/* Home / Done v4 — owner-approved minimalist card direction, 2026-10-24.
+   Cards communicate what each practice is; each button is purely an action.
+   Small information controls open a native dialog. No large decorative icons.
+   Preserve the canonical colors and existing guided/Free practice runtime. */
+
+#home.home-screen--cards,
+#done.done-screen--cards{
+  justify-content:flex-start;
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  scrollbar-width:thin;
+  -webkit-overflow-scrolling:touch;
+}
+#home .home-stack--cards{
+  width:100%;
+  min-width:0;
+  min-height:100%;
+  transform:none;
+  box-sizing:border-box;
+  padding:38px 0 25px;
+  justify-content:flex-start;
+  align-items:center;
+}
+#home .home-stack--cards>.pw-origin-mark{position:relative;inset:auto;transform:none;margin:0 auto 12px}
+#home .home-stack--cards>.pw-origin-mark:active{transform:scale(.96)}
+#home .home-stack--cards>.five-brand{margin:3px auto 0}
+#home .home-stack--cards .five-brand .five-mark{
+  width:clamp(4.1rem,17vw,5.2rem);
+  height:clamp(7.13rem,29.58vw,9.05rem);
+  font-size:0;
+  line-height:0;
+}
+#home .home-stack--cards .five-brand{margin-bottom:0}
+#home .home-stack--cards .hero-copy{margin-top:13px}
+#home .home-stack--cards .home-headline{
+  font-size:clamp(1.02rem,4.25vw,1.24rem);
+  line-height:1.4;
+  font-weight:680;
+  margin:0;
+}
+#home .mode-section-label{
+  width:min(100%,384px);
+  margin:23px 0 0;
+  border-top:1px solid var(--line);
+  padding-top:15px;
+  color:var(--accent-text);
+  font-size:.68rem;
+  font-weight:720;
+  letter-spacing:.13em;
+  text-align:center;
+  text-transform:uppercase;
+}
+
+/* Progress matches the released time/count formula; provenance is explicitly
+   marked SAMPLE in the isolated staging origin. No fake real-user data. */
+#home .preview-progress-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);
+  align-items:stretch;
+  justify-items:center;
+  position:relative;
+  width:min(100%,360px);
+  margin:19px auto 0;
+  padding:0 3px 19px;
+  gap:2px 9px;
+  font-variant-numeric:tabular-nums;
+  box-sizing:border-box;
+}
+#home .preview-progress-grid[hidden]{display:none!important}
+#home .preview-progress-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  padding:2px 3px;
+}
+#home .preview-progress-number{
+  font-size:clamp(1.13rem,4.8vw,1.43rem);
+  font-weight:760;
+  color:var(--ink);
+  letter-spacing:-.025em;
+  white-space:nowrap;
+}
+#home .preview-progress-text{
+  color:var(--muted);
+  font-size:.77rem;
+  font-weight:500;
+  text-transform:none;
+}
+#home .preview-progress-divider{
+  width:1px;
+  min-height:39px;
+  background:var(--line);
+  align-self:center;
+}
+#home .preview-progress-sample{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  padding:1px 5px;
+  color:var(--muted);
+  font-size:.56rem;
+  font-weight:610;
+  line-height:1.4;
+  letter-spacing:.08em;
+}
+
+/* Three quiet practice cards. Cards are *not* clickable surfaces: the user
+   chooses via an explicit native button, so "i" never conflicts with Start. */
+#home .practice-card-list{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:12px;
+  box-sizing:border-box;
+  width:min(100%,384px);
+  margin:14px auto 0;
+}
+#home .practice-choice{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-width:0;
+  box-sizing:border-box;
+  padding:16px 17px 15px;
+  border-radius:23px;
+  border:1px solid transparent;
+  text-align:left;
+}
+#home .practice-choice--foundation{background:#F0EFEB;border-color:#E8E6E1}
+#home .practice-choice--metta{background:#E7EEE6;border-color:#DAE6D9}
+#home .practice-choice--free{background:#F4EAD5;border-color:#E9DCC0}
+#home .practice-choice-heading{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:5px 8px;
+  min-height:34px;
+  min-width:0;
+  position:relative;
+  padding-right:39px;
+}
+#home .practice-choice-title{
+  display:block;
+  flex:0 1 auto;
+  min-width:0;
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(1.08rem,4.3vw,1.35rem);
+  font-weight:750;
+  line-height:1.22;
+  letter-spacing:-.023em;
+  overflow-wrap:normal;
+  word-break:normal;
+  text-wrap:balance;
+}
+#home .practice-new-label{
+  flex:0 0 auto;
+  border:1px solid #C5D6C1;
+  border-radius:999px;
+  padding:2px 6px 1px;
+  background:rgba(221,233,217,.6);
+  color:#57765D;
+  font-size:.57rem;
+  line-height:1.3;
+  font-weight:650;
+  letter-spacing:.045em;
+}
+#home .practice-card-info{
+  position:absolute;
+  top:50%;
+  right:-3px;
+  transform:translateY(-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  width:40px;
+  height:40px;
+  padding:0;
+  margin:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#59655C;
+  font-family:Georgia,serif;
+  font-size:.78rem;
+  line-height:1;
+  font-style:italic;
+  font-weight:500;
+  cursor:pointer;
+}
+#home .practice-card-info::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid currentColor;
+  border-radius:50%;
+  opacity:.7;
+  pointer-events:none;
+}
+#home .practice-card-info:hover{color:#45564B;background:rgba(255,255,255,.17)}
+#home .practice-card-info:active{background:rgba(255,255,255,.26)}
+#home .practice-choice-detail-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  column-gap:10px;
+  row-gap:2px;
+  min-height:1.35em;
+  margin:5px 0 13px;
+}
+#home .practice-choice-description{
+  flex:1 1 160px;
+  display:block;
+  margin:0;
+  min-height:0;
+  color:var(--muted);
+  font-size:clamp(.81rem,3.2vw,.88rem);
+  line-height:1.42;
+  text-align:left;
+  text-wrap:pretty;
+}
+#home .practice-choice--metta .practice-choice-description{color:#526C58}
+#home .practice-choice--free .practice-choice-description{color:#706247}
+#home .practice-choice-usage{
+  flex:0 0 auto;
+  max-width:100%;
+  color:#647268;
+  font-size:.72rem;
+  font-weight:620;
+  line-height:1.35;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+#home .practice-choice--free .practice-choice-usage{color:#786848}
+#home .practice-choice-usage[hidden],
+.practice-info-usage[hidden]{display:none!important}
+#home .practice-card-cta{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:47px;
+  margin:0;
+  padding:9px 31px;
+  box-sizing:border-box;
+  border:1px solid transparent;
+  border-radius:999px;
+  font:650 .94rem/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:0;
+  text-align:center;
+  text-decoration:none;
+  box-shadow:none;
+  cursor:pointer;
+  transition:background .16s ease,transform .16s ease;
+}
+#home .practice-card-cta>span:last-child{
+  position:absolute;right:16px;top:50%;transform:translateY(-52%);
+  font-weight:440;font-size:1.14rem;
+}
+#home .practice-card-cta--foundation{
+  background:#202522;border-color:#202522;color:#fff;
+}
+#home .practice-card-cta--foundation:hover{background:#333C35}
+#home .practice-card-cta--metta{
+  background:#345842;border-color:#345842;color:#fff;
+}
+#home .practice-card-cta--metta:hover{background:#42694F}
+#home .practice-card-cta--free{
+  background:#86621F;border-color:#86621F;color:#fff;
+}
+#home .practice-card-cta--free:hover{background:#75551D}
+#home .practice-card-cta:active{transform:scale(.985)}
+#home .practice-card-cta:focus-visible,
+#home .practice-card-info:focus-visible{
+  outline:2px solid var(--accent-text);outline-offset:3px;
+}
+
+/* Statuses are plain text, not extra action chips or distracting iconography. */
+#home .practice-upcoming{
+  width:min(100%,384px);
+  box-sizing:border-box;
+  padding-top:10px;
+  margin:18px auto 0;
+  border-top:1px solid var(--line);
+}
+#home .practice-upcoming-heading{
+  margin:5px 0 12px;
+  color:var(--accent-text);
+  font-size:.66rem;
+  font-weight:740;
+  letter-spacing:.13em;
+  text-align:center;
+}
+#home .practice-upcoming-list{display:grid;gap:8px}
+#home .practice-upcoming-item{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;
+  min-height:50px;
+  box-sizing:border-box;
+  padding:11px 14px;
+  border-radius:16px;
+  background:rgba(236,235,231,.6);
+  color:var(--text);
+  text-align:left;
+}
+#home .practice-upcoming-item strong{
+  min-width:0;font-size:.87rem;font-weight:640;line-height:1.3;
+}
+#home .practice-upcoming-item span{
+  flex:0 0 auto;color:var(--muted);font-size:.72rem;font-weight:510;
+}
+#home .preview-howto{width:min(100%,384px);margin:17px auto 0}
+#home .preview-disclaimer{margin:14px auto 0}
+#home .preview-home-privacy{margin:5px auto 0;color:var(--muted)}
+
+/* Accessible native dialog: focus trap and Escape are browser-managed. */
+.practice-info-dialog{
+  width:min(92vw,390px);
+  max-width:390px;
+  max-height:80dvh;
+  margin:auto;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:var(--bg,#F9F8F5);
+  color:var(--ink);
+  box-shadow:0 20px 80px rgba(16,22,17,.2);
+  overflow:auto;
+}
+.practice-info-dialog::backdrop{background:rgba(26,32,26,.48)}
+.practice-info-surface{padding:22px;display:flex;flex-direction:column;gap:16px}
+.practice-info-heading{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.practice-info-heading h2{
+  font-size:1.18rem;font-weight:720;line-height:1.3;margin:0;text-align:left;
+}
+.practice-info-close{
+  flex:0 0 36px;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;border:1px solid var(--line);border-radius:50%;
+  background:transparent;color:var(--text);font-size:1.4rem;cursor:pointer;
+}
+.practice-info-close:hover{background:var(--accent-soft)}
+.practice-info-text{
+  color:var(--text);font-size:.93rem;line-height:1.62;
+  margin:0;text-align:left;white-space:normal;
+}
+.practice-info-usage{
+  margin:-4px 0 0;
+  border-top:1px solid var(--line);
+  padding-top:11px;
+  color:var(--muted);
+  font-size:.83rem;
+  line-height:1.45;
+  font-variant-numeric:tabular-nums;
+}
+.practice-info-start{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  min-height:46px;margin:0;
+  padding:9px 20px;
+  border:0;border-radius:999px;
+  background:#202522;color:#fff;
+  font-size:.92rem;font-weight:660;cursor:pointer;
+}
+.practice-info-close:focus-visible,.practice-info-start:focus-visible{
+  outline:2px solid var(--accent-text);outline-offset:3px;
+}
+html[data-pw-theme=dark] .practice-info-dialog{background:#252A26;color:#F0F2EE}
+
+/* Completion: calm message, one useful summary card, no crowded badges. */
+#done .done-stack--cards{
+  position:relative;
+  min-height:100%;
+  width:100%;
+  box-sizing:border-box;
+  padding:32px 7px max(34px,env(safe-area-inset-bottom));
+  transform:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+}
+#done .done-stack--cards>.pw-origin-mark{position:relative;inset:auto;transform:none;margin:0 auto 17px}
+#done .done-stack--cards>.pw-origin-mark:active{transform:scale(.96)}
+#done .done-checkmark{
+  display:flex;align-items:center;justify-content:center;
+  box-sizing:border-box;
+  width:28px;height:28px;
+  border:1px solid #C7D6CA;
+  border-radius:50%;
+  background:transparent;
+  color:#637D68;
+}
+#done .done-checkmark svg{
+  width:16px;height:16px;
+  fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+#done .done-kicker{
+  margin:10px 0 14px;color:var(--muted);
+  font-size:.85rem;font-weight:560;line-height:1.35;
+}
+#done .done-title{
+  margin:0;
+  max-width:100%;
+  font-size:clamp(2.06rem,8vw,3rem);
+  font-weight:750;
+  line-height:1.12;
+  text-align:center;
+  text-wrap:balance;
+}
+#done .done-subtitle{
+  width:min(100%,355px);
+  max-width:355px;
+  margin:13px 0 0;
+  color:var(--muted);
+  font-size:clamp(.88rem,3.55vw,.99rem);
+  line-height:1.55;
+}
+#done .done-summary{
+  width:min(100%,384px);
+  box-sizing:border-box;
+  padding:20px 21px 18px;
+  margin:22px auto 0;
+  border:1px solid #ECEAE4;
+  border-radius:23px;
+  background:#F1F0EB;
+  text-align:left;
+}
+#done .done-summary-eyebrow{
+  display:flex;align-items:center;gap:9px;
+  margin:0;color:var(--muted);
+  font-size:.67rem;font-weight:730;letter-spacing:.12em;
+}
+#done .preview-summary-sample{
+  display:inline-block;
+  padding:2px 5px;
+  border:1px solid #D8D8D0;border-radius:999px;
+  color:var(--muted);
+  font-size:.56rem;font-weight:610;letter-spacing:.08em;
+}
+#done .preview-summary-sample[hidden]{display:none!important}
+#done .done-summary-title{
+  margin:15px 0 0;
+  color:var(--ink);
+  font-size:clamp(1.25rem,5.3vw,1.63rem);
+  line-height:1.22;
+  font-weight:750;
+}
+#done .done-summary-total{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:.89rem;line-height:1.4;
+}
+#done .done-summary-mode{
+  margin:9px 0 0;color:var(--accent-text);
+  font-size:.72rem;font-weight:620;
+}
+#done .done-primary-action{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  width:min(100%,384px);
+  min-height:49px;
+  margin:17px auto 0;
+  padding:10px 18px;
+  border:1px solid #202522;border-radius:999px;
+  background:#202522;color:#fff;
+  font-size:.96rem;font-weight:680;line-height:1.3;
+  cursor:pointer;
+}
+#done .done-primary-action:hover{background:#323C34}
+#done .preview-done-actions{
+  width:min(100%,384px);
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin:10px auto 0;
+  align-items:stretch;
+}
+#done .preview-done-actions > .done-action,
+#done .preview-done-actions > .done-support-action{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;min-width:0;
+  min-height:44px;
+  box-sizing:border-box;
+  padding:9px 9px;margin:0;
+  border:1px solid #DFDFD9;border-radius:999px;
+  background:transparent;color:var(--text);
+  text-align:center;text-decoration:none;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:.78rem;font-weight:610;line-height:1.25;
+  box-shadow:none;
+}
+#done .preview-done-actions > .done-support-action{
+  grid-column:1/-1;
+  font-size:.86rem;font-weight:600;
+}
+#done .preview-done-actions > .done-action:hover,
+#done .preview-done-actions > .done-support-action:hover{background:var(--accent-soft)}
+#done .done-primary-action:focus-visible,#done .preview-done-actions > .done-action:focus-visible,
+#done .preview-done-actions > .done-support-action:focus-visible{
+  outline:2px solid var(--accent-text);outline-offset:3px;
+}
+#done .preview-share-status{
+  margin:6px auto 0;
+  max-width:375px;
+  color:var(--text);font-size:.77rem;line-height:1.4;
+  text-align:center;overflow-wrap:anywhere;
+}
+#done .practice-roadmap-complete{
+  width:min(100%,384px);
+  box-sizing:border-box;
+  margin:22px auto 0;
+  padding-top:21px;
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+#done .practice-roadmap-title{
+  margin:0;
+  color:var(--ink);
+  font-size:1.09rem;
+  font-weight:720;
+  line-height:1.3;
+}
+#done .practice-roadmap-description{
+  margin:9px auto 14px;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.45;
+}
+#done .practice-roadmap-items{display:grid;gap:8px}
+#done .practice-roadmap-item{
+  display:flex;align-items:center;justify-content:space-between;
+  box-sizing:border-box;gap:7px;
+  width:100%;min-height:54px;
+  border-radius:17px;
+  padding:12px 14px;
+  background:#EFEEEA;
+  color:var(--text);text-align:left;
+}
+#done .practice-roadmap-item--available{
+  background:#E7EEE6;
+  color:#2A4431;
+}
+#done .practice-roadmap-item strong{font-size:.86rem;line-height:1.35;font-weight:690;min-width:0}
+#done .practice-roadmap-item span{font-size:.73rem;line-height:1.25;color:var(--muted);flex:0 0 auto}
+#done .practice-roadmap-item--available span{color:#386A46}
+#done .practice-roadmap-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:40px;margin:13px auto 0;
+  color:var(--muted);font-size:.79rem;text-decoration:underline;text-underline-offset:3px;
+}
+#done .practice-roadmap-link:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px}
+#done .preview-done-caption{
+  margin:10px auto 0;color:var(--muted);
+  font-size:.67rem;line-height:1.45;
+  text-align:center;
+}
+
+/* Preserve the original dark + gold identity, adapt the card surfaces. */
+html[data-pw-theme=dark] #home .practice-choice--foundation{background:#2A2E2A;border-color:#3B403B}
+html[data-pw-theme=dark] #home .practice-choice--metta{background:#29382D;border-color:#415645}
+html[data-pw-theme=dark] #home .practice-choice--free{background:#3C3529;border-color:#5E4D30}
+html[data-pw-theme=dark] #home .practice-choice-title{color:#F0F2EE}
+html[data-pw-theme=dark] #home .practice-choice-description{color:#CAD1C9}
+html[data-pw-theme=dark] #home .practice-choice-usage{color:#B6C8BB}
+html[data-pw-theme=dark] #home .practice-choice--free .practice-choice-usage{color:#DCC798}
+html[data-pw-theme=dark] #home .practice-new-label{background:#304536;color:#C8DDCB;border-color:#546B57}
+html[data-pw-theme=dark] #home .practice-card-info{color:#9DAC9E}
+html[data-pw-theme=dark] #home .practice-card-info:hover{color:#D7E3D8;background:rgba(255,255,255,.08)}
+html[data-pw-theme=dark] #home .practice-card-cta--foundation{background:#E6EBE5;border-color:#E6EBE5;color:#182119}
+html[data-pw-theme=dark] #home .practice-card-cta--metta{background:#4B7556;border-color:#4B7556;color:#fff}
+html[data-pw-theme=dark] #home .practice-card-cta--free{background:#D4B36C;border-color:#D4B36C;color:#242118}
+html[data-pw-theme=dark] #home .practice-upcoming-item{background:#292D29;color:#ECEFEC}
+html[data-pw-theme=dark] #done .done-checkmark{background:transparent;border-color:#4E6954;color:#9FC0A4}
+html[data-pw-theme=dark] #done .done-summary{background:#292D29;border-color:#424A42}
+html[data-pw-theme=dark] #done .done-primary-action{background:#E7EBE5;color:#192119;border-color:#E7EBE5}
+html[data-pw-theme=dark] #done .preview-done-actions > .done-action,
+html[data-pw-theme=dark] #done .preview-done-actions > .done-support-action{border-color:#505950;color:var(--text)}
+html[data-pw-theme=dark] #done .practice-roadmap-item{background:#2B302B;color:#EFF0ED}
+html[data-pw-theme=dark] #done .practice-roadmap-item--available{background:#2B4030;color:#D7E9D9}
+
+/* Small devices: readable text and scrollable cards, no ellipses or cutoff. */
+@media(max-width:385px){
+  #home .practice-choice{padding:14px 14px 13px;border-radius:20px}
+  #home .practice-choice-title{font-size:clamp(.98rem,4.1vw,1.13rem)}
+  #home .practice-choice-heading{gap:5px 6px;padding-right:37px}
+  #home .practice-card-info{width:39px;height:39px}
+  #home .practice-new-label{font-size:.55rem;padding-inline:5px}
+  #done .done-summary{padding:17px 16px;border-radius:20px}
+  #done .practice-roadmap-item{padding-inline:12px}
+}
+@media(max-height:700px){
+  #home .home-stack--cards{padding-top:21px}
+  #home .home-stack--cards .five-brand .five-mark{width:clamp(3.4rem,14.5vw,4.1rem);height:clamp(5.92rem,25.23vw,7.13rem)}
+  #home .home-stack--cards .hero-copy{margin-top:9px}
+  #home .preview-progress-grid{margin-top:12px}
+  #home .mode-section-label{margin-top:15px;padding-top:10px}
+  #home .practice-card-list{margin-top:10px;gap:9px}
+  #home .practice-choice{padding-block:12px}
+  #home .practice-choice-description{margin-bottom:10px}
+  #done .done-stack--cards{padding-top:19px}
+  #done .done-stack--cards>.pw-origin-mark{margin-bottom:12px}
+  #done .done-title{font-size:clamp(1.92rem,7.5vw,2.72rem)}
+  #done .done-summary{margin-top:16px}
+  #done .practice-roadmap-complete{margin-top:16px}
+}
+@media(orientation:landscape) and (max-height:540px){
+  #home .home-stack--cards{padding-top:12px}
+  #home .home-stack--cards .five-brand .five-mark{width:2.8rem;height:4.87rem}
+  #home .practice-card-list{gap:8px}
+  #home .practice-choice{padding-block:11px}
+  #done .done-stack--cards{padding-top:12px}
+  #done .done-checkmark{width:26px;height:26px}
+}
+@media(prefers-reduced-motion:reduce){
+  #home .practice-card-cta{transition:none}
+}
+
+
+
+/* Real PWA integration: old functional controls remain in DOM for released
+ * timers, installation, analytics, and native prepare contracts. UI uses cards.
+ */
+#home.home-screen--cards{justify-content:flex-start;padding:0;scrollbar-width:none}
+#home.home-screen--cards::-webkit-scrollbar{display:none}
+#home .home-stack--cards{min-height:100%;padding-top:32px;padding-bottom:22px}
+#home .home-stack--cards>.pw-origin-mark{margin-bottom:8px}
+#home .home-stack--cards .five-brand{margin:0 auto}
+#home .home-stack--cards .hero-copy{margin-top:8px}
+html.pw-modes-ready #home .five-word,
+html.pw-modes-ready #home #startBtn,
+html.pw-modes-ready #home .pw-free-entry,
+html.pw-modes-ready #home .pw-time-odometer,
+html.pw-modes-ready #home .howto{display:none!important}
+html:not(.pw-modes-ready) #pwModeCards,
+html:not(.pw-modes-ready) #pwModeChoose,
+html:not(.pw-modes-ready) #pwModeUpcoming,
+html:not(.pw-modes-ready) #pwModeProgress,
+html:not(.pw-modes-ready) #pwModeDoneSummary,
+html:not(.pw-modes-ready) #pwModeBack,
+html:not(.pw-modes-ready) #pwModeRoadmap{display:none!important}
+#home .mode-section-label{margin-top:17px}
+#home .practice-card-list{margin-top:11px}
+#home .home-install-area{width:min(100%,384px);margin:13px auto 0}
+#home .home-privacy-row{margin:10px 0 0}
+#done.done-screen--cards{justify-content:flex-start;padding:0;scrollbar-width:none}
+#done.done-screen--cards::-webkit-scrollbar{display:none}
+#done .done-stack--cards{padding-top:27px}
+#done .done-stack--cards>.pw-origin-mark{margin-bottom:15px}
+#done .done-title{font-size:clamp(2.06rem,8vw,3rem)}
+#done .done-subtitle.done-lines{white-space:pre-line}
+#done .done-subtitle.done-lines span{white-space:normal}
+#done .preview-done-actions>.done-action{box-shadow:none}
+#done .preview-done-actions>.done-action:hover{box-shadow:none}
+#done .preview-done-actions .pw-ai-guide-trigger{grid-column:1/-1;margin:auto}
+#done .install-area{width:min(100%,384px);margin:11px auto 0}
+#done .install-area[hidden]{display:none!important}
+#done .done-summary,#done .practice-roadmap-complete{flex-shrink:0}
+#done .done-checkmark{flex-shrink:0}
+#pwModeInfoDialog[open]{display:block}
+#pwModeProgress[hidden],.practice-choice-usage[hidden],#pwModeInfoUsage[hidden]{display:none!important}
+@media(max-height:700px){
+  #home .home-stack--cards{padding-top:18px}
+  #home .home-stack--cards .five-brand .five-mark{width:clamp(3.4rem,14.5vw,4.1rem);height:clamp(5.92rem,25.23vw,7.13rem)}
+}
+
+
+/* Brand at the top utility rail, visually separate from the raised 5.
+   The compensating top padding preserves the existing approved 5 position. */
+#home .home-stack--cards{padding-top:88px}
+#home .home-stack--cards>.pw-origin-mark{
+  position:fixed;
+  inset:auto;
+  top:max(12px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));
+  left:50%;
+  width:42px;
+  height:42px;
+  margin:0;
+  transform:translateX(-50%);
+  z-index:8998;
+}
+#home .home-stack--cards>.pw-origin-mark:active{transform:translateX(-50%) scale(.96)}
+@media(max-width:520px){
+  #home .home-stack--cards{padding-top:84px}
+  #home .home-stack--cards>.pw-origin-mark{
+    top:max(9px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));
+    width:40px;
+    height:40px;
+  }
+}
+@media(max-height:700px){
+  #home .home-stack--cards{padding-top:66px}
+}
+
+/* The home logo joins the actual fixed utility rail. Its edge now shares
+   exactly the same viewport/safe-area coordinates as the two utility icons. */
+.pw-utilities > .pw-utility-origin-mark{
+  position:fixed;
+  top:max(12px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));
+  left:50%;
+  width:42px;
+  height:42px;
+  margin:0;
+  transform:translateX(-50%);
+  pointer-events:auto;
+  z-index:1;
+}
+.pw-utilities > .pw-utility-origin-mark:active{transform:translateX(-50%) scale(.96)}
+.pw-utilities > .pw-utility-origin-mark[hidden]{display:none!important}
+@media(max-width:520px){
+  .pw-utilities > .pw-utility-origin-mark{
+    top:max(9px,max(env(safe-area-inset-top),var(--safe-area-inset-top,0px)));
+    width:40px;
+    height:40px;
+  }
+}

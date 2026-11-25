@@ -1,0 +1,7 @@
+/* Isolated integrated guest pilot. */
+html[data-pw-progress-product] #home #pwModeProgress {display:none!important}
+html[data-pw-progress-product] #home .pw-my-progress {margin-top:10px}
+#pwV2PreviewPanel button {min-height:44px;cursor:pointer}
+#pwV2PreviewPanel:not(:has(#pwV2PreviewStatus[data-state="error"],#pwV2LegacyRecovery:not([hidden]),#pwV2Retry:not([hidden]))) {display:none}
+#pwModeDoneInstall,#pwModeInstall,#pwWorldShareBtn,#shareBtn,#feedbackBtn,#pwWebAiHome,#pwWebAiDone,.done-install-area {display:none!important}
+@media(min-width:700px){html[data-pw-progress-product] #home .pw-my-progress{width:100%;max-width:none}}
