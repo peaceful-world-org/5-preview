@@ -589,8 +589,10 @@ async function startPractice() {
       return;
     }
 
-    const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-    await v2.startGuided(window.PW_TRAINING_MODES?.mode || 'foundation', IS_DEMO);
+    if (!IS_DEMO) {
+      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
+      await v2.startGuided(window.PW_TRAINING_MODES?.mode || 'foundation', false);
+    }
     ensureAudio();
     document.dispatchEvent(new CustomEvent('pw:practice-started', {
       detail: {
@@ -709,7 +711,7 @@ async function finish() {
   closeBtn.disabled = true;
   pauseBtn.disabled = true;
   try {
-    await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided();
+    if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided();
     window.PW_COPY_ROTATION?.completeSession?.();
   } catch (error) {
     window.PW_PROGRESS_PREVIEW?.report(error, finish);
@@ -729,7 +731,7 @@ async function exit() {
   if (v2GuidedSaving) return;
   v2GuidedSaving = true;
   stopSession();
-  try { await (await window.PW_PROGRESS_PREVIEW_READY).abandonGuided(); }
+  try { if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).abandonGuided(); }
   catch (error) { window.PW_PROGRESS_PREVIEW?.report(error, exit); return; }
   finally { v2GuidedSaving = false; }
   show(home);

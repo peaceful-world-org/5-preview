@@ -11,5 +11,6 @@
   "cloud_enabled": false,
   "offline_install": false,
   "production_changed": false,
-  "layout_revision": 2
+  "layout_revision": 3,
+  "demo_progress_failure_independent": true
 }

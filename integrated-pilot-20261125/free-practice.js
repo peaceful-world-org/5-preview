@@ -446,8 +446,7 @@
     startingFree = true;
     try {
       await freeReady;
-      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-      if (!v2Demo) await v2.startFree();
+      if (!v2Demo) await (await window.PW_PROGRESS_PREVIEW_READY).startFree();
       if (document.hidden || !screen.classList.contains('active')) return;
       const firstStart = !resumed && elapsedMs <= 0;
       running = true;
@@ -500,8 +499,7 @@
       if (running) pauseTimer();
       const whole = Math.floor(elapsedMs / 1000);
       if (whole < 1) return;
-      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-      if (!v2Demo) await v2.recordFree(whole, true);
+      if (!v2Demo) await (await window.PW_PROGRESS_PREVIEW_READY).recordFree(whole, true);
       window.PW_LAST_COMPLETION = { mode:'free', durationSeconds:v2Demo?null:whole, freePracticeNumber:v2Demo?null:freeSessions(), demo:v2Demo };
       document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       playBoundarySignal();

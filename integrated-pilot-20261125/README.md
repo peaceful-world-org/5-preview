@@ -5,3 +5,7 @@ Isolated guest-only test release combining approved Focus v4 with the My Progres
 ## Layout correction (revision 2)
 
 Scoped Home-only CSS: unified content width, one shared desktop catalog surface, vertical mobile/tablet catalog, right-aligned progress summary, bounded calendar and explicit free-timer action layout. All runtime scripts, copy, existing local ledger and preferences are unchanged. Browser visual QA is pending.
+
+## Revision 3
+
+Align both information buttons on a single right-side rail, reserve independent action space, and preserve mobile full-width Foundation CTA. Fast review does not await the guest ledger, so another tab holding the write lock cannot prevent reviewing all practice steps. Full practice remains guarded by the original ledger initialization. The preview Pages workflow now waits for the uniquely named artifact to appear in the Actions API before deploying. No history is reset or cleared.
