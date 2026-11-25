@@ -1,0 +1,14 @@
+{
+  "kind": "isolated integrated RU guest pilot",
+  "version": "Integrated Pilot 1",
+  "source_commit": "7969df8f56b54387ae9e75a79b5d1f5332040725",
+  "focus_source": "41c39aecf3374d5925a3e402f800980276f150f5",
+  "modes": 12,
+  "focus_steps": 45,
+  "copy_checksum": 1315413488,
+  "ledger_checks": 67,
+  "browser_qa": "pending",
+  "cloud_enabled": false,
+  "offline_install": false,
+  "production_changed": false
+}
