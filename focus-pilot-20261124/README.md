@@ -5,3 +5,7 @@ Actual Web vNext RC markup, brand, CSS, utilities, mode chooser, existing Founda
 ## Preview v3 — visual polish (2026-11-25)
 
 Compact hero and QA controls, clearer catalog typography, shared duration in the library header, 44px information controls, small-screen fallback. The three skill groups, 12 modes, candidate copy, practice runtime, and fast/full preview behavior remain unchanged. All changes are confined to the Focus preview directory.
+
+## Preview v4 — scroll catalog (2026-11-25)
+
+Default: prominent Foundation, compact Free row, all 10 skills immediately visible in three families. Mobile uses one continuous scroll, desktop retains three columns. Small category icons and restrained theme-aware accents only. Previous v3 mobile tabs and paired cards remain available with `?demo=1&layout=tabs` or `?mode=practice&layout=tabs`; switching fast/full retains that layout. No changes to practice copy or controllers, analytics, storage, or production.

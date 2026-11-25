@@ -141,3 +141,135 @@ html[data-pw-focus-pilot] #home .home-stack--cards {
   #home #pwModeCards {grid-template-columns:minmax(0,1fr)}
   #home #pwModeCards .practice-choice-detail-row {min-height:0}
 }
+
+/* v4: one primary practice, compact free timer, visible skill families.
+   The previous v3 composition is available via ?layout=tabs. */
+html[data-pw-focus-layout="scroll"] #home #pwModeCards {
+  grid-template-columns:minmax(0,1fr);
+  gap:8px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+  padding:13px 15px 14px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-heading {
+  min-height:34px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-title {
+  font-size:1.22rem;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-detail-row {
+  min-height:0;margin:3px 0 12px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+  position:relative;
+  padding:12px 55px 12px 15px;
+  border-radius:18px;
+  justify-content:center;
+  min-height:76px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-heading {
+  min-height:26px;
+  padding-inline-end:39px;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-title {
+  font-size:1rem;line-height:1.28;text-wrap:initial;overflow-wrap:normal;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-detail-row {
+  min-height:0;margin:3px 0 0;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-info {
+  right:0;z-index:2;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  position:absolute;inset:0;z-index:1;
+  width:100%;height:100%;margin:0;padding:0;min-height:44px;
+  border:0;border-radius:17px;background:transparent;color:#86621F;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta>span:first-child {
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta>span:last-child {
+  right:16px;font-size:1.4rem;
+}
+html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:hover {
+  background:rgba(134,98,31,.06);
+}
+html[data-pw-theme="dark"][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  color:#D4B36C;
+}
+html[data-pw-theme="dark"][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:hover {
+  background:rgba(212,179,108,.08);
+}
+html[data-pw-focus-layout="scroll"] #home .pilot-library {
+  background:transparent;border:0;border-radius:0;padding:0;
+  margin-top:21px;
+}
+html[data-pw-focus-layout="scroll"] .pilot-library-header {margin-bottom:11px;padding-inline:2px}
+html[data-pw-focus-layout="scroll"] .pilot-groups {
+  display:grid;grid-template-columns:minmax(0,1fr);gap:10px;
+}
+html[data-pw-focus-layout="scroll"] .pilot-group,
+html[data-pw-focus-layout="scroll"] .pilot-group[data-active="false"] {
+  display:block;min-width:0;box-sizing:border-box;
+  border:1px solid var(--line);border-radius:17px;
+  padding:9px 12px 4px;background:var(--surface);
+}
+html[data-pw-focus-layout="scroll"] .pilot-group[data-group="care"] {
+  --family-accent:#426747;--family-bg:#E3EBE0;
+}
+html[data-pw-focus-layout="scroll"] .pilot-group[data-group="thinking"] {
+  --family-accent:#46667C;--family-bg:#E3E9EF;
+}
+html[data-pw-focus-layout="scroll"] .pilot-group[data-group="action"] {
+  --family-accent:#795A24;--family-bg:#F0E7D4;
+}
+html[data-pw-theme="dark"][data-pw-focus-layout="scroll"] .pilot-group[data-group="care"] {
+  --family-accent:#B3CDB4;--family-bg:#2D4032;
+}
+html[data-pw-theme="dark"][data-pw-focus-layout="scroll"] .pilot-group[data-group="thinking"] {
+  --family-accent:#B6CEDF;--family-bg:#2C3C49;
+}
+html[data-pw-theme="dark"][data-pw-focus-layout="scroll"] .pilot-group[data-group="action"] {
+  --family-accent:#E0C48B;--family-bg:#433A29;
+}
+html[data-pw-focus-layout="scroll"] .pilot-group-title {
+  display:flex;align-items:center;gap:9px;
+  color:var(--family-accent);font-size:.88rem;font-weight:700;
+  margin:0 0 3px;padding:5px 1px 8px;
+}
+.pilot-group-icon {
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;flex:0 0 32px;
+  border-radius:9px;background:var(--family-bg);color:var(--family-accent);
+}
+.pilot-group-icon svg {width:19px;height:19px}
+.pilot-group-label {min-width:0;overflow-wrap:anywhere}
+html[data-pw-focus-layout="scroll"] .pilot-skill {
+  padding:10px 2px;min-height:56px;
+}
+html[data-pw-focus-layout="scroll"] .pilot-skill-name {font-size:1rem}
+html[data-pw-focus-layout="scroll"] .pilot-arrow {color:var(--family-accent)}
+html[data-pw-focus-layout="scroll"] .pilot-skill:hover,
+html[data-pw-focus-layout="scroll"] .pilot-skill:focus-visible {background:var(--family-bg)}
+@media(min-width:700px) {
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.65fr);
+    align-items:center;gap:0 18px;padding:14px 18px;
+  }
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-heading {grid-column:1}
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-detail-row {grid-column:1;margin:3px 0 0}
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {grid-area:1/2/3/3;margin:0}
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {padding-left:18px}
+}
+@media(min-width:900px) {
+  html[data-pw-focus-layout="scroll"] .pilot-groups {
+    grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:12px;
+  }
+  html[data-pw-focus-layout="scroll"] .pilot-group+.pilot-group {padding-left:12px}
+}
+@media(max-width:360px) {
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {padding-right:48px}
+  html[data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-title {font-size:.96rem}
+  html[data-pw-focus-layout="scroll"] .pilot-group {padding-inline:10px}
+}
