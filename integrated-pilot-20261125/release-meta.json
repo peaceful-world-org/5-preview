@@ -12,5 +12,7 @@
   "offline_install": false,
   "production_changed": false,
   "layout_revision": 4,
-  "demo_progress_failure_independent": true
+  "demo_progress_failure_independent": true,
+  "deployment_revision": 2,
+  "deployment_method": "verified upload artifact ID via official Pages REST API"
 }

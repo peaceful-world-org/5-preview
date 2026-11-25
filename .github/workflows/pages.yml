@@ -75,35 +75,89 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload site
+        id: upload
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: .
 
-      - name: Wait for uploaded artifact metadata
+      # The artifact service used by deploy-pages has intermittently returned
+      # zero matches after successful uploads. Use the upload's verified ID
+      # with the documented Pages REST deployment API instead.
+      - name: Verify uploaded artifact ID
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
           ARTIFACT_NAME: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           set -euo pipefail
+          [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
           for attempt in $(seq 1 10); do
-            count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT_NAME" --jq '[.artifacts[] | select(.expired == false)] | length' || echo 0)"
-            if [ "$count" = "1" ]; then
-              echo "Pages artifact metadata is visible."
-              exit 0
-            fi
-            if [ "$count" -gt 1 ]; then
-              echo "::error::Unexpected duplicate Pages artifact"
-              exit 1
+            if metadata="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT_NAME")"; then
+              count="$(jq -r '[.artifacts[] | select(.expired == false)] | length' <<< "$metadata")"
+              if [ "$count" = "1" ]; then
+                jq -e --arg id "$ARTIFACT_ID" --arg name "$ARTIFACT_NAME" '[.artifacts[] | select(.expired == false and (.id|tostring)==$id and .name==$name and .size_in_bytes>0 and .size_in_bytes<1073741824)] | length == 1' <<< "$metadata" >/dev/null
+                echo "Verified Pages artifact ID $ARTIFACT_ID."
+                exit 0
+              fi
+              if [ "$count" -gt 1 ]; then
+                echo "::error::Unexpected duplicate Pages artifact"
+                exit 1
+              fi
             fi
             sleep 3
           done
           echo "::error::Pages artifact metadata did not become visible"
           exit 1
 
-      - name: Deploy to Pages
+      - name: Deploy to Pages by verified artifact ID
         id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+        run: |
+          set -euo pipefail
+          [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
+          oidc="$(curl --fail --silent --show-error --retry 2 --max-time 20 \
+            -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -er '.value | select(type=="string" and length>0)')"
+          echo "::add-mask::$oidc"
+          endpoint="repos/$GITHUB_REPOSITORY/pages/deployments"
+          deployment_id=""
+          cancel_pending() {
+            if [ -n "$deployment_id" ]; then
+              gh api --method POST "$endpoint/$deployment_id/cancel" --silent || true
+            fi
+          }
+          trap 'cancel_pending; exit 130' INT TERM
+          response="$(jq -n --argjson artifact_id "$ARTIFACT_ID" --arg sha "$GITHUB_SHA" --arg oidc "$oidc" \
+            '{artifact_id:$artifact_id,pages_build_version:$sha,oidc_token:$oidc,environment:"github-pages"}' \
+            | gh api --method POST "$endpoint" --input -)"
+          unset oidc
+          deployment_id="$(jq -er '(.id // (.status_url | split("/") | map(select(length>0 and .!="status")) | last)) | tostring | select(length>0)' <<< "$response")"
+          [[ "$deployment_id" =~ ^[A-Za-z0-9_-]+$ ]]
+          page_url="$(jq -er '.page_url | select(type=="string" and length>0)' <<< "$response")"
+          printf 'page_url=%s\n' "$page_url" >> "$GITHUB_OUTPUT"
+          echo "Created Pages deployment $deployment_id for artifact $ARTIFACT_ID."
+          for attempt in $(seq 1 60); do
+            if status="$(gh api "$endpoint/$deployment_id" --jq '.status')"; then
+              echo "Pages status: $status"
+              case "$status" in
+                succeed)
+                  deployment_id=""
+                  echo "Reported success!"
+                  exit 0
+                  ;;
+                deployment_failed|deployment_perms_error|deployment_content_failed|deployment_cancelled|deployment_lost)
+                  echo "::error::Pages deployment ended with $status"
+                  exit 1
+                  ;;
+              esac
+            fi
+            sleep 5
+          done
+          cancel_pending
+          echo "::error::Pages deployment did not reach success within the polling window"
+          exit 1
