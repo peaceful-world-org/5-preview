@@ -17,9 +17,12 @@ html[data-pw-progress-product] #home .pw-my-progress{
 .pw-my-progress-totals strong,.pw-my-progress-totals span{display:block;overflow-wrap:anywhere}
 .pw-my-progress-totals strong{font-size:1.22rem;font-weight:650;line-height:1.3}
 .pw-my-progress-totals span{font-size:.75rem;color:var(--muted);margin-top:5px}
-.pw-my-progress-modes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);gap:10px;margin:12px 0;font-size:.84rem;line-height:1.45}
-.pw-my-progress-modes dd{margin:0;text-align:end;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.pw-my-progress-modes dt{overflow-wrap:anywhere}
+.pw-my-progress-modes{width:100%;border-collapse:collapse;table-layout:fixed;margin:12px 0;font-size:.82rem;line-height:1.45}
+.pw-my-progress-modes th,.pw-my-progress-modes td{padding:6px 2px;overflow-wrap:anywhere;text-align:end;font-variant-numeric:tabular-nums}
+.pw-my-progress-modes th:first-child{width:45%;text-align:start;font-weight:500}
+.pw-my-progress-modes th:nth-child(2){width:34%}
+.pw-my-progress-modes thead th{color:var(--muted);font-size:.72rem;font-weight:500;border-bottom:1px solid var(--line)}
+.pw-my-progress-modes tbody td{vertical-align:top}
 .pw-my-progress p{font-size:.82rem;line-height:1.55;margin:8px 0;color:var(--muted);overflow-wrap:anywhere}
 .pw-my-progress details{border-top:1px solid var(--line);margin:8px 0 0;padding:0}
 .pw-my-progress details summary{padding:10px 0;min-height:44px}
@@ -31,7 +34,14 @@ html[data-pw-progress-product] #home .pw-my-progress{
 #pwV2TrackingPanel label{display:flex;align-items:center;gap:9px;min-height:44px}
 #pwV2Calendar{border-top:1px solid var(--line);padding-top:12px;margin:12px 0}
 #pwV2MonthGrid>span{padding:6px 0;min-width:0;font-size:.78rem;line-height:1.4}
-#pwV2MonthGrid>span[data-count]:not([data-count="0"]){background:var(--line);color:var(--text);font-weight:700}
+#pwV2MonthGrid>span[data-day]{box-sizing:border-box;justify-self:center;display:grid;place-items:center;width:min(100%,34px);aspect-ratio:1;padding:0;border:1px solid transparent;border-radius:50%}
+#pwV2MonthGrid>span.pw-calendar-practised{background:var(--text);color:var(--bg);font-weight:650}
+#pwV2MonthGrid>span[data-today="true"]{outline:1px solid var(--text);outline-offset:2px;font-weight:700}
+.pw-calendar-legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:12px 0 4px;color:var(--muted);font-size:.72rem;line-height:1.4}
+.pw-calendar-legend>span{display:inline-flex;align-items:center;gap:6px}
+.pw-calendar-legend i{width:10px;height:10px;border-radius:50%;display:inline-block;box-sizing:border-box}
+.pw-calendar-today-key{border:1px solid var(--text)}
+.pw-calendar-practice-key{background:var(--text)}
 html[data-pw-progress-product] #pwV2PreviewPanel:not(:has(#pwV2PreviewStatus[data-state="error"],#pwV2LegacyRecovery:not([hidden]),#pwV2Retry:not([hidden]))){display:none}
 html[data-pw-progress-product] #pwV2PreviewPanel{padding-bottom:max(8px,env(safe-area-inset-bottom));overflow-wrap:anywhere}
-@media(max-width:340px){.pw-my-progress-totals{grid-template-columns:1fr}.pw-my-progress-modes{grid-template-columns:1fr;gap:3px}.pw-my-progress-modes dd{text-align:start;margin-bottom:7px}}
+@media(max-width:340px){.pw-my-progress-totals{grid-template-columns:1fr}.pw-my-progress-modes{font-size:.75rem}.pw-my-progress-modes thead th{font-size:.68rem}}

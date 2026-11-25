@@ -2,6 +2,13 @@
 // English fallback is provisional for locales other than ru/en.
 const ru={
   'My progress':'Мой прогресс',
+  'Practice':'Практика',
+  'Time':'Время',
+  'Sessions':'Сессии',
+  'Today':'Сегодня',
+  'Practice completed':'Тренировка завершена',
+  'Only practices with saved dates appear here.':'Здесь только тренировки с сохранённой датой.',
+  'Turn off recording to pause new records. Your saved history stays. Dates are optional.':'Отключи учёт, чтобы не сохранять новые тренировки. Прежняя история останется. Запись дат необязательна.',
   'Completed practices':'Завершённые тренировки',
   'Time in practice':'Время практики',
   'No practices recorded yet.':'Пока нет сохранённых тренировок.',

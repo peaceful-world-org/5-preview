@@ -22,7 +22,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
           '<div><strong id="pwMyProgressTime"></strong><span data-progress-copy="Time in practice">Time in practice</span></div>'+
           '<div><strong id="pwMyProgressCount"></strong><span data-progress-copy="Completed practices">Completed practices</span></div>'+
         '</div>'+
-        '<dl id="pwMyProgressModes" class="pw-my-progress-modes"></dl>'+
+        '<table class="pw-my-progress-modes"><thead><tr><th scope="col" data-progress-copy="Practice">Practice</th><th scope="col" data-progress-copy="Time">Time</th><th scope="col" data-progress-copy="Sessions">Sessions</th></tr></thead><tbody id="pwMyProgressModes"></tbody></table>'+
       '</div>'+
       '<div id="pwMyProgressControls"></div>'+
     '</div>';
@@ -63,11 +63,13 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
     el('pwMyProgressCount').textContent=nf.format(view.practices);
     const list=el('pwMyProgressModes');list.replaceChildren();
     for(const row of view.modes){
-      const label=document.createElement('dt'),value=document.createElement('dd');
+      const line=document.createElement('tr');
+      const label=document.createElement('th'),time=document.createElement('td'),count=document.createElement('td');
+      label.scope='row';
       label.textContent=document.getElementById(titleIds[row.mode])?.textContent||row.mode;
-      value.textContent=durationText(row.seconds,locale)+' · '+nf.format(row.practices);
-      value.setAttribute('aria-label',t('Time in practice')+': '+durationText(row.seconds,locale)+'; '+t('Completed practices')+': '+nf.format(row.practices));
-      list.append(label,value);
+      time.textContent=durationText(row.seconds,locale);
+      count.textContent=nf.format(row.practices);
+      line.append(label,time,count);list.append(line);
     }
   }
   document.addEventListener('pw:progress-restored',render);
