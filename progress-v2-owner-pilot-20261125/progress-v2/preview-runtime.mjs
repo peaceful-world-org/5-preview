@@ -1,5 +1,6 @@
 // Local-only Web/PWA integration candidate. Never loaded by production.
 import { openLocalLedger } from './local-ledger.mjs';
+import { FOCUS_MODES } from './ledger-contract.mjs';
 import { captureLegacy } from './legacy-import.mjs';
 import { mountAccountPanel } from './account-panel.mjs';
 import {createTrackingPolicy,beginGuided,beginFree,recordFree as writeFree} from './tracking-policy.mjs';
@@ -10,6 +11,7 @@ import {progressView} from './my-progress-view.mjs';
 import {t,productProgress} from './progress-copy.mjs';
 
 export async function startPreview() {
+  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||new URLSearchParams(location.search).get('mode')!=='practice'||globalThis.PW_V2_AUTH_CONFIG?.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||globalThis.PW_V2_AUTH_CONFIG?.googleEnabled!==false)throw Error('Isolated owner pilot only; use its HTTPS address in a clean browser profile.');
   const status = document.getElementById('pwV2PreviewStatus');
   const offerButton = document.getElementById('pwV2AdoptLegacy');
   const retryButton = document.getElementById('pwV2Retry');
@@ -26,17 +28,17 @@ export async function startPreview() {
   // production will need broader browser/native lifecycle validation.
   if (!navigator.locks) { const e = Error('Web Locks unavailable'); report(e); throw e; }
   await new Promise((resolve, reject) => {
-    navigator.locks.request('pw-progress-owner-pilot-20261125', { ifAvailable: true }, async lock => {
+    navigator.locks.request('pw-focus-owner-pilot-20261125-v1', { ifAvailable: true }, async lock => {
       if (!lock) { reject(Error('Another preview tab is active. Close it and reload.')); return; }
       resolve();
       await new Promise(() => {}); // released by the browser when document dies
     }).catch(reject);
   }).catch(e => { report(e); throw e; });
-  const ledger = await openLocalLedger({ name: 'pw-progress-owner-pilot-20261125' });
+  const ledger = await openLocalLedger({ name: 'pw-focus-owner-pilot-20261125-v1' });
   ledger.activate();
-  policy=createTrackingPolicy({storage:window.PW_PILOT_LOCAL});
+  policy=createTrackingPolicy({storage:window.PW_REVIEW_STORAGE});
   const warning=document.getElementById('pwV2LegacyRecovery');
-  gate=createLegacyGate({storage:window.PW_PILOT_LOCAL,ledger,capture:captureLegacy,onBlocked:()=>{
+  gate=createLegacyGate({storage:window.PW_REVIEW_STORAGE,ledger,capture:captureLegacy,onBlocked:()=>{
     offerButton.hidden=true;
     warning.hidden=false;
     warning.textContent=t('Earlier progress needs recovery. New practices are not recorded until resolved. Original data is preserved.');
@@ -46,7 +48,7 @@ export async function startPreview() {
   const canSwitch=()=>!guided&&!timerStarting&&!legacyBusy&&(!freeHandle||freeHandle.recorded)&&!preferences?.blocksStart()&&(document.getElementById('home').classList.contains('active')||document.getElementById('done').classList.contains('active'));
   const settle=async()=>{await tail;if(!canSwitch())throw Error('Timer still active');};
   const allowed=()=>{if(timerStarting||legacyBusy||panel?.blocksStart()||preferences?.blocksStart())throw Error('Progress operation in progress');};
-  const zero={guided_practices:0,guided_seconds:0,metta_practices:0,metta_seconds:0,free_practices:0,free_seconds:0,practices:0,seconds:0,calendar:new Map()};
+  const zero={...Object.fromEntries(FOCUS_MODES.flatMap(m=>[[m+"_seconds",0],[m+"_practices",0]])),guided_practices:0,guided_seconds:0,metta_practices:0,metta_seconds:0,free_practices:0,free_seconds:0,practices:0,seconds:0,calendar:new Map()};
   function committed() { retry = null; retryButton.hidden = true; if(panel)void panel.update(snapshot);else show('local','Preview · saved on this device only'); }
   async function refresh() {
     snapshot = await ledger.read();

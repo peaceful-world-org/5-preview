@@ -7,13 +7,13 @@ import {t,localizeProgress,guestClaimText,productProgress} from './progress-copy
 export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,canDelete=canSwitch}) {
   const cfg=globalThis.PW_V2_AUTH_CONFIG;
   if(!cfg)return null;
-  if(location.origin!=='https://preview-5.peaceful-world.org'||location.pathname!=='/progress-v2-owner-pilot-20261125/'||cfg.endpoint!=='https://infxxghlchechanqkjwx.supabase.co'||cfg.googleEnabled!==false||!globalThis.supabase?.createClient)throw Error('Isolated owner pilot only');
+  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||cfg.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||cfg.googleEnabled!==false||!globalThis.supabase?.createClient)throw Error('Isolated owner account pilot only');
   const sdk=globalThis.supabase.createClient(cfg.endpoint,cfg.publishableKey,{
-    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'pkce',storage:window.PW_PILOT_LOCAL,storageKey:'pw-progress-owner-pilot-20261125-auth'}
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'pkce',storage:window.PW_REVIEW_STORAGE,storageKey:'pw-focus-owner-pilot-20261125-v1-auth'}
   });
   const google=createGoogleFlow({auth:sdk.auth,endpoint:cfg.endpoint,appUrl:new URL(location.pathname,location.origin).href,
-    storage:window.PW_PILOT_SESSION,quarantineStorage:window.PW_PILOT_LOCAL,enabled:cfg.googleEnabled===true,
-    navigate:url=>location.assign(url),cleanUrl:url=>history.replaceState(null,'',url)});
+    storage:window.PW_REVIEW_SESSION,quarantineStorage:window.PW_REVIEW_STORAGE,enabled:cfg.googleEnabled===true,
+    navigate:url=>location.assign(url),cleanUrl:url=>{const next=new URL(url);next.searchParams.set('mode','practice');history.replaceState(null,'',next.href);}});
   const panel=document.createElement('details');
   panel.id='pwV2AccountPanel';
   panel.style.cssText='margin:12px 0;padding:12px;border:1px solid currentColor;border-radius:12px;text-align:left;display:grid;gap:8px;font-size:14px';
@@ -34,7 +34,7 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
   const notice=msg=>{noticeSource=msg;el('pwV2AccountNotice').textContent=t(msg);};
   let busy=false,snapshot=null,claim=null,revision=0,scheduled=null,ready=false,googleNavigating=false;
   const stateText=el('pwV2AccountState');
-  const account=createPreviewAccount({ledger,auth:sdk.auth,...cfg,onChange:()=>render(),onError:notice,onSignedOut:()=>google.clearAfterSignOut(),onDeleted:()=>{try{window.PW_PILOT_SESSION.setItem('pw-v2-deletion-completed','1');}catch(_){}}});
+  const account=createPreviewAccount({ledger,auth:sdk.auth,...cfg,onChange:()=>render(),onError:notice,onSignedOut:()=>google.clearAfterSignOut(),onDeleted:()=>{try{window.PW_REVIEW_SESSION.setItem('pw-v2-deletion-completed','1');}catch(_){}}});
   function render(){
     const s=account.state();
     localizeProgress(panel);el('pwV2AccountNotice').textContent=t(noticeSource);
@@ -109,10 +109,8 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
   el('pwV2Google').onclick=()=>action(async()=>{await google.begin();googleNavigating=true;render();},'Google sign-in unavailable. You can still use email.',{transition:true});
   el('pwV2Send').onclick=()=>action(async()=>{
     await account.send(el('pwV2Email').value.trim());
-    const waiting = new URL('check-email.html',location.href);
-    waiting.searchParams.set('lang',document.documentElement.lang==='ru'?'ru':'en');
-    location.replace(waiting.href);
-  },'Could not send a link. Check the address and wait before trying again.');
+    location.replace(new URL('check-email.html',location.href));
+  },'Could not send a sign-in link. Check your address and wait before trying again.');
   el('pwV2SignOut').onclick=()=>action(()=>account.signOut(),'Sign-out not confirmed. Reload before retrying.',{transition:true});
   el('pwV2Reload').onclick=()=>{if(canSwitch())location.reload();};
   el('pwV2Sync').onclick=()=>action(synchronize,'Cloud synchronization not confirmed.');
@@ -150,16 +148,15 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
     await refresh();
     await synchronize();
   },'Transfer not confirmed; the original records remain protected.',{transition:true});
-  const callback = window.PW_PILOT_CALLBACK;
-  const code = callback?.takeCode();
-  const result = code ? await sdk.auth.exchangeCodeForSession(code).catch(() => ({error:true})) : null;
-  const failed = !!(callback?.failed || (code && !result?.data?.session));
-  const callbackResult = failed ? 'failed' : 'none';
+  const callback=window.PW_PILOT_CALLBACK;
+  const code=callback?.takeCode();
+  const result=code ? await sdk.auth.exchangeCodeForSession(code).catch(()=>null) : null;
+  const callbackResult=callback?.failed || (code && !result?.data?.session) ? 'failed' : 'none';
   await account.start({blockSession:callbackResult==='blocked'});
   if(callbackResult==='cancelled')notice('Google sign-in cancelled. You can still practise without an account.');
-  if(callbackResult==='failed'){panel.open=true;notice('Sign-in link is invalid, expired, or opened in a different browser. Request a new link.');}
+  if(callbackResult==='failed')notice('Sign-in link is invalid, expired, or opened in a different browser. Request a new link.');
   if(callbackResult==='blocked')notice('Account verification incomplete. Sign out before retrying.');
-  try{if(window.PW_PILOT_SESSION.getItem('pw-v2-deletion-completed')==='1'){window.PW_PILOT_SESSION.removeItem('pw-v2-deletion-completed');notice('Account and its v2 history deleted. Other device data was preserved.');panel.open=true;}}catch(_){}
+  try{if(window.PW_REVIEW_SESSION.getItem('pw-v2-deletion-completed')==='1'){window.PW_REVIEW_SESSION.removeItem('pw-v2-deletion-completed');notice('Account and its v2 history deleted. Other device data was preserved.');panel.open=true;}}catch(_){}
   ready=true;
   // The initial real restore is performed by the runtime after reading the
   // legacy offer and before rehydrating the active timer.

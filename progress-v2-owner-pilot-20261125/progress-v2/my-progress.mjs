@@ -4,9 +4,9 @@ import {t,progressLocale,localizeProgress} from './progress-copy.mjs';
 
 function rememberOpen(details,key){
   const storageKey='pw-my-progress-ui-'+key;
-  try{details.open=window.PW_PILOT_SESSION.getItem(storageKey)==='1';}catch(_){}
+  try{details.open=window.PW_REVIEW_SESSION.getItem(storageKey)==='1';}catch(_){}
   details.addEventListener('toggle',()=>{
-    try{window.PW_PILOT_SESSION.setItem(storageKey,details.open?'1':'0');}catch(_){}
+    try{window.PW_REVIEW_SESSION.setItem(storageKey,details.open?'1':'0');}catch(_){}
   });
 }
 export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
@@ -38,10 +38,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
   const calendar=document.getElementById('pwV2Calendar');
   el('pwMyProgressHistory').before(calendar);
   rememberOpen(root,'main');rememberOpen(settings,'settings');rememberOpen(account,'account');
-  if (window.PW_PILOT_CALLBACK) {
-    root.open = true;
-    account.open = true;
-  }
+  if(window.PW_PILOT_CALLBACK){root.open=true;account.open=true;}
   if(!adopt.hidden)root.open=true; // Explicit choice is visible; never auto-adopt.
   const titleIds={foundation:'pwCardBaseTitle',metta:'pwCardMettaTitle',free:'pwCardFreeTitle'};
   function render(){
@@ -70,7 +67,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
       const line=document.createElement('tr');
       const label=document.createElement('th'),time=document.createElement('td'),count=document.createElement('td');
       label.scope='row';
-      label.textContent=document.getElementById(titleIds[row.mode])?.textContent||row.mode;
+      label.textContent=document.getElementById(titleIds[row.mode])?.textContent||window.PW_FOCUS_PILOT?.find(p=>p.id===row.mode)?.name||row.mode;
       time.textContent=minutesText(row.seconds,locale);
       count.textContent=nf.format(row.practices);
       line.append(label,time,count);list.append(line);

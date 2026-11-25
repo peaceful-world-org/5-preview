@@ -1,6 +1,7 @@
 // Progress & Identity v2: executable reference contract, NOT application runtime.
 // No network, database, real user data, or persistence side effects.
-const GUIDED = new Set(['foundation', 'metta']);
+export const FOCUS_MODES=Object.freeze(["F01","F02","F03","F04","F05","F06","F07","F08","F09"]);
+const GUIDED = new Set(['foundation', 'metta', ...FOCUS_MODES]);
 const MODES = new Set([...GUIDED, 'free']);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fields = ['guided_practices', 'guided_seconds', 'free_practices', 'free_seconds', 'metta_practices', 'metta_seconds'];
@@ -65,6 +66,7 @@ export function applyPractice(ownerId, ledger, incoming) {
 export function summarize(ownerId, baseline, ledger) {
   assert(id(ownerId), 'invalid owner');
   const total = mergeLegacy({}, baseline);
+  for(const mode of FOCUS_MODES){total[mode+'_seconds']=0;total[mode+'_practices']=0;}
   const calendar = new Map();
   for (const row of ledger.values()) {
     assert(row.ownerId === ownerId, 'mixed account ledger');
@@ -73,5 +75,5 @@ export function summarize(ownerId, baseline, ledger) {
     if (row.completed) total[prefix + '_practices'] = plus(total[prefix + '_practices'], 1);
     if (row.day !== null && row.completed) calendar.set(row.day, plus(calendar.get(row.day) || 0, 1));
   }
-  return { ...total, practices: plus(plus(total.guided_practices, total.metta_practices), total.free_practices), seconds: plus(plus(total.guided_seconds, total.metta_seconds), total.free_seconds), calendar };
+  return { ...total, practices: FOCUS_MODES.reduce((n,mode)=>plus(n,total[mode+'_practices']),plus(plus(total.guided_practices,total.metta_practices),total.free_practices)), seconds: FOCUS_MODES.reduce((n,mode)=>plus(n,total[mode+'_seconds']),plus(plus(total.guided_seconds,total.metta_seconds),total.free_seconds)), calendar };
 }

@@ -14,6 +14,9 @@
     if (copy && draft?.metta) copy[code] = draft.metta;
   }
   const rotation = window.PW_COPY_ROTATION;
+  const focus = new Map(window.PW_FOCUS_PILOT.map(p=>[p.id,p]));
+  const focusKey = id => 'focus-count-'+id;
+  let focusMeta=null, focusDemo=true, focusFinished=false;
   if (!copy?.ru?.steps || !copy?.en?.steps || !rotation) {
     console.error('[5] Required practice copy is unavailable');
     return;
@@ -53,7 +56,7 @@
       freeDesc:'An open timer at your own pace.',
       baseMore:'Five steps: Stop, See a living being, Wish someone well, Reduce harm, and Make a choice. Each step lasts one minute after a short preparation. There is no right answer to find.',
       mettaMore:'Five directions of goodwill: yourself, someone who showed kindness, someone close, someone you barely know, and all living beings. Wishing happiness and freedom from suffering does not require a particular feeling or forgiveness.',
-      freeMore:'An open-ended timer for a practice you already know. An optional hint is available. Your time is added to your overall practice total.',
+      freeMore:'An open-ended timer for a practice you already know. An optional hint is available. In the released app, your time contributes to the overall practice total.',
       choose:'CHOOSE A PRACTICE', start:'Start · 5 minutes', startFree:'Start',
       details:'More about ', close:'Close', total:'in practice',
       countOne:'practice', countFew:'practices', countMany:'practices',
@@ -73,9 +76,10 @@
     if (draft?.modeUi) text[code] = draft.modeUi;
   }
   const safeInt = key => {
-    const totals = window.PW_PROGRESS_PREVIEW?.totals;
-    const fields = {[LEGACY_BASE]:'guided_practices',[METTA_COUNT]:'metta_practices',[FREE_SECONDS]:'free_seconds',[FREE_SESSIONS]:'free_practices'};
-    return totals?.[fields[key]] ?? 0;
+    const totals=window.PW_PROGRESS_PREVIEW?.totals;
+    const fields={[LEGACY_BASE]:'guided_practices',[METTA_COUNT]:'metta_practices',[FREE_SECONDS]:'free_seconds',[FREE_SESSIONS]:'free_practices'};
+    const mode=key.startsWith('focus-count-')?key.slice('focus-count-'.length):null;
+    return totals?.[mode&&focus.has(mode)?mode+'_practices':fields[key]]??0;
   };
   const locale = () => {
     const raw = String(document.documentElement.lang || window.PW_I18N?.locale || 'ru');
@@ -86,7 +90,7 @@
   // Storage mode ID is 'foundation', while the approved copy key is 'base'.
   // Never render "undefined" in the details title, screen-reader label or history.
   const modeCopyKey = mode => mode === 'foundation' ? 'base' : mode;
-  const modeTitle = (c, mode) => c[modeCopyKey(mode)];
+  const modeTitle = (c, mode) => focus.get(mode)?.name || c[modeCopyKey(mode)];
   const mettaCopyVersion = () => window.PW_DRAFT_LOCALES?.[locale()]
     ? (window.PW_I18N?.config?.copyVersion || copy.version) : copy.version;
   let selected = 'foundation';
@@ -104,12 +108,9 @@
     const m = Math.floor((amount % 3600) / 60);
     const units = {ru:[' ч ',' мин',' сек'],uk:[' год ',' хв',' с'],es:[' h ',' min',' s'],'pt-br':[' h ',' min',' s'],'pt-pt':[' h ',' min',' s'],fr:[' h ',' min',' s'],id:[' jam ',' mnt',' dtk']};
     const unit = units[locale()] || [' h ',' min',' sec'];
-    const seconds = amount % 60;
-    if (h > 0 || m > 0) {
-      const minutes = (h > 0 ? h + unit[0] + String(m).padStart(2,'0') : m) + unit[1];
-      return exact && seconds > 0 ? minutes + ' ' + seconds + unit[2] : minutes;
-    }
-    return seconds + unit[2];
+    const seconds=amount%60;
+    if(h>0||m>0){const minutes=(h>0?h+unit[0]+String(m).padStart(2,'0'):m)+unit[1];return exact&&seconds>0?minutes+' '+seconds+unit[2]:minutes;}
+    return seconds+unit[2];
   }
   function practiceWord(n) {
     const c = dict();
@@ -122,13 +123,16 @@
   function stats() {
     const base = safeInt(LEGACY_BASE), metta = safeInt(METTA_COUNT);
     const freeTime = safeInt(FREE_SECONDS), freeCount = safeInt(FREE_SESSIONS);
+    const focusStats=Object.fromEntries([...focus.keys()].map(id=>{const count=safeInt(focusKey(id));return [id,{count,seconds:count*300}]}));
+    const focusCount=Object.values(focusStats).reduce((n,p)=>n+p.count,0);
     return {
       foundation:{ seconds:base*300,count:base },
       metta:{ seconds:metta*300,count:metta },
       free:{ seconds:freeTime,count:freeCount },
-      seconds:(base+metta)*300+freeTime,
-      count:base+metta+freeCount,
-      guided:base+metta
+      ...focusStats,
+      seconds:(base+metta+focusCount)*300+freeTime,
+      count:base+metta+focusCount+freeCount,
+      guided:base+metta+focusCount
     };
   }
   function set(id, value) {
@@ -188,6 +192,9 @@
     window.setTimeout(()=>wait.disconnect(),3500);
   }
   function startMode(id) {
+    if(!['foundation','metta','free'].includes(id)&&!focus.has(id))return;
+    if(start.disabled)return;
+    window.PW_LAST_COMPLETION=null;
     closeInfo();
     if(id==='free'){freeStart();return}
     selected=id;
@@ -230,7 +237,7 @@
     set('pwModeRoadmapAnger',c.anger);
     set('pwModeRoadmapAngerStatus',c.planned);
     set('pwModeRoadmapLink',c.roadmapLink);
-    set('pwModeDoneBackText', window.PW_WEB_COPY[locale()]?.back || c.doneStart);
+    set('pwModeDoneBackText',window.PW_WEB_COPY[locale()]?.back || c.doneStart);
     const article=window.PW_I18N?.config?.links?.article;
     const link=$('pwModeRoadmapLink');
     if(link)link.href=typeof article==='string'&&article.startsWith('https://')?article:(locale()==='ru'?'https://peaceful-world.org/ru/research/peaceful-world-practice':'https://peaceful-world.org/research/peaceful-world-practice');
@@ -242,7 +249,7 @@
     const last=window.PW_LAST_COMPLETION;
     const isFree=last?.mode==='free'||selected==='free';
     const isMetta=!isFree&&(last?.mode==='metta'||selected==='metta');
-    const mode=isFree?'free':isMetta?'metta':'foundation';
+    const mode=isFree?'free':focus.has(last?.mode)?last.mode:focus.has(selected)?selected:isMetta?'metta':'foundation';
     completionMode=mode;
     const doneLabel=$('doneKicker');
     if(doneLabel)doneLabel.textContent=c.kicker;
@@ -252,17 +259,14 @@
       else if(isFree)subtitle.textContent=c.freeDoneSubtitle || (locale()==='ru'?'Это время ты посвятил тренировке.':'You made time for your practice.');
       else subtitle.textContent=window.PW_I18N?.pack?.['done.subtitle']|| (locale()==='ru'?'Закрой приложение и вернись к своему дню.':'Close the app and return to your day.');
     }
-    const webText = window.PW_WEB_COPY[locale()] || window.PW_WEB_COPY.en;
-    const demo = last?.demo || new URLSearchParams(location.search).has('demo') ||
-      location.pathname.endsWith('/demo.html');
-    const duration = demo ? null : last?.durationSeconds;
-    if (doneLabel && demo) doneLabel.textContent = window.PW_I18N.text('done.demo');
+    const webText=window.PW_WEB_COPY[locale()]||window.PW_WEB_COPY.ru;
+    const demo=last?.demo||IS_DEMO;
+    if(doneLabel&&demo)doneLabel.textContent='Быстрый просмотр завершён';
+    const duration=demo?null:last?.durationSeconds;
     set('pwModeDoneSummaryHeading',c.outcome);
     set('pwModeDoneSummaryTitle',modeTitle(c,mode));
-    const separator = locale() === 'fr' ? '\u00a0: ' : ': ';
-    set('pwModeDoneSummaryTime',Number.isFinite(duration) ? webText.sessionTime+separator+formatTime(duration,true) : '');
-    set('pwModeDoneSummaryMode',c.totalTime+separator+formatTime(d.seconds));
-    $('pwModeDoneSummaryMode').hidden=window.PW_PROGRESS_PREVIEW?.recordingEnabled===false;
+    set('pwModeDoneSummaryTime',Number.isFinite(duration)?webText.sessionTime+': '+formatTime(duration,true):'');
+    set('pwModeDoneSummaryMode',demo?'Просмотр не учитывается в статистике':window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?'Запись прогресса отключена':c.totalTime+': '+formatTime(d.seconds));
     $('pwModeDoneSummary')?.setAttribute('aria-label',webText.outcomeAria);
     updateHome();
   }
@@ -274,14 +278,27 @@
     oldDescriptors[prop]=Object.getOwnPropertyDescriptor(rotation,prop);
   }
   rotation.startSession=function(opts={}){
+    if(focus.has(selected)){
+      focusDemo=Boolean(opts.demo);focusFinished=false;focusMeta=null;
+      return focus.get(selected).steps.map(s=>({title:s.title,guide:s.guide}));
+    }
     if(selected!=='metta')return originalStart(opts);
     mettaDemo=Boolean(opts.demo);mettaActive=true;mettaFinished=false;mettaMeta=null;
     return getMettaSteps();
   };
   rotation.completeSession=function(){
+    if(focus.has(selected)){
+      if(focusFinished)return focusMeta;
+      focusFinished=true;
+      const n=focusDemo||window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?null:safeInt(focusKey(selected));
+      focusMeta={practiceNumber:n===null?null:stats().guided,modeNumber:n,copyVersion:focus.get(selected).version,setId:selected,locale:'ru',demo:focusDemo};
+      window.PW_LAST_COMPLETION={mode:selected,practiceNumber:focusMeta.practiceNumber,durationSeconds:focusDemo?null:300,demo:focusDemo};
+      document.dispatchEvent(new CustomEvent('pw:completion-changed'));
+      return focusMeta;
+    }
     if(selected!=='metta'){
       const result=originalComplete();
-      if(result?.practiceNumber){
+      if(result&&!result.demo){
         window.PW_LAST_COMPLETION={mode:'foundation',practiceNumber:result.practiceNumber,durationSeconds:300};
         document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       }
@@ -290,7 +307,7 @@
     if(mettaFinished)return mettaMeta;
     if(!mettaActive)return null;
     mettaFinished=true;
-    const n=mettaDemo||window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?null:safeInt(METTA_COUNT); // already committed
+    const n=mettaDemo||window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?null:safeInt(METTA_COUNT);
     const practiceNumber=n===null?null:safeInt(LEGACY_BASE)+n;
     mettaMeta={
       practiceNumber,modeNumber:n,
@@ -315,6 +332,11 @@
     const orig=oldDescriptors[prop];
     if(!orig?.configurable)continue;
     Object.defineProperty(rotation,prop,{configurable:true,enumerable:true,get(){
+      if(focus.has(selected)){
+        const current=focus.get(selected);
+        const fields={lastCompletedPracticeNumber:focusMeta?.practiceNumber??null,lastCompletedCopyVersion:focusMeta?.copyVersion??null,lastCompletedSetId:focusMeta?.setId??null,lastCompletedLocale:focusMeta?.locale??null,lastCompletedWasDemo:focusMeta?.demo??false,copyVersion:current.version,currentSetId:selected,currentLocale:'ru'};
+        return fields[prop];
+      }
       return selected==='metta'?fn(mettaMeta):(typeof orig.get==='function'?orig.get.call(rotation):orig.value);
     }});
   }
@@ -353,6 +375,7 @@
     isMetta(){return selected==='metta';},
     getMettaSteps,
     example(step){
+      if(focus.has(selected))return focus.get(selected).steps[step-1]?.hint||'';
       if(selected!=='metta')return '';
       return copy[locale()]?.steps?.[step-1]?.example||'';
     },

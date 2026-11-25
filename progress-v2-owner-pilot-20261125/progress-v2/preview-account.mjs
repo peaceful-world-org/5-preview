@@ -3,22 +3,22 @@
 import { createProgressSync } from './sync-coordinator.mjs';
 
 const assert = (ok,msg) => { if(!ok) throw Error(msg); };
-const PILOT_BACKEND='https://infxxghlchechanqkjwx.supabase.co';
+const SYNTHETIC_ORIGIN='https://progress-auth-qa.test';
 
 export function createPreviewAccount({ledger,auth,endpoint,publishableKey,
   onChange=()=>{},onError=()=>{},onReload=()=>location.reload(),onSignedOut=async()=>{},onDeleted=()=>{},
   fetchImpl=globalThis.fetch,online=()=>navigator.onLine}) {
   const base=new URL(endpoint);
-  assert(base.href===PILOT_BACKEND+'/','Only isolated owner pilot Auth allowed');
+  assert(base.href==="https://infxxghlchechanqkjwx.supabase.co/",'Only designated hosted test project allowed');
   let user=null, verified=null, token=null, pendingEmail=null, unavailable=false, transitioning=false, flight=null, lastError=false, removal=null;
   const sync=createProgressSync({ledger,auth:{async getUser(jwt){
     const result=await auth.getUser(jwt);
     if(result.error && (result.error.name==='AuthRetryableFetchError'||result.error.status===0||result.error.status>=500))throw Error('Identity verification temporarily unavailable');
     if(!result.error) verified=result.data?.user??null;
     return result;
-  }},url:PILOT_BACKEND,publishableKey,fetchImpl:(input,init)=>{
+  }},url:SYNTHETIC_ORIGIN,publishableKey,fetchImpl:(input,init)=>{
     const u=new URL(input);
-    assert(u.origin===PILOT_BACKEND&&u.pathname.startsWith('/rest/v1/rpc/'),'Unexpected transport');
+    assert(u.origin===SYNTHETIC_ORIGIN&&u.pathname.startsWith('/rest/v1/rpc/'),'Unexpected transport');
     return fetchImpl(new URL(u.pathname,base),init);
   }});
   const state=()=>({signedIn:!!user,owner:user?.id??null,email:user?.email??'',pendingEmail,unavailable,transitioning,syncing:!!flight,syncError:lastError,deletionPending:!!removal,deletionPhase:removal?.phase??null});
@@ -49,7 +49,7 @@ export function createPreviewAccount({ledger,auth,endpoint,publishableKey,
     assert(online(),'Network unavailable');
     assert(typeof email==='string'&&email.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),'Invalid email');
     const address=email.trim().toLowerCase();
-    unwrap(await auth.signInWithOtp({email:address,options:{shouldCreateUser:true,emailRedirectTo:'https://preview-5.peaceful-world.org/progress-v2-owner-pilot-20261125/'}}));
+    unwrap(await auth.signInWithOtp({email:address,options:{shouldCreateUser:false,emailRedirectTo:'https://preview-5.peaceful-world.org/progress-v2-owner-pilot-20261125/'}}));
     pendingEmail=address;changed();
   }
   function cancel(){pendingEmail=null;changed();}
@@ -81,7 +81,7 @@ export function createPreviewAccount({ledger,auth,endpoint,publishableKey,
       unavailable=true;lastError=true;onError('Sign-out not confirmed. Reload to retry.');changed();throw e;
     }
   }
-  async function deleteAccount(){throw Error('Deletion is unavailable in the owner pilot');}
+  async function deleteAccount(){throw Error('Deletion is unavailable in this pilot');}
   function syncNow(){
     if(flight)return flight;
     assert(user&&!transitioning,'Sign in first');

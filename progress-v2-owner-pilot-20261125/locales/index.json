@@ -1,5 +1,5 @@
 {
-  "default": "en",
+  "default": "ru",
   "legacyDefault": "ru",
   "locales": {
     "ru": {
@@ -8,7 +8,7 @@
       "label": "Русский",
       "copyVersion": "ru-v0.18.50-stable",
       "rotationVersion": "ru-rotation-v1",
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.html",
+      "privacy": "privacy.html",
       "privacyVersion": "2.3",
       "shareHint": "ru",
       "links": {
@@ -17,165 +17,9 @@
         "article": "https://peaceful-world.org/ru/research/peaceful-world-practice",
         "notebook": "https://notebook.google.com/notebook/c24ace59-2fe4-46be-afbc-ba4ee2c9ab4a"
       },
-      "ai": {
-        "agentId": "agent_4701m19eebbhe8zr9vq8afq0r51k"
-      },
+      "ai": {},
       "iosGuide": {
         "assetLocale": "ru"
-      }
-    },
-    "en": {
-      "released": true,
-      "dir": "ltr",
-      "label": "English",
-      "copyVersion": "en-v1",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "en",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": "agent_4701m19eebbhe8zr9vq8afq0r51k"
-      },
-      "iosGuide": {
-        "assetLocale": "en"
-      }
-    },
-    "uk": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Українська",
-      "copyVersion": "uk-v0.2-web-vnext",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "uk",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
-      }
-    },
-    "es": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Español",
-      "copyVersion": "es-v0.1-web-vnext",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "es",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
-      }
-    },
-    "pt-br": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Português (Brasil)",
-      "copyVersion": "pt-br-v0.1-web-vnext",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "pt-br",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
-      }
-    },
-    "pt-pt": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Português (Portugal)",
-      "copyVersion": "pt-pt-v0.1-web-vnext",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "pt-pt",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
-      }
-    },
-    "fr": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Français",
-      "copyVersion": "fr-v0.1",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "fr",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
-      }
-    },
-    "id": {
-      "released": true,
-      "dir": "ltr",
-      "label": "Bahasa Indonesia",
-      "copyVersion": "id-v0.1-web-vnext",
-      "rotationVersion": null,
-      "privacy": "/progress-v2-owner-pilot-20261125/privacy.en.html",
-      "privacyVersion": "2.3",
-      "shareHint": "id",
-      "links": {
-        "site": "https://peaceful-world.org/",
-        "support": "https://peaceful-world.org/help",
-        "article": "https://peaceful-world.org/research/peaceful-world-practice",
-        "notebook": "https://notebook.google.com/notebook/2a545259-78f0-42f7-affe-27f8a25879de"
-      },
-      "ai": {
-        "agentId": ""
-      },
-      "iosGuide": {
-        "assetLocale": ""
       }
     }
   }

@@ -1,3 +1,4 @@
+import {FOCUS_MODES} from './ledger-contract.mjs';
 // Export one committed local partition, never SDK/session storage or raw metadata.
 const GUEST='00000000-0000-0000-0000-000000000000';
 const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
@@ -11,13 +12,14 @@ export function formatProgressExport(snapshot,verifiedOwner,{now=new Date()}={})
   const owner=verifiedOwner===null?GUEST:verifiedOwner;
   assert(typeof owner==='string'&&UUID.test(owner)&&snapshot?.ownerId===owner,'Wrong export partition');
   const legacy=counters(snapshot.baseline), totals={...legacy};
+  for(const mode of FOCUS_MODES){totals[mode+'_seconds']=0;totals[mode+'_practices']=0;}
   assert(legacy.guided_seconds===legacy.guided_practices*300&&legacy.metta_seconds===legacy.metta_practices*300,'Invalid legacy export baseline');
   assert(Array.isArray(snapshot.rows),'Missing export rows');
   const ids=new Set(),practices=[];
   for(const r of snapshot.rows){
     assert(r.ownerId===owner&&typeof r.id==='string'&&UUID.test(r.id)&&!ids.has(r.id),'Invalid or foreign export row');
     ids.add(r.id);
-    assert(['foundation','metta','free'].includes(r.mode)&&typeof r.completed==='boolean','Invalid export practice');
+    assert(['foundation','metta','free',...FOCUS_MODES].includes(r.mode)&&typeof r.completed==='boolean','Invalid export practice');
     const seconds=uint(r.seconds);
     if(!seconds){assert(!r.completed,'Invalid export draft');continue;}
     assert(r.mode==='free'||(r.completed&&seconds===300),'Invalid export duration');
@@ -28,15 +30,15 @@ export function formatProgressExport(snapshot,verifiedOwner,{now=new Date()}={})
     if(r.completed)totals[prefix+'_practices']=sum(totals[prefix+'_practices'],1);
     practices.push({id:r.id,mode:r.mode,seconds,completed:r.completed,day});
   }
-  totals.practices=sum(sum(totals.guided_practices,totals.metta_practices),totals.free_practices);
-  totals.seconds=sum(sum(totals.guided_seconds,totals.metta_seconds),totals.free_seconds);
+  totals.practices=FOCUS_MODES.reduce((n,m)=>sum(n,totals[m+'_practices']),sum(sum(totals.guided_practices,totals.metta_practices),totals.free_practices));
+  totals.seconds=FOCUS_MODES.reduce((n,m)=>sum(n,totals[m+'_seconds']),sum(sum(totals.guided_seconds,totals.metta_seconds),totals.free_seconds));
   assert(Object.entries(totals).every(([k,v])=>snapshot.totals?.[k]===v),'Export totals do not reconcile');
   practices.sort((a,b)=>a.id.localeCompare(b.id));
   assert(typeof snapshot.legacyPending==='boolean','Invalid export import state');
   const pending=uint(snapshot.pending),scan=snapshot.reconciliation?.state;
   assert(['never','incomplete','complete'].includes(scan),'Invalid export scan state');
   return {
-    format:'peaceful-world-practice-progress',version:1,exportedAt:now.toISOString(),
+    format:'peaceful-world-practice-progress',version:2,exportedAt:now.toISOString(),
     scope:verifiedOwner===null?'guest':'account',source:'local-snapshot',
     cloud:{pendingRecords:pending,legacyImportPending:snapshot.legacyPending,reconciliation:scan,lastSuccessfulScan:timestamp(snapshot.reconciliation.lastSuccessfulScan)},
     legacyUndated:legacy,totals,practices

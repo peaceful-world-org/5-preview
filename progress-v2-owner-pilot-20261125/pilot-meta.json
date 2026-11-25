@@ -1,9 +1,0 @@
-{
-  "source_sha": "8c125808c4b7e9646c2dc9437dc4a2cf188d0b86",
-  "backend": "https://infxxghlchechanqkjwx.supabase.co",
-  "google_enabled": false,
-  "email_auth": "magic-link-pkce",
-  "account_deletion_enabled": false,
-  "offline_install": false,
-  "storage_namespace": "pw-progress-owner-pilot-20261125"
-}

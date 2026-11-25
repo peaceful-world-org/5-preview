@@ -14,7 +14,7 @@
   const METTA_KEY = 'pw-metta-completed-practices-v1';
   const FREE_SECONDS_KEY = 'pw-free-practice-seconds-v1';
   const FREE_SESSIONS_KEY = 'pw-free-practice-sessions-v1';
-  const SESSION_KEY = 'pw-free-practice-session-v1';
+  const SESSION_KEY = 'pw-free-practice-session-v1'+(IS_DEMO?'-review':'');
   const TICKING_KEY = 'pw-ticking';
 
   const STRINGS = {
@@ -27,7 +27,7 @@
       screenLabel: 'СВОБОДНАЯ ТРЕНИРОВКА',
       title: 'Таймер',
       idea: 'Тренируйся столько, сколько нужно.',
-      note: 'Без цели и без серий дней подряд. Просто время, посвящённое тренировке.',
+      note: 'Без цели и без серии. Просто время, посвящённое тренировке.',
       start: 'Начать',
       pause: 'Пауза',
       resume: 'Продолжить',
@@ -87,7 +87,7 @@
 
   function safeGet(key, fallback = '') {
     try {
-      const value = window.PW_PILOT_LOCAL.getItem(key);
+      const value = window.PW_REVIEW_STORAGE.getItem(key);
       return value === null ? fallback : value;
     } catch (_) {
       return fallback;
@@ -96,7 +96,7 @@
 
   function safeSet(key, value) {
     try {
-      window.PW_PILOT_LOCAL.setItem(key, String(value));
+      window.PW_REVIEW_STORAGE.setItem(key, String(value));
       return true;
     } catch (_) {
       return false;
@@ -104,7 +104,7 @@
   }
 
   function safeRemove(key) {
-    try { window.PW_PILOT_LOCAL.removeItem(key); } catch (_) {}
+    try { window.PW_REVIEW_STORAGE.removeItem(key); } catch (_) {}
   }
 
   function safeInt(value) {
@@ -276,7 +276,7 @@
   let wakeLock = null;
   let hintPausedTimer = false;
 
-  const v2Demo = new URLSearchParams(location.search).has('demo') || location.pathname.endsWith('demo.html');
+  const v2Demo = IS_DEMO;
   let queuedSeconds = 0, startingFree = false, finishingFree = false;
   async function loadSession() {
     if (v2Demo) return;
@@ -439,7 +439,6 @@
     home.classList.add('active');
     nativeHistoryReplace('home');
     renderOdometer();
-    document.getElementById('pwModeFreeStart')?.focus({preventScroll:true});
   }
 
   async function startTimer({ resumed = false } = {}) {
@@ -447,8 +446,7 @@
     startingFree = true;
     try {
       await freeReady;
-      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-      if (!v2Demo) await v2.startFree();
+      if (!v2Demo) await (await window.PW_PROGRESS_PREVIEW_READY).startFree();
       if (document.hidden || !screen.classList.contains('active')) return;
       const firstStart = !resumed && elapsedMs <= 0;
       running = true;
@@ -501,8 +499,7 @@
       if (running) pauseTimer();
       const whole = Math.floor(elapsedMs / 1000);
       if (whole < 1) return;
-      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-      if (!v2Demo) await v2.recordFree(whole, true);
+      if (!v2Demo) await (await window.PW_PROGRESS_PREVIEW_READY).recordFree(whole, true);
       window.PW_LAST_COMPLETION = { mode:'free', durationSeconds:v2Demo?null:whole, freePracticeNumber:v2Demo?null:freeSessions(), demo:v2Demo };
       document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       playBoundarySignal();

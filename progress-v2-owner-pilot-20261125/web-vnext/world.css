@@ -481,9 +481,3 @@ html[data-pw-web-vnext] #practice #stepCount {color:var(--text);opacity:.94}
 }
 #done .pw-world-tools .pw-ai-guide-trigger {width: auto}
 #done .pw-world-done-tools {display: flex; flex-direction: column; align-items: center}
-
-/* Approved preview PR #29: one simple alphabetical language list. */
-#home .pw-world-candidate-list{display:block;padding:0 18px 16px;min-width:0}
-#home .pw-world-flat-language-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:6px 16px;margin:0;padding:14px 0 0 18px;list-style:disc}
-#home .pw-world-flat-language-list li{display:list-item;min-width:0;line-height:1.55;font-size:.78rem;color:#35503B;overflow-wrap:anywhere}
-html[data-pw-theme="dark"][data-pw-web-vnext] #home .pw-world-flat-language-list li{color:#D6E7D6}

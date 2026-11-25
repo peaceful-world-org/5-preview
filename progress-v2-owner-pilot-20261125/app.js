@@ -38,8 +38,7 @@ if (REDUCED_MOTION) {
   CONFIG.phaseChangeMs = 60;
 }
 
-const IS_DEMO = new URLSearchParams(location.search).has('demo') ||
-  location.pathname.endsWith('demo.html');
+const IS_DEMO = new URLSearchParams(location.search).get('mode') !== 'practice';
 const PREP = IS_DEMO ? CONFIG.demoPrepSeconds : CONFIG.prepSeconds;
 const PRACTICE = IS_DEMO ? CONFIG.demoPracticeSeconds : CONFIG.practiceSeconds;
 const CIRC = 2 * Math.PI * CONFIG.ringRadius;
@@ -52,16 +51,8 @@ function currentLocale() {
   return window.PW_I18N?.locale || document.documentElement.lang || 'ru';
 }
 function localizedSeconds(value) {
-  const language = currentLocale();
-  const format = window.PW_DRAFT_LOCALES?.[language]?.formatSeconds;
-  if (typeof format === 'function') return format(value);
-  if (language === 'en') return value + (value === 1 ? ' second' : ' seconds');
-  const lastDigit = value % 10;
-  const lastTwoDigits = value % 100;
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return value + ' секунд';
-  if (lastDigit === 1) return value + ' секунда';
-  if (lastDigit >= 2 && lastDigit <= 4) return value + ' секунды';
-  return value + ' секунд';
+  const format = window.PW_DRAFT_LOCALES?.[currentLocale()]?.formatSeconds;
+  return typeof format === 'function' ? format(value) : value;
 }
 
 function localizedFallbackSteps() {
@@ -97,6 +88,7 @@ function selectPracticeSteps() {
     console.warn('Copy rotation unavailable; using locale fallback copy.', error);
   }
 
+  if(window.PW_FOCUS_PILOT.some(p=>p.id===window.PW_TRAINING_MODES?.mode))return false;
   const fallback = localizedFallbackSteps();
   if (!validPracticeSteps(fallback)) return false;
   STEPS = fallback;
@@ -106,14 +98,14 @@ function selectPracticeSteps() {
 const store = {
   get(key, fallback) {
     try {
-      const value = window.PW_PILOT_LOCAL.getItem(key);
+      const value = window.PW_REVIEW_STORAGE.getItem(key);
       return value === null ? fallback : value;
     } catch (_) {
       return fallback;
     }
   },
   set(key, value) {
-    try { window.PW_PILOT_LOCAL.setItem(key, value); } catch (_) {}
+    try { window.PW_REVIEW_STORAGE.setItem(key, value); } catch (_) {}
   }
 };
 
@@ -132,6 +124,7 @@ let lastObservedRemainingMs = 0;
 let deferredInstallPrompt = null;
 let finalHiddenAt = 0;
 let startingPractice = false;
+let resumeAfterExitDialog = false;
 
 const $ = id => document.getElementById(id);
 const home = $('home');
@@ -140,6 +133,9 @@ const done = $('done');
 const feedback = $('feedback');
 const startBtn = $('startBtn');
 const closeBtn = $('closeBtn');
+const exitDialog = $('pwExitDialog');
+const exitStayBtn = $('pwExitStay');
+const exitLeaveBtn = $('pwExitLeave');
 const pauseBtn = $('pauseBtn');
 const feedbackBtn = $('feedbackBtn');
 const shareBtn = $('shareBtn');
@@ -435,7 +431,7 @@ function renderTimer() {
       'aria-label',
       i18nText(
         'practice.timer.prep.aria',
-        'Подготовка, осталось {seconds}',
+        'Подготовка, осталось {seconds} секунд',
         { seconds: localizedSeconds(seconds) }
       )
     );
@@ -457,7 +453,7 @@ function renderTimer() {
     'aria-label',
     i18nText(
       'practice.timer.run.aria',
-      'Тренировка, осталось {seconds}',
+      'Тренировка, осталось {seconds} секунд',
       { seconds: localizedSeconds(ariaSeconds) }
     )
   );
@@ -479,6 +475,7 @@ function updatePhaseVisual() {
 function writeStep() {
   const step = STEPS[stepIndex];
   stepCount.textContent = `${stepIndex + 1} / ${STEPS.length}`;
+  $('stepNumber').textContent=String(stepIndex+1);
   stepTitle.textContent = step.title;
   stepGuide.textContent = step.guide;
   updateDots();
@@ -596,12 +593,14 @@ async function startPractice() {
       return;
     }
 
-    const v2 = await window.PW_PROGRESS_PREVIEW_READY;
-    await v2.startGuided(window.PW_TRAINING_MODES?.mode === 'metta' ? 'metta' : 'foundation', IS_DEMO);
+    if (!IS_DEMO) {
+      const v2 = await window.PW_PROGRESS_PREVIEW_READY;
+      await v2.startGuided(window.PW_TRAINING_MODES?.mode || 'foundation', false);
+    }
     ensureAudio();
     document.dispatchEvent(new CustomEvent('pw:practice-started', {
       detail: {
-        mode: window.PW_TRAINING_MODES?.mode === 'metta' ? 'metta' : 'guided',
+        mode: window.PW_TRAINING_MODES?.mode || 'foundation',
         locale: window.PW_COPY_ROTATION?.currentLocale || currentLocale(),
         copyVersion: window.PW_COPY_ROTATION?.copyVersion || window.PW_I18N?.config?.copyVersion || ''
       }
@@ -716,7 +715,7 @@ async function finish() {
   closeBtn.disabled = true;
   pauseBtn.disabled = true;
   try {
-    await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided();
+    if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided();
     window.PW_COPY_ROTATION?.completeSession?.();
   } catch (error) {
     window.PW_PROGRESS_PREVIEW?.report(error, finish);
@@ -734,9 +733,10 @@ async function finish() {
 
 async function exit() {
   if (v2GuidedSaving) return;
+  if (exitDialog?.open) exitDialog.close();
   v2GuidedSaving = true;
   stopSession();
-  try { await (await window.PW_PROGRESS_PREVIEW_READY).abandonGuided(); }
+  try { if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).abandonGuided(); }
   catch (error) { window.PW_PROGRESS_PREVIEW?.report(error, exit); return; }
   finally { v2GuidedSaving = false; }
   show(home);
@@ -757,8 +757,31 @@ function maybeResetCompletedView() {
   focusQuietly($('pwModeChoose'));
 }
 
+function requestExit() {
+  if (v2GuidedSaving || !practice.classList.contains('active') || exitDialog?.open) return;
+  if (IS_DEMO) { void exit(); return; }
+  resumeAfterExitDialog = Boolean(interval) && !paused;
+  if (resumeAfterExitDialog) pausePractice();
+  if (!exitDialog?.showModal) {
+    answerExitDialog(window.confirm(i18nText('practice.exit.title', 'Прервать тренировку?') + '\n\n' + i18nText('practice.exit.body', 'Текущий сеанс не сохранится. Следующий начнётся с первого шага.')));
+    return;
+  }
+  exitDialog.showModal();
+  exitStayBtn?.focus({ preventScroll:true });
+}
+function answerExitDialog(shouldLeave) {
+  if (exitDialog?.open) exitDialog.close();
+  if (shouldLeave) { resumeAfterExitDialog = false; void exit(); return; }
+  if (resumeAfterExitDialog && paused && interval && !document.hidden) pausePractice();
+  resumeAfterExitDialog = false;
+  closeBtn.focus({ preventScroll:true });
+}
+exitStayBtn?.addEventListener('click', () => answerExitDialog(false));
+exitLeaveBtn?.addEventListener('click', () => answerExitDialog(true));
+exitDialog?.addEventListener('cancel', e => { e.preventDefault(); answerExitDialog(false); });
+
 startBtn.addEventListener('click', startPractice);
-closeBtn.addEventListener('click', exit);
+closeBtn.addEventListener('click', requestExit);
 pauseBtn.addEventListener('click', pausePractice);
 
 if (feedbackBtn) {
@@ -780,7 +803,7 @@ function backFromFeedback() {
   if (feedback?.dataset) delete feedback.dataset.pwReturn;
   if (target === 'home') {
     show(home);
-    focusQuietly(startBtn);
+    focusQuietly($('pwModeChoose'));
     return;
   }
   backToDone();
@@ -807,7 +830,8 @@ soundToggle.addEventListener('click', () => {
 
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
-  if (practice.classList.contains('active')) exit();
+  if (exitDialog?.open) return;
+  if (practice.classList.contains('active')) { event.preventDefault(); requestExit(); }
   else if (feedback && feedback.classList.contains('active')) backFromFeedback();
 });
 

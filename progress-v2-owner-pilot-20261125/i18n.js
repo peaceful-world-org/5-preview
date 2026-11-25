@@ -2,7 +2,7 @@
 'use strict';
 
 (() => {
-  const REGISTRY_URL = '/progress-v2-owner-pilot-20261125/locales/index.json';
+  const REGISTRY_URL = './locales/index.json?v=2';
   const LOCALE_KEY = 'pw-locale';
   const LOCALE_SOURCE_KEY = 'pw-locale-source';
   const LEGACY_LOCALE = 'ru';
@@ -21,12 +21,12 @@
   let locked = false;
 
   function safeGet(key) {
-    try { return window.PW_PILOT_LOCAL.getItem(key); } catch (_) { return null; }
+    try { return window.PW_REVIEW_STORAGE.getItem(key); } catch (_) { return null; }
   }
 
   function safeSet(key, value) {
     try {
-      window.PW_PILOT_LOCAL.setItem(key, String(value));
+      window.PW_REVIEW_STORAGE.setItem(key, String(value));
       return true;
     } catch (_) {
       return false;
@@ -153,7 +153,7 @@
   }
 
   async function loadPack(code) {
-    const value = await fetchJson(`/progress-v2-owner-pilot-20261125/locales/${encodeURIComponent(code)}.json`);
+    const value = await fetchJson(`./locales/${encodeURIComponent(code)}.json?v=2`);
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       throw new Error(`Invalid locale pack: ${code}`);
     }

@@ -1,20 +1,11 @@
 /* 5 by Peaceful World — small UI enhancements */
 'use strict';
 
-window.PW_BUILD_VERSION = 'v0.18.63';
+window.PW_BUILD_VERSION = 'Integrated Pilot 1';
 
 var i18nText = (key, fallback, vars) =>
   window.PW_I18N?.text?.(key, fallback, vars) ?? fallback;
 
-(() => {
-  const host = String(location.hostname || '').trim().toLowerCase().replace(/\.+$/, '');
-  if (host !== '5.peaceful-world.org' && host !== 'android.5.peaceful-world.org') return;
-  const script = document.createElement('script');
-  script.src = 'aggregate-analytics.js';
-  script.async = true;
-  script.dataset.pwAggregateAnalyticsLoader = '1';
-  document.head.appendChild(script);
-})();
 
 (() => {
   const badge = document.querySelector('.build-version');
@@ -131,11 +122,11 @@ var i18nText = (key, fallback, vars) =>
   if (!home || !practice || !done || !window.PW_I18N) return;
 
   function safeGet(key) {
-    try { return window.PW_PILOT_LOCAL.getItem(key); } catch (_) { return null; }
+    try { return window.PW_REVIEW_STORAGE.getItem(key); } catch (_) { return null; }
   }
 
   function safeSet(key, value) {
-    try { window.PW_PILOT_LOCAL.setItem(key, value); } catch (_) {}
+    try { window.PW_REVIEW_STORAGE.setItem(key, value); } catch (_) {}
   }
 
   function validTheme(value) {
@@ -246,7 +237,7 @@ var i18nText = (key, fallback, vars) =>
   function chooseTheme(value) {
     themePreference = validTheme(value);
     if (themePreference === 'system') {
-      try { window.PW_PILOT_LOCAL.removeItem(THEME_KEY); } catch (_) {}
+      try { window.PW_REVIEW_STORAGE.removeItem(THEME_KEY); } catch (_) {}
     } else {
       safeSet(THEME_KEY, themePreference);
     }
@@ -317,16 +308,14 @@ var i18nText = (key, fallback, vars) =>
         syncLabels();
       }));
     });
-    const atlas = document.createElement('button');
-    atlas.type = 'button';
-    atlas.className = 'pw-language-option pw-language-atlas';
-    atlas.setAttribute('role', 'menuitem');
-    atlas.textContent = (window.PW_WEB_COPY[window.PW_I18N.locale] || window.PW_WEB_COPY.en).menu;
-    atlas.addEventListener('click', () => {
-      closeLanguagePanel();
-      document.dispatchEvent(new Event('pw:open-language-atlas'));
+    const plannedHeading = document.createElement('p');
+    plannedHeading.className = 'pw-language-title pw-language-planned-title';
+    plannedHeading.textContent = i18nText('locale.planned.title', 'Другие языки — в планах');
+    fragment.appendChild(plannedHeading);
+    const plannedStatus = i18nText('locale.planned.status', 'В планах');
+    PLANNED_LOCALES.forEach(([code, label]) => {
+      if (!availableLocales().some(([available]) => available === code)) fragment.appendChild(plannedLanguageOption(label, plannedStatus));
     });
-    fragment.appendChild(atlas);
     panel.replaceChildren(fragment);
   }
 
@@ -444,12 +433,7 @@ var i18nText = (key, fallback, vars) =>
   syncWatcher();
 })();
 
-(() => {
-  const script = document.createElement('script');
-  script.src = '/progress-v2-owner-pilot-20261125/ios-install-guide.js?v=1';
-  script.async = true;
-  document.head.appendChild(script);
-})();
+
 
 (() => {
   const area = document.getElementById('homeInstallArea');
@@ -585,23 +569,7 @@ var i18nText = (key, fallback, vars) =>
   syncCompletionInstallAction();
 })();
 
-(() => {
-  return; // isolated preview must not register the production service worker
-  window.addEventListener('load', () => {
-    window.setTimeout(async () => {
-      try {
-        let registration = await navigator.serviceWorker.getRegistration('/');
-        if (!registration) {
-          registration = await navigator.serviceWorker.register('/sw.js', {
-            scope: '/',
-            updateViaCache:'none'
-          });
-        }
-        await registration.update();
-      } catch (_) {}
-    }, 0);
-  });
-})();
+
 
 (() => {
   const params = new URLSearchParams(location.search);

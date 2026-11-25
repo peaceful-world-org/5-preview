@@ -1,0 +1,11 @@
+{
+  "source": "dac3f2df880c50f769cb27b56378b391c184c749",
+  "validatedLocalCandidate": "83e54c4a1640f5f904fb61c1ba174ff8d7ba7ad1",
+  "target": "https://preview-5.peaceful-world.org/progress-v2-owner-pilot-20261125/",
+  "backend": "https://infxxghlchechanqkjwx.supabase.co",
+  "googleEnabled": false,
+  "hostedAcceptance": "pending",
+  "candidate": "64468fb26fe800d75eec8a9f1e60474ac1ccfe2e",
+  "emailAuth": "magic-link-pkce",
+  "accountDeletionEnabled": false
+}

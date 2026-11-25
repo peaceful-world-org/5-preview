@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="ru" data-pw-web-vnext data-pw-progress-product>
+<html lang="ru" data-pw-web-vnext data-pw-focus-pilot data-pw-progress-product data-pw-focus-layout="scroll">
 <head>
-  <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="referrer" content="no-referrer">
   <script src="pilot-callback.js"></script>
-  <script src="pilot-storage.js"></script>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; media-src 'self' blob:; connect-src 'self' https://infxxghlchechanqkjwx.supabase.co; worker-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <script src="review-storage.js?v=1"></script>
+  <script>if(new URLSearchParams(location.search).get('layout')==='tabs')document.documentElement.dataset.pwFocusLayout='tabs';</script>
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://infxxghlchechanqkjwx.supabase.co; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'self'" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#F9F8F4" />
@@ -39,7 +40,7 @@
       const THEME_KEY = 'pw-theme';
       let preference = 'system';
       try {
-        const saved = window.PW_PILOT_LOCAL.getItem(THEME_KEY);
+        const saved = window.PW_REVIEW_STORAGE.getItem(THEME_KEY);
         if (saved === 'light' || saved === 'dark') preference = saved;
       } catch (_) {}
       const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
@@ -51,6 +52,7 @@
       if (meta) meta.content = theme === 'dark' ? '#171A18' : '#F9F8F4';
     })();
   </script>
+  
   <link rel="icon" href="icon.svg?v=0.18.59" type="image/svg+xml" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png" />
   <link rel="stylesheet" href="styles.css" />
@@ -60,12 +62,13 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <title>5 — Peace Practice by Peaceful World</title>
-  <link rel="stylesheet" href="web-vnext/world.css" />
-  <link rel="stylesheet" href="progress-v2/my-progress.css">
+  <title>5 — Единый тестовый релиз</title>
+  <link rel="stylesheet" href="web-vnext/world.css?v=2" />
+  <link rel="stylesheet" href="pilot-v2.css?v=4" />
+  <link rel="stylesheet" href="progress-v2/my-progress.css?v=1" />
+  <link rel="stylesheet" href="integrated.css?v=5" />
 </head>
 <body>
-  <p id="pwOwnerPilot" role="note" style="text-align:center;margin:8px">Личный тест · отдельная история / Personal pilot</p>
   <main class="app">
     <section id="home" class="screen active home-screen home-screen--cards">
       <div class="home-stack home-stack--cards">
@@ -78,7 +81,7 @@
         <div class="five-brand" aria-label="5, пять" data-i18n-aria-label="brand.aria">
           <button type="button" class="five-mark" aria-controls="pwBuildVersion" aria-expanded="false" aria-label="Показать версию после пяти нажатий" data-i18n-aria-label="build.reveal.aria">5</button>
           <div class="five-word" data-i18n="brand.word">пять</div>
-          <div id="pwBuildVersion" class="build-version" aria-label="Версия 0.18.63" data-i18n-aria-label="build.aria" aria-live="polite" hidden>v0.18.63</div>
+          <div id="pwBuildVersion" class="build-version" aria-label="Integrated Pilot 1" data-i18n-aria-label="build.aria" aria-live="polite" hidden>Integrated Pilot 1</div>
         </div>
 
         <div class="hero-copy">
@@ -95,16 +98,16 @@
           <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
         </div>
         </div>
+        <div class="pilot-mode" aria-label="Режим тестирования">
+          <p class="pilot-build" id="pwReviewBanner">Персональный пилот · RU · отдельный тестовый аккаунт</p>
+          <div class="pilot-switch">
+            <a id="pilotFast" href="./?demo=1">Быстрый просмотр</a>
+            <a id="pilotFull" href="./?mode=practice">Полная тренировка</a>
+          </div>
+          <p id="pilotModeNote" class="pilot-mode-note"></p>
+        </div>
         <h2 id="pwModeChoose" tabindex="-1" class="mode-section-label">ВЫБЕРИ ТРЕНИРОВКУ</h2>
         <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose">
-          <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
-            <div class="practice-choice-heading">
-              <h3 id="pwCardFreeTitle" class="practice-choice-title">Свободная тренировка</h3>
-              <button id="pwModeInfoFree" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
-            </div>
-            <div class="practice-choice-detail-row"><p id="pwCardFreeDesc" class="practice-choice-description">Открытый таймер в твоём темпе.</p><span id="pwModeUsageFree" class="practice-choice-usage" hidden></span></div>
-            <button id="pwModeFreeStart" class="practice-card-cta practice-card-cta--free" type="button"><span id="pwCardFreeAction">Начать</span><span aria-hidden="true">→</span></button>
-          </article>
           <article class="practice-choice practice-choice--foundation" role="listitem" aria-labelledby="pwCardBaseTitle">
             <div class="practice-choice-heading">
               <h3 id="pwCardBaseTitle" class="practice-choice-title">База</h3>
@@ -113,15 +116,29 @@
             <div class="practice-choice-detail-row"><p id="pwCardBaseDesc" class="practice-choice-description">Пять шагов мирного мышления.</p><span id="pwModeUsageFoundation" class="practice-choice-usage" hidden></span></div>
             <button id="pwModeBaseStart" class="practice-card-cta practice-card-cta--foundation" type="button"><span id="pwCardBaseAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
           </article>
-          <article class="practice-choice practice-choice--metta" role="listitem" aria-labelledby="pwCardMettaTitle">
+          <article class="practice-choice practice-choice--metta" hidden role="listitem" aria-labelledby="pwCardMettaTitle">
             <div class="practice-choice-heading">
               <h3 id="pwCardMettaTitle" class="practice-choice-title">Доброжелательность</h3>
+              <span id="pwCardNew" class="practice-new-label">НОВАЯ</span>
               <button id="pwModeInfoMetta" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
             </div>
             <div class="practice-choice-detail-row"><p id="pwCardMettaDesc" class="practice-choice-description">От себя ко всем живым.</p><span id="pwModeUsageMetta" class="practice-choice-usage" hidden></span></div>
             <button id="pwModeMettaStart" class="practice-card-cta practice-card-cta--metta" type="button"><span id="pwCardMettaAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
           </article>
+          <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardFreeTitle" class="practice-choice-title">Свободная тренировка</h3>
+              <button id="pwModeInfoFree" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardFreeDesc" class="practice-choice-description">Открытый таймер в твоём темпе.</p><span id="pwModeUsageFree" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeFreeStart" class="practice-card-cta practice-card-cta--free" type="button" aria-label="Начать свободную тренировку"><span id="pwCardFreeAction">Начать</span><span aria-hidden="true">→</span></button>
+          </article>
         </div>
+        <section id="pilotLibrary" class="pilot-library" aria-labelledby="pilotLibraryTitle">
+          <header class="pilot-library-header"><h2 id="pilotLibraryTitle">Тренировка навыков</h2><span>10 практик · по 5 мин</span></header>
+          <div id="pilotCategories" class="pilot-categories" role="group" aria-label="Направления навыков"></div>
+          <div id="pilotGroups" class="pilot-groups"></div>
+        </section>
         <section id="pwWorldPreview" class="pw-world-section" aria-labelledby="pwWorldTitle">
           <h2 id="pwWorldTitle" class="pw-world-title">Маленькая практика. Большой горизонт.</h2>
           <p id="pwWorldDescription" class="pw-world-description">A library of skills for everyday peace is taking shape.</p>
@@ -191,6 +208,7 @@
             <p class="howto-more-row"><a class="howto-more" href="https://peaceful-world.org/ru/research/peaceful-world-practice" data-i18n-link="article" target="_blank" rel="noopener noreferrer" data-i18n="home.howto.more">Подробнее о тренажёре →</a></p>
           </div>
         </details>
+        <p class="home-privacy-row"><a class="home-privacy-link" href="privacy.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Конфиденциальность</a></p>
       </div>
     </section>
 
@@ -220,8 +238,20 @@
           <div class="timer-center" aria-hidden="true"><div id="timer" class="timer">5</div><div id="timerCaption" class="timer-caption" data-i18n="practice.preparing">ПОДГОТОВКА</div></div>
         </div>
         <button id="pauseBtn" type="button" class="secondary pause-btn" data-i18n="practice.pause">Пауза</button>
+        <nav id="pilotStepNav" class="pilot-step-nav" aria-label="Быстрый просмотр шагов" hidden>
+          <button id="pilotPrev" type="button">← Назад</button><span id="pilotStepPosition"></span><button id="pilotNext" type="button">Дальше →</button>
+        </nav>
       </div>
     </section>
+
+    <dialog id="pwExitDialog" class="pw-exit-dialog" aria-labelledby="pwExitTitle" aria-describedby="pwExitBody">
+      <h2 id="pwExitTitle" data-i18n="practice.exit.title">Прервать тренировку?</h2>
+      <p id="pwExitBody" data-i18n="practice.exit.body">Текущий сеанс не сохранится. Следующий начнётся с первого шага.</p>
+      <div class="pw-exit-actions">
+        <button id="pwExitStay" type="button" class="secondary" data-i18n="practice.exit.stay">Продолжить</button>
+        <button id="pwExitLeave" type="button" class="secondary" data-i18n="practice.exit.leave">Прервать</button>
+      </div>
+    </dialog>
 
     <section id="done" class="screen done-screen done-screen--cards">
       <div class="done-stack done-stack--cards">
@@ -342,50 +372,55 @@
       <button id="pwModeInfoStart" class="practice-info-start" type="button"><span id="pwModeInfoStartText">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
     </div>
   </dialog>
-  <aside id="pwV2PreviewPanel" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg,#fff);color:var(--ink,#222);border-top:1px solid var(--line,#ccc);font:12px system-ui;padding:5px 12px;text-align:center;pointer-events:none">
-    <span id="pwV2PreviewStatus" role="status" data-state="loading">Local QA preview · loading</span>
-    <button id="pwV2AdoptLegacy" hidden type="button" style="pointer-events:auto">Keep previous progress on this device</button>
+  <aside id="pwV2PreviewPanel" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg,#fff);color:var(--ink,#222);border-top:1px solid var(--line,#ccc);font:12px system-ui;padding:8px 12px;text-align:center" aria-label="Сохранение прогресса">
+    <span id="pwV2PreviewStatus" role="status" data-state="loading">Загрузка локальной истории…</span>
     <span id="pwV2LegacyRecovery" role="status" hidden></span>
-    <button id="pwV2Retry" hidden type="button" style="pointer-events:auto">Retry saving</button>
+    <button id="pwV2AdoptLegacy" hidden type="button">Сохранить прежний прогресс</button>
+    <button id="pwV2Retry" hidden type="button">Повторить сохранение</button>
   </aside>
+  <script src="pilot-data.js?v=2"></script>
   <script src="progress-v2/vendor-supabase.js"></script>
   <script src="progress-v2/account-config.js"></script>
   <script>
-    window.PW_PROGRESS_PREVIEW_READY = import('./progress-v2/preview-runtime.mjs').then(async m => {
-      const preview = await m.startPreview();
-      window.PW_PROGRESS_PREVIEW = preview;
-      document.dispatchEvent(new CustomEvent('pw:progress-restored'));
-      window.PW_TRAINING_MODES?.refresh?.();
-      return preview;
-    });
-    window.PW_PROGRESS_PREVIEW_READY.catch(error => {
-      const status = document.getElementById('pwV2PreviewStatus');
-      status.dataset.state = 'error';
-      status.textContent = 'Local QA preview unavailable: ' + error.message;
-    });
+    (() => {
+      const demo=new URLSearchParams(location.search).get('mode')!=='practice';
+      if(demo){
+        window.PW_PROGRESS_PREVIEW_READY=Promise.resolve(null);
+        const s=document.getElementById('pwV2PreviewStatus');
+        s.dataset.state='local';
+        s.textContent='Быстрый просмотр не сохраняет прогресс.';
+      }else{
+        window.PW_PROGRESS_PREVIEW_READY=import('./progress-v2/preview-runtime.mjs').then(async m=>{
+          const preview=await m.startPreview();
+          window.PW_PROGRESS_PREVIEW=preview;
+          document.dispatchEvent(new CustomEvent('pw:progress-restored'));
+          window.PW_TRAINING_MODES?.refresh?.();
+          return preview;
+        });
+        window.PW_PROGRESS_PREVIEW_READY.catch(error=>{
+          const s=document.getElementById('pwV2PreviewStatus');
+          const busy=String(error?.message||'').includes('Another preview tab');
+          s.dataset.state='error';
+          s.textContent='Сохранение прогресса недоступно. '+(busy?'История открыта в другой вкладке пилота. Закрой её и обнови страницу.':'Не удалось открыть локальную историю. Обнови страницу для повторной попытки.');
+          console.warn('[5 preview] Local progress initialization failed:',error);
+        });
+      }
+    })();
   </script>
-  <script src="i18n.js"></script>
-  <script src="uk-preview.js"></script>
-  <script src="es-preview.js"></script>
-  <script src="pt-br-preview.js"></script>
-  <script src="pt-pt-preview.js"></script>
-  <script src="fr-preview.js"></script>
-  <script src="id-preview.js"></script>
-  <script src="draft-locales.js"></script>
-  <script src="copy-rotation.js"></script>
-  <script src="metta-focus.js"></script>
-  <script src="web-vnext/copy.js"></script>
-  <script src="practice-modes.js"></script>
-  <script src="app.js"></script>
+  <script src="i18n.js?v=2"></script>
+  <script src="copy-rotation.js?v=integrated1"></script>
+  <script src="metta-focus.js?v=2"></script>
+  <script src="web-vnext/copy.js?v=2"></script>
+  <script src="practice-modes.js?v=integrated1"></script>
+  <script src="app.js?v=integrated4"></script>
   <script src="sound-v1.js"></script>
-  <script src="step-number.js"></script>
-  <!-- External analytics and feedback disabled in isolated preview. -->
+  <script src="step-number.js?v=integrated1"></script>
   <script>
     /* Free practice and optional backup depend on the resolved locale. Waiting
        for i18n avoids a mixed-language first paint for returning users. */
     (() => {
       const loadPracticeExtras = () => {
-        for (const src of ['free-practice.js?v=3']) {
+        for (const src of ['free-practice.js?v=integrated3']) {
           if (document.querySelector(`script[src="${src}"]`)) continue;
           const script = document.createElement('script');
           script.src = src;
@@ -608,7 +643,7 @@
         pauseForHint();
         renderHint(step);
         overlay.hidden = false;
-        window.PW_ANALYTICS?.event?.('practice_hint_open', { practice_step: step });
+
         window.setTimeout(() => continueBtn.focus({ preventScroll:true }), 0);
       }
 
@@ -676,6 +711,7 @@
       }
     })();
   </script>
-  <script src="web-vnext/world.js"></script>
+  <script src="web-vnext/world.js?v=2"></script>
+  <script src="pilot-v2.js?v=5"></script>
 </body>
 </html>

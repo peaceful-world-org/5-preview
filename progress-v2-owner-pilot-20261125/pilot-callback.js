@@ -9,6 +9,7 @@
   let code = !failed && values.length === 1 && /^[a-zA-Z0-9_-]{20,128}$/.test(values[0]) ? values[0] : null;
   for (const key of fields) url.searchParams.delete(key);
   url.hash = '';
+  url.searchParams.set('mode','practice');
   history.replaceState(null, '', url);
   Object.defineProperty(window, 'PW_PILOT_CALLBACK', {value:Object.freeze({
     failed: failed || !code,

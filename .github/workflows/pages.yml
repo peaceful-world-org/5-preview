@@ -120,34 +120,86 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
-          oidc="$(curl --fail --silent --show-error --retry 2 --max-time 20 \
+          [[ "$GITHUB_REPOSITORY" == peaceful-world-org/5-preview ]]
+          [[ "$GITHUB_REF" == refs/heads/main ]]
+          umask 077
+          temp="$(mktemp -d)"
+          trap 'rm -rf "$temp"' EXIT
+          oidc_status="$(curl --silent --show-error --connect-timeout 10 --max-time 20 \
             -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -er '.value | select(type=="string" and length>0)')"
+            --output "$temp/oidc" --write-out '%{http_code}' \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL")"
+          if [[ "$oidc_status" != 200 ]] || ! oidc="$(jq -er '.value | select(type=="string" and length>0)' "$temp/oidc" 2>/dev/null)"; then
+            echo "::error::GitHub Actions OIDC returned HTTP $oidc_status or an invalid token response"
+            exit 1
+          fi
           echo "::add-mask::$oidc"
+          rm -f "$temp/oidc"
+          printf '%s' "$oidc" | jq -Rs --argjson artifact_id "$ARTIFACT_ID" --arg sha "$GITHUB_SHA" \
+            '{artifact_id:$artifact_id,pages_build_version:$sha,oidc_token:.,environment:"github-pages"}' > "$temp/payload"
+          unset oidc
           endpoint="repos/$GITHUB_REPOSITORY/pages/deployments"
           deployment_id=""
           cancel_pending() {
-            if [ -n "$deployment_id" ]; then
+            if [[ -n "$deployment_id" ]]; then
               gh api --method POST "$endpoint/$deployment_id/cancel" --silent || true
             fi
           }
           trap 'cancel_pending; exit 130' INT TERM
-          response="$(jq -n --argjson artifact_id "$ARTIFACT_ID" --arg sha "$GITHUB_SHA" --arg oidc "$oidc" \
-            '{artifact_id:$artifact_id,pages_build_version:$sha,oidc_token:$oidc,environment:"github-pages"}' \
-            | gh api --method POST "$endpoint" --input -)"
-          unset oidc
-          deployment_id="$(jq -er '(.id // (.status_url | split("/") | map(select(length>0 and .!="status")) | last)) | tostring | select(length>0)' <<< "$response")"
-          [[ "$deployment_id" =~ ^[A-Za-z0-9_-]+$ ]]
-          page_url="$(jq -er '.page_url | select(type=="string" and length>0)' <<< "$response")"
-          printf 'page_url=%s\n' "$page_url" >> "$GITHUB_OUTPUT"
-          echo "Created Pages deployment $deployment_id for artifact $ARTIFACT_ID."
+
+          # Send one deployment request. Never replay a POST with an ambiguous outcome.
+          post_result=0
+          http_status="$(curl --silent --show-error --connect-timeout 10 --max-time 35 \
+            --request POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'Content-Type: application/json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            --data-binary "@$temp/payload" --dump-header "$temp/headers" \
+            --output "$temp/response" --write-out '%{http_code}' \
+            "$GITHUB_API_URL/$endpoint")" || post_result=$?
+          rm -f "$temp/payload"
+          request_id="$(awk 'tolower($1)=="x-github-request-id:" {gsub(/\r/,"",$2); id=$2} END {print id}' "$temp/headers" 2>/dev/null || true)"
+          [[ "$request_id" =~ ^[A-Za-z0-9:-]+$ ]] || request_id=unavailable
+          body_bytes=0
+          [[ ! -f "$temp/response" ]] || body_bytes="$(wc -c < "$temp/response")"
+          echo "Pages create HTTP ${http_status:-000}, curl exit $post_result, $body_bytes response bytes, request $request_id."
+
+          if [[ "$post_result" == 0 && "$http_status" == 201 ]]; then
+            if ! deployment_id="$(jq -er '(.id // (.status_url | split("/") | map(select(length>0 and .!="status")) | last)) | tostring | select(length>0)' "$temp/response" 2>/dev/null)"; then
+              deployment_id=""
+            fi
+          fi
+          if [[ ! "$deployment_id" =~ ^[A-Za-z0-9_-]+$ ]]; then
+            # GitHub identifies the Pages deployment by its build SHA. Check whether an
+            # ambiguous response nevertheless created the expected deployment.
+            if ! known_status="$(gh api "$endpoint/$GITHUB_SHA" --jq '.status | select(type=="string" and length>0)' 2>/dev/null)" || [[ ! "$known_status" =~ ^[a-z_]+$ ]]; then
+              case "$http_status" in
+                400) reason='GitHub rejected the deployment request' ;;
+                401|403) reason='GitHub rejected authentication or authorization for Pages' ;;
+                404) reason='Pages site or API resource was unavailable to this workflow' ;;
+                409) reason='GitHub reported a conflicting deployment' ;;
+                422) reason='GitHub rejected the artifact, deployment parameters or policy' ;;
+                429) reason='GitHub rate-limited the deployment' ;;
+                5??) reason='GitHub Pages returned a server error' ;;
+                201) reason='GitHub returned an invalid deployment response' ;;
+                *) reason='GitHub did not return a usable Pages deployment response' ;;
+              esac
+              echo "::error::$reason. HTTP ${http_status:-000}, $body_bytes bytes, request $request_id."
+              exit 1
+            fi
+            deployment_id="$GITHUB_SHA"
+            echo "Found Pages deployment for this commit after the ambiguous response."
+          fi
+          printf '%s\n' 'page_url=https://preview-5.peaceful-world.org/' >> "$GITHUB_OUTPUT"
+          echo "Created or located Pages deployment $deployment_id for artifact $ARTIFACT_ID."
           for attempt in $(seq 1 60); do
-            if status="$(gh api "$endpoint/$deployment_id" --jq '.status')"; then
+            if status="$(gh api "$endpoint/$deployment_id" --jq '.status' 2>/dev/null)"; then
               echo "Pages status: $status"
               case "$status" in
                 succeed)
                   deployment_id=""
-                  echo "Reported success!"
+                  echo "Reported success."
                   exit 0
                   ;;
                 deployment_failed|deployment_perms_error|deployment_content_failed|deployment_cancelled|deployment_lost)

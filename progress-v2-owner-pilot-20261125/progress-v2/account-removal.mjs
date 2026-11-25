@@ -38,7 +38,7 @@ export async function purgeRemoval(tx,request,id){
   const next={...device,accountRemoval:{ownerId:id,phase:'cleaned'}};
   if(next.legacySnapshot?.ownerId===id){
     delete next.legacySnapshot;
-    // Old window.PW_PILOT_LOCAL is shared with v1 and cannot be safely attributed or
+    // Old localStorage is shared with v1 and cannot be safely attributed or
     // atomically cleared here. Do not let the old snapshot reappear as an offer.
     next.legacyRetired=true;
   }
@@ -82,7 +82,7 @@ export async function removeAccount({ledger,auth,expectedOwner,send,lock,onPendi
 }
 export function createDeletionTransport({endpoint,publishableKey,fetchImpl=globalThis.fetch}){
   const base=new URL(endpoint);
-  assert(base.protocol==='http:'&&base.hostname==='127.0.0.1'&&base.port==='54321'&&base.pathname==='/'&&!base.search&&!base.hash&&!base.username&&!base.password,'Only disposable loopback deletion allowed');
+  assert(base.href==="https://infxxghlchechanqkjwx.supabase.co/",'Only designated hosted test project allowed');
   assert(/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey),'Public key required');
   return async token=>{
     assert(typeof token==='string'&&token,'Verified token required');

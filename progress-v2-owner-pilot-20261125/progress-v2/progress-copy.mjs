@@ -3,7 +3,7 @@
 const ru={
   'Use an email link to sign in. You can keep practising without an account.':'Войди по ссылке из письма. Практиковать можно и без аккаунта.',
   'Send sign-in link':'Получить ссылку для входа',
-  'Could not send a link. Check the address and wait before trying again.':'Не удалось отправить ссылку. Проверь адрес и подожди перед повторной отправкой.',
+  'Could not send a sign-in link. Check your address and wait before trying again.':'Не удалось отправить ссылку. Проверь адрес и подожди перед повторной отправкой.',
   'Sign-in link is invalid, expired, or opened in a different browser. Request a new link.':'Ссылка недействительна, истекла или открыта в другом браузере. Запроси новую ссылку.',
   'My progress':'Мой прогресс',
   'Practice':'Практика',

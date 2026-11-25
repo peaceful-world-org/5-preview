@@ -1,10 +1,10 @@
 // Isolated v2 adapter; not loaded by the released application.
-import { mergePractice, mergeLegacy, summarize } from './ledger-contract.mjs';
+import { mergePractice, mergeLegacy, summarize, FOCUS_MODES } from './ledger-contract.mjs';
 import { validateLegacySnapshot, coversLegacy, sameSettledLegacy } from './legacy-import.mjs';
 import * as removal from './account-removal.mjs';
 const GUEST = '00000000-0000-0000-0000-000000000000';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const MODES = new Set(['foundation', 'metta', 'free']);
+const MODES = new Set(['foundation', 'metta', 'free', ...FOCUS_MODES]);
 const assert = (ok, msg) => { if (!ok) throw new Error(msg); };
 const request = req => new Promise((resolve, reject) => {
   req.onsuccess = () => resolve(req.result);

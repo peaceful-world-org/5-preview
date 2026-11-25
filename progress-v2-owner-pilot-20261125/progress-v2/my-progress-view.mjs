@@ -1,11 +1,11 @@
 // Presentation only. The verified ledger remains the sole source of history.
 const GUEST='00000000-0000-0000-0000-000000000000';
-const modes=[['foundation','guided'],['metta','metta'],['free','free']];
+const modes=[['foundation','guided'],['free','free'],['metta','metta'],...["F01","F02","F03","F08","F07","F09","F04","F05","F06"].map(id=>[id,id])];
 const natural=n=>Number.isSafeInteger(n)&&n>=0;
 export function progressView(snapshot,account,prefs){
   const empty=reason=>({visible:false,reason,modes:[],calendar:new Map()});
   if(!prefs?.record)return empty('paused');
-  if(account?.transitioning||account?.unavailable)return empty('unverified');
+  if(account?.transitioning||account?.unavailable||account?.deletionPending)return empty('unverified');
   const owner=account?.signedIn?account.owner:GUEST;
   if(!snapshot||!owner||snapshot.ownerId!==owner)return empty('unverified');
   const totals=snapshot.totals;

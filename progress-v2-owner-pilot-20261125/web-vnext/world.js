@@ -40,45 +40,31 @@
       make('span', item.label, 'pw-world-language-live')
     ));
 
-    // Browser language databases differ (notably on mobile). Never show a raw language code.
-    const stable = atlas.languageNames;
-    const known = stable.en;
     let names;
     try { names = new Intl.DisplayNames([lang], {type:'language'}); } catch (_) {}
-    const meaningful = (label, code) => typeof label === 'string' &&
-      Boolean(label.trim()) && label.toLowerCase() !== code.toLowerCase() &&
-      !/^[a-z]{2,3}$/i.test(label.trim());
     const name = code => {
-      const english = known[code];
-      if (lang === 'ru') return stable.ru[code] || english;
-      if (lang === 'en') return english;
-      try {
-        if (code === 'kmr') {
-          const kurdish = names?.of('ku');
-          return meaningful(kurdish, 'ku') ? kurdish + ' (Kurmanji)' : english;
-        }
-        if (code === 'ro-MD') {
-          const romanian = names?.of('ro');
-          if (!meaningful(romanian, 'ro')) return english;
-          let country = 'Moldova';
-          try {
-            const localRegion = new Intl.DisplayNames([lang], {type:'region'}).of('MD');
-            if (meaningful(localRegion, 'MD')) country = localRegion;
-          } catch (_) {}
-          return romanian + ' (' + country + ')';
-        }
-        const localized = names?.of(code);
-        return meaningful(localized, code) ? localized : english;
-      } catch (_) { return english; }
+      if (code === 'kmr') return 'Kurdî (Kurmancî)';
+      try { return names?.of(code) || code; } catch (_) { return code; }
     };
-    const sorter = new Intl.Collator(lang, {sensitivity:'base'});
-    const candidates = [...new Set(atlas.waves.flatMap(wave => wave.codes))]
-      .map(code => ({code, label:name(code)}))
-      .sort((a,b) => sorter.compare(a.label,b.label) || a.code.localeCompare(b.code));
-    const list = make('ul', '', 'pw-world-flat-language-list');
-    list.append(...candidates.map(({label}) => make('li',label)));
-    $('pwWorldCandidateList').replaceChildren(list);
-
+    $('pwWorldCandidateList').replaceChildren(...atlas.waves.map((wave, index) => {
+      const section = make('div', '', 'pw-world-wave');
+      const list = make('div', '', 'pw-world-wave-code-list');
+      list.append(...wave.codes.map(code => {
+        const translated = name(code);
+        const item = make('span', translated, 'pw-world-wave-code');
+        try {
+          const endonym = new Intl.DisplayNames([code], {type:'language',fallback:'none'}).of(code);
+          if (endonym && endonym.toLocaleLowerCase() !== translated.toLocaleLowerCase()) {
+            const nativeName = make('span', endonym);
+            nativeName.lang = code;
+            item.append(' · ', nativeName);
+          }
+        } catch (_) {}
+        return item;
+      }));
+      section.append(make('h4', labels.waveTitles[index] + ' · ' + wave.codes.length), list);
+      return section;
+    }));
   }
 
   function update() {
@@ -146,11 +132,6 @@
     const status = $('pwWorldToolsStatus');
     status.textContent = '';
     const payload = {url:shareUrl(), title:i18nText('share.title'), text:i18nText('share.text')};
-    const nativeShare = window.Capacitor?.Plugins?.Share;
-    if ((window.PW_NATIVE_IOS || window.PW_NATIVE_ANDROID) && typeof nativeShare?.share === 'function') {
-      try { await nativeShare.share(payload); return; }
-      catch (error) { if (error?.name === 'AbortError') return; }
-    }
     if (typeof navigator.share === 'function') {
       try { await navigator.share(payload); return; }
       catch (error) { if (error?.name === 'AbortError') return; }
@@ -164,10 +145,7 @@
   update();
   fetch('web-vnext/roadmap.json')
     .then(response => {
-      // Capacitor local assets can return readable status-zero responses.
-      const nativeLocal = (window.PW_NATIVE_IOS || window.PW_NATIVE_ANDROID) &&
-        response.status === 0 && response.type === 'basic';
-      if (!response.ok && !nativeLocal) throw new Error('Practice atlas unavailable');
+      if (!response.ok) throw new Error('Practice atlas unavailable');
       return response.json();
     })
     .then(data => { atlas = data; renderAtlas(); })
