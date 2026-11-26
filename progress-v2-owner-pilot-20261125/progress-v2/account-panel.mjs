@@ -7,13 +7,14 @@ import {t,localizeProgress,guestClaimText,productProgress} from './progress-copy
 export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,canDelete=canSwitch}) {
   const cfg=globalThis.PW_V2_AUTH_CONFIG;
   if(!cfg)return null;
-  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||cfg.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||cfg.googleEnabled!==false||!globalThis.supabase?.createClient)throw Error('Isolated owner account pilot only');
+  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||cfg.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||typeof cfg.googleEnabled!=='boolean'||!globalThis.supabase?.createClient)throw Error('Isolated owner account pilot only');
   const sdk=globalThis.supabase.createClient(cfg.endpoint,cfg.publishableKey,{
     auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'pkce',storage:window.PW_REVIEW_STORAGE,storageKey:'pw-focus-owner-pilot-20261125-v1-auth'}
   });
   const google=createGoogleFlow({auth:sdk.auth,endpoint:cfg.endpoint,appUrl:new URL(location.pathname,location.origin).href,
     storage:window.PW_REVIEW_SESSION,quarantineStorage:window.PW_REVIEW_STORAGE,enabled:cfg.googleEnabled===true,
     navigate:url=>location.assign(url),cleanUrl:url=>{const next=new URL(url);next.searchParams.set('mode','practice');history.replaceState(null,'',next.href);}});
+  const emailPendingKey='pw-v2-email-pending';
   const panel=document.createElement('details');
   panel.id='pwV2AccountPanel';
   panel.style.cssText='margin:12px 0;padding:12px;border:1px solid currentColor;border-radius:12px;text-align:left;display:grid;gap:8px;font-size:14px';
@@ -21,7 +22,7 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
     '<p id="pwV2AccountState" role="status" aria-live="polite"></p>'+
     '<div id="pwV2LoginFields"><p data-progress-copy="Use an email link to sign in. You can keep practising without an account.">Use an email link to sign in. You can keep practising without an account.</p>'+
     '<label for="pwV2Email" data-progress-copy="Email">Email</label><input id="pwV2Email" type="email" autocomplete="email" maxlength="254" style="display:block;width:100%">'+
-    '<button id="pwV2Send" type="button" data-progress-copy="Send sign-in link">Send sign-in link</button><button id="pwV2Google" type="button" hidden>Continue with Google (QA)</button></div>'+
+    '<button id="pwV2Send" type="button" data-progress-copy="Send sign-in link">Send sign-in link</button><button id="pwV2Google" type="button" data-progress-copy="Continue with Google" hidden>Continue with Google</button></div>'+
     '<div id="pwV2AccountActions" hidden><button id="pwV2Sync" type="button" data-progress-copy="Sync now">Sync now</button>'+
     '<button id="pwV2GuestClaim" type="button" hidden></button><button id="pwV2SignOut" type="button" data-progress-copy="Sign out on this device">Sign out on this device</button></div>'+
     '<div id="pwV2Removal" hidden><p data-progress-copy="Delete your account, cloud history and its saved v2 copy on this device. Other guest data, old app storage and other devices are not erased. Export first if you want a copy.">Delete your account, cloud history and its saved v2 copy on this device. Other guest data, old app storage and other devices are not erased. Export first if you want a copy.</p><button id="pwV2Delete" type="button" data-progress-copy="Delete account and saved history">Delete account and saved history</button><p id="pwV2DeleteHelp" hidden><a href="delete-data.html" data-progress-copy="Account deletion help">Account deletion help</a></p></div>'+
@@ -106,9 +107,14 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
       if(canSwitch()&&!busy&&!account.state().transitioning&&!account.state().syncing)void synchronize();
     },300);
   }
-  el('pwV2Google').onclick=()=>action(async()=>{await google.begin();googleNavigating=true;render();},'Google sign-in unavailable. You can still use email.',{transition:true});
+  el('pwV2Google').onclick=()=>action(async()=>{
+    window.PW_REVIEW_STORAGE.removeItem(emailPendingKey);
+    await google.begin();googleNavigating=true;render();
+  },'Google sign-in unavailable. You can still use email.',{transition:true});
   el('pwV2Send').onclick=()=>action(async()=>{
+    google.discardPending();
     await account.send(el('pwV2Email').value.trim());
+    window.PW_REVIEW_STORAGE.setItem(emailPendingKey,String(Date.now()));
     const next=new URL('check-email.html',location.href);
     next.searchParams.set('lang',document.documentElement.lang==='en'?'en':'ru');
     location.replace(next);
@@ -151,13 +157,36 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
     await synchronize();
   },'Transfer not confirmed; the original records remain protected.',{transition:true});
   const callback=window.PW_PILOT_CALLBACK;
-  const code=callback?.takeCode();
-  const result=code ? await sdk.auth.exchangeCodeForSession(code).catch(()=>null) : null;
-  const callbackResult=callback?.failed || (code && !result?.data?.session) ? 'failed' : 'none';
-  await account.start({blockSession:callbackResult==='blocked'});
-  if(callbackResult==='cancelled')notice('Google sign-in cancelled. You can still practise without an account.');
-  if(callbackResult==='failed')notice('Sign-in link is invalid, expired, or opened in a different browser. Request a new link.');
-  if(callbackResult==='blocked')notice('Account verification incomplete. Sign out before retrying.');
+  const googleURL=callback?.takeGoogleURL();
+  let googleResult=await google.finish(googleURL??location.href);
+  // An OAuth return missing its marker must not fall through to the email exchange.
+  if(googleResult==='none'&&callback&&(callback.kind==='google'||google.hasPending())){
+    google.discardPending();
+    googleResult='failed';
+  }
+  let emailFailed=false;
+  if(googleResult==='none'&&callback?.kind==='email'){
+    const code=callback.takeCode();
+    const requested=Number(window.PW_REVIEW_STORAGE.getItem(emailPendingKey));
+    window.PW_REVIEW_STORAGE.removeItem(emailPendingKey);
+    const age=Date.now()-requested;
+    emailFailed=callback.failed||!(requested>0&&age>=0&&age<=60*60*1000);
+    if(code&&!emailFailed){
+      try{
+        const existing=await sdk.auth.getSession();
+        if(existing.error)emailFailed=true;
+        else if(!existing.data.session){
+          const result=await sdk.auth.exchangeCodeForSession(code);
+          emailFailed=Boolean(result.error||!result.data?.session);
+        }
+      }catch(_){emailFailed=true;}
+    }
+  }
+  await account.start({blockSession:googleResult==='blocked'});
+  if(googleResult==='cancelled')notice('Google sign-in cancelled. You can still practise without an account.');
+  if(googleResult==='failed')notice('Google sign-in not confirmed. Retry or use email.');
+  if(googleResult==='blocked')notice('Account verification incomplete. Sign out before retrying.');
+  if(emailFailed)notice('Sign-in link is invalid, expired, or opened in a different browser. Request a new link.');
   try{if(window.PW_REVIEW_SESSION.getItem('pw-v2-deletion-completed')==='1'){window.PW_REVIEW_SESSION.removeItem('pw-v2-deletion-completed');notice('Account and its v2 history deleted. Other device data was preserved.');panel.open=true;}}catch(_){}
   ready=true;
   // The initial real restore is performed by the runtime after reading the

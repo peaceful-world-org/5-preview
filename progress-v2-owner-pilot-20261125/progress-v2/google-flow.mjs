@@ -19,7 +19,8 @@ export function createGoogleFlow({auth,endpoint,appUrl,storage,quarantineStorage
     const result=data(await auth.signInWithOAuth({provider:'google',options:{redirectTo:callback.href,skipBrowserRedirect:true,scopes:'openid email profile',queryParams:{prompt:'select_account'}}}));
     const url=new URL(result.url);
     assert(url.origin===backend.origin&&url.pathname==='/auth/v1/authorize'&&!url.username&&!url.password&&!url.hash&&url.searchParams.getAll('provider').length===1&&url.searchParams.get('provider')==='google'&&url.searchParams.getAll('redirect_to').length===1&&url.searchParams.get('redirect_to')===callback.href&&url.searchParams.getAll('code_challenge_method').length===1&&url.searchParams.get('code_challenge_method')==='s256'&&url.searchParams.getAll('code_challenge').length===1&&/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('code_challenge')||''),'Unexpected OAuth redirect');
-    storage.setItem(KEY,JSON.stringify({at:now(),callback:callback.href}));
+    assert(result.flowId==null||/^[a-f0-9]{32}$/.test(result.flowId),'Invalid PKCE flow identifier');
+    storage.setItem(KEY,JSON.stringify({at:now(),callback:callback.href,flowId:result.flowId}));
     try{navigate(url.href);}catch(e){storage.removeItem(KEY);throw e;}
   }
   async function finish(href){
@@ -44,7 +45,8 @@ export function createGoogleFlow({auth,endpoint,appUrl,storage,quarantineStorage
       // unverified session on the next launch or in another tab.
       quarantineStorage.setItem(BLOCK,'1');
       exchangeAttempted=true;
-      const session=data(await auth.exchangeCodeForSession(codes[0]))?.session;
+      assert(marker.flowId==null||/^[a-f0-9]{32}$/.test(marker.flowId),'Invalid PKCE flow identifier');
+      const session=data(await auth.exchangeCodeForSession(codes[0],marker.flowId?{flowId:marker.flowId}:undefined))?.session;
       assert(session?.access_token&&session.user?.id,'Missing session');
       const user=data(await auth.getUser(session.access_token))?.user;
       assert(user?.id===session.user.id&&user.is_anonymous===false&&user.email_confirmed_at&&user.identities?.some(i=>i.provider==='google'),'Unverified Google identity');
@@ -66,7 +68,11 @@ export function createGoogleFlow({auth,endpoint,appUrl,storage,quarantineStorage
   }
   async function clearAfterSignOut(){
     assert(!data(await auth.getSession())?.session,'Sign-out not confirmed');
+    storage.removeItem(KEY);
     quarantineStorage.removeItem(BLOCK);
   }
-  return Object.freeze({begin,finish,clearAfterSignOut,callback:callback.href});
+  return Object.freeze({begin,finish,clearAfterSignOut,
+    hasPending:()=>Boolean(storage.getItem(KEY)),
+    discardPending:()=>storage.removeItem(KEY),
+    callback:callback.href});
 }

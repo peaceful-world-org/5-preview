@@ -11,7 +11,7 @@ import {progressView} from './my-progress-view.mjs';
 import {t,productProgress} from './progress-copy.mjs';
 
 export async function startPreview() {
-  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||new URLSearchParams(location.search).get('mode')!=='practice'||globalThis.PW_V2_AUTH_CONFIG?.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||globalThis.PW_V2_AUTH_CONFIG?.googleEnabled!==false)throw Error('Isolated owner pilot only; use its HTTPS address in a clean browser profile.');
+  if(location.origin!=="https://preview-5.peaceful-world.org"||location.pathname!=="/progress-v2-owner-pilot-20261125/"||navigator.serviceWorker?.controller||new URLSearchParams(location.search).get('mode')!=='practice'||globalThis.PW_V2_AUTH_CONFIG?.endpoint!=="https://infxxghlchechanqkjwx.supabase.co"||typeof globalThis.PW_V2_AUTH_CONFIG?.googleEnabled!=='boolean')throw Error('Isolated owner pilot only; use its HTTPS address in a clean browser profile.');
   const status = document.getElementById('pwV2PreviewStatus');
   const offerButton = document.getElementById('pwV2AdoptLegacy');
   const retryButton = document.getElementById('pwV2Retry');

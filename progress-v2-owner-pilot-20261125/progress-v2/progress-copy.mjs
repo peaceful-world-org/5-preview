@@ -1,6 +1,7 @@
 // Product copy is deliberately separate from Auth/storage code.
 // English fallback is provisional for locales other than ru/en.
 const ru={
+  'Continue with Google':'Войти через Google',
   'Use an email link to sign in. You can keep practising without an account.':'Войди по ссылке из письма. Практиковать можно и без аккаунта.',
   'Send sign-in link':'Получить ссылку для входа',
   'Could not send a sign-in link. Check your address and wait before trying again.':'Не удалось отправить ссылку. Проверь адрес и подожди перед повторной отправкой.',
