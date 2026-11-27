@@ -48,14 +48,9 @@
       const p=practiceCopy(id);
       const b=make('button','pilot-skill');b.type='button';b.dataset.practiceId=id;b.setAttribute('aria-label',copy().start+p.name);
       const label=make('span','pilot-skill-label'),title=make('strong','pilot-skill-name',p.name),desc=make('span','pilot-skill-desc',p.description);
-      label.append(title,desc);const arrow=make('span','pilot-arrow','→');arrow.setAttribute('aria-hidden','true');b.append(label,arrow);
+      label.append(title,desc);b.append(label);
       b.addEventListener('click',()=>window.PW_TRAINING_MODES.start(id,b));
-      b.setAttribute('aria-haspopup','dialog');
-      const row=make('div','pilot-skill-row'),details=make('button','practice-card-info','i');
-      details.type='button';details.setAttribute('aria-label','Подробнее о тренировке: '+p.name);
-      details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-controls','pwModeInfoDialog');
-      details.addEventListener('click',()=>window.PW_TRAINING_MODES.info(id,details));
-      row.append(b,details);list.append(row);
+      list.append(b);
     }
     panel.append(list);panels.append(panel);
   }
@@ -80,6 +75,7 @@
     note.hidden=!fast;
     note.textContent='Быстрый предпросмотр: шаги ускорены, тренировки не сохраняются.';
     document.title='5 — Вводные к тренировкам';
+    window.PW_TRAINING_MODES.refreshIntroChoices();
     syncNav();
   }
   const nav=el('pilotStepNav'),prev=el('pilotPrev'),next=el('pilotNext');

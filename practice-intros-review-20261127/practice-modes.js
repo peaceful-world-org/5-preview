@@ -167,6 +167,20 @@
   const introKey=id=>'practice-intro-skip-v1:'+id;
   const introCatalog=window.PW_PRACTICE_INTROS;
   const skipped=id=>{try{return window.PW_REVIEW_STORAGE.getItem(introKey(id))==='1'}catch(_){return false}};
+  function refreshIntroChoices(){
+    const reset=$('pwIntroPreferenceTools');
+    if(reset)reset.hidden=!Object.keys(introCatalog).some(skipped);
+    for(const button of home.querySelectorAll('button[data-practice-id]')){
+      const direct=skipped(button.dataset.practiceId);
+      if(direct){button.removeAttribute('aria-haspopup');button.removeAttribute('aria-controls');}
+      else{button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','pwModeInfoDialog');}
+    }
+  }
+  function resetIntros(){
+    for(const id of Object.keys(introCatalog)){try{window.PW_REVIEW_STORAGE.removeItem(introKey(id));}catch(_){}}
+    refreshIntroChoices();
+    $('pwModeChoose')?.focus({preventScroll:true});
+  }
   function canStart(id){return !!introCatalog[id]&&!start.disabled&&home.classList.contains('active')&&!window.PW_I18N?.isLocked}
   function fillIntro(){
     const entry=introCatalog[info],host=$('pwModeIntroDetails');
@@ -207,6 +221,7 @@
       if($('pwModeIntroSkip').checked)window.PW_REVIEW_STORAGE.setItem(introKey(info),'1');
       else window.PW_REVIEW_STORAGE.removeItem(introKey(info));
     }catch(_){}
+    refreshIntroChoices();
     startMode(info);
   }
   function closeInfo(){
@@ -247,9 +262,10 @@
     set('pwCardMettaDesc',c.mettaDesc);
     set('pwCardFreeDesc',c.freeDesc);
     set('pwCardNew',c.new);
-    set('pwCardBaseAction',c.start);
-    set('pwCardMettaAction',c.start);
-    set('pwCardFreeAction',c.startFree);
+    set('pwCardBaseAction','5 минут');
+    set('pwCardMettaAction','5 минут');
+    set('pwCardFreeAction','Без лимита');
+    refreshIntroChoices();
     set('pwModePlannedHeading',c.plannedHeader);
     set('pwModeUpcomingCompassion',c.compassion);
     set('pwModeUpcomingAnger',c.anger);
@@ -374,8 +390,7 @@
     }});
   }
 
-  const map={foundation:'pwModeInfoFoundation',metta:'pwModeInfoMetta',free:'pwModeInfoFree'};
-  for(const [mode,id] of Object.entries(map))$(id)?.addEventListener('click',()=>openInfo(mode,$(id)));
+  $('pwIntroReset')?.addEventListener('click',resetIntros);
   $('pwModeBaseStart')?.addEventListener('click',e=>requestStart('foundation',e.currentTarget));
   $('pwModeMettaStart')?.addEventListener('click',e=>requestStart('metta',e.currentTarget));
   $('pwModeFreeStart')?.addEventListener('click',e=>requestStart('free',e.currentTarget));
@@ -415,7 +430,7 @@
     totals:stats,
     refresh:renderCopy,
     start:requestStart,
-    info:openInfo
+    refreshIntroChoices
   };
   document.documentElement.classList.add('pw-modes-ready');
   renderCopy();
