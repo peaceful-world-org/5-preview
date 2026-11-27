@@ -1,0 +1,23 @@
+{
+  "kind": "isolated RU practice-introduction review",
+  "source": "e69f48874b5e016c3e04d830f8f45d594dcbd456",
+  "created": "2026-11-27",
+  "production": false,
+  "trainingWrites": false,
+  "auth": false,
+  "editorialStatus": "draft",
+  "practiceIds": [
+    "foundation",
+    "metta",
+    "free",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "F07",
+    "F08",
+    "F09"
+  ]
+}

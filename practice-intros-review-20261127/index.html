@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="ru" data-pw-web-vnext data-pw-focus-pilot data-pw-progress-product data-pw-focus-layout="scroll">
+<head>
+  <meta name="referrer" content="no-referrer">
+  <script src="review-storage.js?v=1"></script>
+  <script>if(new URLSearchParams(location.search).get('layout')==='tabs')document.documentElement.dataset.pwFocusLayout='tabs';</script>
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'self'" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F4" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="5 — пятиминутный тренажёр мирного ума от Peaceful World." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="5" />
+  <script>
+    (() => {
+      const syncViewportHeight = () => {
+        const height = window.visualViewport?.height || window.innerHeight;
+        if (!Number.isFinite(height) || height <= 0) return;
+        document.documentElement.style.setProperty('--pw-viewport-height', `${Math.round(height)}px`);
+      };
+      syncViewportHeight();
+      requestAnimationFrame(syncViewportHeight);
+      setTimeout(syncViewportHeight, 120);
+      window.addEventListener('pageshow', syncViewportHeight, { passive:true });
+      window.addEventListener('resize', syncViewportHeight, { passive:true });
+      window.addEventListener('orientationchange', () => setTimeout(syncViewportHeight, 120), { passive:true });
+      window.visualViewport?.addEventListener('resize', syncViewportHeight, { passive:true });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) requestAnimationFrame(syncViewportHeight);
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      const THEME_KEY = 'pw-theme';
+      let preference = 'system';
+      try {
+        const saved = window.PW_REVIEW_STORAGE.getItem(THEME_KEY);
+        if (saved === 'light' || saved === 'dark') preference = saved;
+      } catch (_) {}
+      const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
+      const theme = preference === 'dark' || (preference === 'system' && systemDark) ? 'dark' : 'light';
+      document.documentElement.dataset.pwTheme = theme;
+      document.documentElement.dataset.pwThemePreference = preference;
+      document.documentElement.style.colorScheme = theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = theme === 'dark' ? '#171A18' : '#F9F8F4';
+    })();
+  </script>
+  
+  <link rel="icon" href="icon.svg?v=0.18.59" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v4.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="feedback.css" />
+  <link rel="stylesheet" href="brand.css" />
+  <link rel="stylesheet" href="install.css" />
+  <link rel="stylesheet" href="step-number.css" />
+  <link rel="stylesheet" href="completion-polish.css" />
+  <link rel="stylesheet" href="practice-modes.css" />
+  <title>5 — Вводные к тренировкам</title>
+  <link rel="stylesheet" href="web-vnext/world.css?v=2" />
+  <link rel="stylesheet" href="pilot-v2.css?v=4" />
+  <link rel="stylesheet" href="progress-v2/my-progress.css?v=1" />
+  <link rel="stylesheet" href="integrated.css?v=5" />
+</head>
+<body>
+  <main class="app">
+    <section id="home" class="screen active home-screen home-screen--cards">
+      <div class="home-stack home-stack--cards">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru.html" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+          <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
+        </a>
+
+        <div id="pwWorldHero" class="pw-world-hero">
+          <div class="pw-world-brandline">
+        <div class="five-brand" aria-label="5, пять" data-i18n-aria-label="brand.aria">
+          <button type="button" class="five-mark" aria-controls="pwBuildVersion" aria-expanded="false" aria-label="Показать версию после пяти нажатий" data-i18n-aria-label="build.reveal.aria">5</button>
+          <div class="five-word" data-i18n="brand.word">пять</div>
+          <div id="pwBuildVersion" class="build-version" aria-label="Integrated Pilot 1" data-i18n-aria-label="build.aria" aria-live="polite" hidden>Integrated Pilot 1</div>
+        </div>
+
+        <div class="hero-copy">
+          <h1 class="subtitle home-headline" data-i18n="home.subtitle">Тренировка
+мирного мышления</h1>
+          </div>
+        </div>
+
+        <button id="startBtn" type="button" class="primary" hidden aria-hidden="true" tabindex="-1"><span data-i18n="home.start">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+
+        <div id="pwModeProgress" class="preview-progress-grid" role="status" aria-live="polite" hidden>
+          <div class="preview-progress-cell"><strong id="pwModeTotalTime" class="preview-progress-number"></strong><span id="pwModeTotalLabel" class="preview-progress-text"></span></div>
+          <span class="preview-progress-divider" aria-hidden="true"></span>
+          <div class="preview-progress-cell"><strong id="pwModeTotalCount" class="preview-progress-number"></strong><span id="pwModeCountLabel" class="preview-progress-text"></span></div>
+        </div>
+        </div>
+        <div class="pilot-mode" aria-label="Режим тестирования" data-i18n-aria-label="pilot.mode.aria">
+          <p class="pilot-build" id="pwReviewBanner" data-i18n="pilot.banner">Предпросмотр вводных · без сохранения тренировок</p>
+          <div class="pilot-switch" hidden style="display:none!important">
+            <a id="pilotFast" data-i18n="pilot.fast" href="./?demo=1">Быстрый просмотр</a>
+            <a id="pilotFull" data-i18n="pilot.full" href="./?mode=practice">Полная тренировка</a>
+          </div>
+          <p id="pilotModeNote" class="pilot-mode-note" hidden></p>
+        </div>
+        <h2 id="pwModeChoose" tabindex="-1" class="mode-section-label">ВЫБЕРИ ТРЕНИРОВКУ</h2>
+        <div id="pwModeCards" class="practice-card-list" role="list" aria-labelledby="pwModeChoose">
+          <article class="practice-choice practice-choice--foundation" role="listitem" aria-labelledby="pwCardBaseTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardBaseTitle" class="practice-choice-title">База</h3>
+              <button id="pwModeInfoFoundation" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardBaseDesc" class="practice-choice-description">Пять шагов мирного мышления.</p><span id="pwModeUsageFoundation" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeBaseStart" class="practice-card-cta practice-card-cta--foundation" type="button"><span id="pwCardBaseAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="practice-choice practice-choice--metta" hidden role="listitem" aria-labelledby="pwCardMettaTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardMettaTitle" class="practice-choice-title">Доброжелательность</h3>
+              <span id="pwCardNew" class="practice-new-label">НОВАЯ</span>
+              <button id="pwModeInfoMetta" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardMettaDesc" class="practice-choice-description">От себя ко всем живым.</p><span id="pwModeUsageMetta" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeMettaStart" class="practice-card-cta practice-card-cta--metta" type="button"><span id="pwCardMettaAction">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="practice-choice practice-choice--free" role="listitem" aria-labelledby="pwCardFreeTitle">
+            <div class="practice-choice-heading">
+              <h3 id="pwCardFreeTitle" class="practice-choice-title">Свободная тренировка</h3>
+              <button id="pwModeInfoFree" class="practice-card-info" type="button" aria-haspopup="dialog" aria-controls="pwModeInfoDialog">i</button>
+            </div>
+            <div class="practice-choice-detail-row"><p id="pwCardFreeDesc" class="practice-choice-description">Открытый таймер в твоём темпе.</p><span id="pwModeUsageFree" class="practice-choice-usage" hidden></span></div>
+            <button id="pwModeFreeStart" class="practice-card-cta practice-card-cta--free" type="button" aria-label="Начать свободную тренировку"><span id="pwCardFreeAction">Начать</span><span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+        <section id="pilotLibrary" class="pilot-library" aria-labelledby="pilotLibraryTitle">
+          <header class="pilot-library-header"><h2 id="pilotLibraryTitle" data-i18n="pilot.library">Тренировка навыков</h2><span data-i18n="pilot.count">10 практик · по 5 мин</span></header>
+          <div id="pilotCategories" class="pilot-categories" role="group" aria-label="Направления навыков" data-i18n-aria-label="pilot.groups.aria"></div>
+          <div id="pilotGroups" class="pilot-groups"></div>
+        </section>
+        <section id="pwWorldPreview" class="pw-world-section" aria-labelledby="pwWorldTitle">
+          <h2 id="pwWorldTitle" class="pw-world-title">Маленькая практика. Большой горизонт.</h2>
+          <p id="pwWorldDescription" class="pw-world-description">A library of skills for everyday peace is taking shape.</p>
+          <ul id="pwWorldThemeChips" class="pw-world-tracks" aria-label="Направления развития"></ul>
+          <button id="pwWorldOpen" class="pw-world-open" type="button" aria-controls="pwWorldDetails" aria-expanded="false">
+            <span id="pwWorldOpenText">Карта развития</span><span class="pw-world-chevron" aria-hidden="true"></span>
+          </button>
+          <div id="pwWorldDetails" class="pw-world-details" hidden>
+            <section class="pw-world-atlas-section" aria-labelledby="pwWorldCurriculumTitle">
+              <div class="pw-world-section-line"><h3 id="pwWorldCurriculumTitle">Practice atlas</h3><span id="pwWorldCurriculumCount">30 ideas</span></div>
+              <p id="pwWorldCurriculumNote" class="pw-world-note">Ideas only. Not courses or promised releases.</p>
+
+              <div id="pwWorldCurriculumList" class="pw-world-atlas-list"></div>
+            </section>
+            <section class="pw-world-atlas-section" aria-labelledby="pwWorldLanguagesTitle">
+              <div class="pw-world-section-line"><h3 id="pwWorldLanguagesTitle">Languages for «5»</h3><span id="pwWorldLanguagesCount">7 languages · 8 variants</span></div>
+              <p id="pwWorldLanguagesNote" class="pw-world-note">This preview has 7 languages (8 variants). The other language candidates are ideas for future translations, not ready app versions or confirmed releases.</p>
+              <div id="pwWorldLiveLocales" class="pw-world-languages-live"></div>
+              <details id="pwWorldCandidateDisclosure" class="pw-world-candidate-details">
+                <summary id="pwWorldCandidateSummary">Explore 46 possible language variants</summary>
+                <div id="pwWorldCandidateList" class="pw-world-candidate-list"></div>
+              </details>
+            </section>
+            <section id="pwWorldTradition" class="pw-world-atlas-section pw-world-tradition" aria-labelledby="pwWorldTraditionTitle">
+              <div class="pw-world-section-line"><h3 id="pwWorldTraditionTitle">Practices and spiritual traditions</h3><span id="pwWorldTraditionStatus">Long-term plan</span></div>
+              <p id="pwWorldTraditionLead" class="pw-world-note">The secular practice remains the universal foundation. Tradition-informed forms are a future direction, not available exercises.</p>
+              <p id="pwWorldTraditionDetail" class="pw-world-tradition-detail">We hope to work with teachers and practitioners from different traditions. These are future plans.</p>
+              <a id="pwWorldExpertInAtlas" class="pw-world-expert-in-atlas" href="mailto:hello@peaceful-world.org">Suggest a correction or collaboration</a>
+            </section>
+          </div>
+        </section>
+        <div class="pw-world-home-tools">
+          <nav id="pwWorldTools" class="pw-world-tools" aria-label="Help, support, sharing and privacy">
+            <span id="pwWebAiHome"></span>
+            <a id="pwWorldSupportHome" class="pw-world-tool" href="https://peaceful-world.org/help" target="_blank" rel="noopener noreferrer" data-i18n-link="support">Support</a>
+            <button id="pwWorldShareBtn" class="pw-world-tool" type="button">Share</button>
+            <a class="pw-world-tool home-privacy-link" href="privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" aria-label="Privacy" data-i18n-aria-label="home.privacy">Privacy</a>
+          </nav>
+          <p id="pwWebAiHomeNote" class="pw-world-status" hidden></p>
+          <p id="pwWorldToolsStatus" class="pw-world-tools-status" role="status"></p>
+        </div>
+
+        <section id="pwWorldExpertInvite" class="pw-world-expert-invite" aria-labelledby="pwWorldExpertHeading">
+          <div class="pw-world-expert-content">
+            <h2 id="pwWorldExpertHeading">Help make the practices more accurate</h2>
+            <p id="pwWorldExpertText">Do you teach, translate or study a tradition? We'd welcome your suggestions and corrections.</p>
+          </div>
+          <a id="pwWorldExpertLink" class="pw-world-expert-action" href="mailto:hello@peaceful-world.org">Suggest an improvement</a>
+        </section>
+
+
+        <div id="homeInstallArea" class="home-install-area" hidden>
+          <button id="homeInstallBtn" type="button" class="home-install-cta" data-i18n="home.install.cta">Установить</button>
+          <div id="homeInstallHelp" class="install-help home-install-help" hidden>
+            <p class="install-help-title" data-i18n="install.title">Как установить 5</p>
+            <p id="homeInstallHelpCopy" class="install-help-copy"></p>
+            <button id="homeInstallHelpClose" type="button" class="install-help-close" data-i18n="install.help.close">Понятно</button>
+          </div>
+        </div>
+
+        <details class="howto">
+          <summary data-i18n="home.howto.title">Как проходит тренировка</summary>
+          <div class="howto-body">
+            <p data-i18n="home.howto.p1">На каждом шаге сначала есть 5 секунд, чтобы прочитать подсказку и настроиться. Затем начинается полная минута тренировки.</p>
+            <p data-i18n="home.howto.p2">Используй эту минуту, чтобы удерживать внимание, думать, вспоминать или представлять. Не нужно искать правильный ответ.</p>
+            <p data-i18n="home.howto.p3">На последнем шаге прими одно небольшое решение и представь, как поступишь в подходящий момент.</p>
+            <p class="howto-more-row"><a class="howto-more" href="https://peaceful-world.org/ru/research/peaceful-world-practice" data-i18n-link="article" target="_blank" rel="noopener noreferrer" data-i18n="home.howto.more">Подробнее о тренажёре →</a></p>
+          </div>
+        </details>
+        <p class="home-privacy-row"><a class="home-privacy-link" href="privacy.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="home.privacy">Конфиденциальность</a></p>
+      </div>
+    </section>
+
+    <section id="practice" class="screen practice-screen">
+      <div class="practice-topbar">
+        <button id="closeBtn" type="button" class="round-btn" aria-label="Завершить тренировку" data-i18n-aria-label="practice.close.aria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+        <div class="step-meta"><span id="stepCount">1 / 5</span><small data-i18n="practice.label">ТРЕНИРОВКА</small></div>
+        <button id="soundToggle" type="button" class="round-btn sound-on" aria-pressed="true" aria-label="Тиканье включено" data-i18n-aria-label="practice.sound.on.aria">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.2 1.8"></path><path class="sound-slash" d="M5.5 18.5l13-13"></path></svg>
+        </button>
+      </div>
+      <div id="dots" class="progress-dots" aria-hidden="true"></div>
+      <div id="practiceContent" class="practice-card">
+        <div id="stepNumber" class="step-number" aria-hidden="true">1</div>
+        <p class="kicker" data-i18n="practice.kicker">СЕЙЧАС</p>
+        <div class="step-copy">
+          <h2 id="stepTitle" tabindex="-1"></h2>
+          <p id="stepGuide" class="step-guide"></p>
+        </div>
+      </div>
+      <div class="practice-footer">
+        <div id="timerShell" class="timer-shell preparing" role="timer" aria-label="Подготовка, осталось 5 секунд">
+          <svg viewBox="0 0 120 120" class="timer-ring" aria-hidden="true">
+            <circle class="timer-track" cx="60" cy="60" r="49"></circle>
+            <circle id="progressRing" class="timer-progress" cx="60" cy="60" r="49"></circle>
+          </svg>
+          <div class="timer-center" aria-hidden="true"><div id="timer" class="timer">5</div><div id="timerCaption" class="timer-caption" data-i18n="practice.preparing">ПОДГОТОВКА</div></div>
+        </div>
+        <button id="pauseBtn" type="button" class="secondary pause-btn" data-i18n="practice.pause">Пауза</button>
+        <nav id="pilotStepNav" class="pilot-step-nav" aria-label="Быстрый просмотр шагов" data-i18n-aria-label="pilot.steps.aria" hidden>
+          <button id="pilotPrev" data-i18n="pilot.prev" type="button">← Назад</button><span id="pilotStepPosition"></span><button id="pilotNext" type="button">Дальше →</button>
+        </nav>
+      </div>
+    </section>
+
+    <dialog id="pwExitDialog" class="pw-exit-dialog" aria-labelledby="pwExitTitle" aria-describedby="pwExitBody">
+      <h2 id="pwExitTitle" data-i18n="practice.exit.title">Прервать тренировку?</h2>
+      <p id="pwExitBody" data-i18n="practice.exit.body">Текущий сеанс не сохранится. Следующий начнётся с первого шага.</p>
+      <div class="pw-exit-actions">
+        <button id="pwExitStay" type="button" class="secondary" data-i18n="practice.exit.stay">Продолжить</button>
+        <button id="pwExitLeave" type="button" class="secondary" data-i18n="practice.exit.leave">Прервать</button>
+      </div>
+    </dialog>
+
+    <section id="done" class="screen done-screen done-screen--cards">
+      <div class="done-stack done-stack--cards">
+        <a class="pw-origin-mark" href="https://peaceful-world.org/ru.html" data-i18n-link="site" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Peaceful World" data-i18n-aria-label="home.logo.aria">
+          <img src="peaceful-world-logo.png" alt="" width="128" height="128" decoding="async" />
+        </a>
+        <span class="done-checkmark" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="m5.5 12 4.2 4.2 8.8-9"/></svg></span>
+        <p id="doneKicker" class="brand-name done-kicker" data-i18n="done.kicker">Тренировка завершена</p>
+        <h1 id="doneTitle" class="done-title" tabindex="-1" data-i18n="done.title">Теперь просто действуй.</h1>
+        <p class="done-subtitle done-lines" data-i18n-lines="done.subtitle"><span>Закрой приложение</span><span>и вернись к своему дню.</span></p>
+
+        <section id="pwModeDoneSummary" class="done-summary" aria-label="Результат тренировки">
+          <div class="done-summary-eyebrow"><span id="pwModeDoneSummaryHeading">РЕЗУЛЬТАТ</span></div>
+          <h2 id="pwModeDoneSummaryTitle" class="done-summary-title"></h2>
+          <p id="pwModeDoneSummaryTime" class="done-summary-total"></p>
+          <p id="pwModeDoneSummaryMode" class="done-summary-mode"></p>
+        </section>
+        <button id="pwModeBack" class="done-primary-action" type="button"><span id="pwModeDoneBackText">К выбору тренировок</span><span aria-hidden="true">→</span></button>
+        <div class="pw-world-done-tools preview-done-actions">
+          <button id="feedbackBtn" hidden type="button" class="done-action" data-i18n="done.feedback">Поделиться впечатлением</button>
+          <nav id="pwWorldDoneActions" class="pw-world-tools" aria-label="More actions after practice">
+            <span id="pwWebAiDone"></span>
+            <a id="supportBtn" class="pw-world-tool" href="https://peaceful-world.org/help" data-i18n-link="support" target="_blank" rel="noopener noreferrer">Support</a>
+            <button id="shareBtn" class="pw-world-tool" type="button" data-i18n="done.share">Поделиться</button>
+          </nav>
+          <p id="pwWebAiDoneNote" class="pw-world-status" hidden></p>
+          <div class="pw-world-done-meta">
+            <button type="button" id="pwWorldDoneOpen" class="pw-world-tool">Explore the roadmap</button>
+            <a id="pwWorldExpertDone" class="pw-world-tool" href="mailto:hello@peaceful-world.org">Предложения и сотрудничество</a>
+            <a class="pw-world-tool" href="privacy.en.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" aria-label="Privacy" data-i18n-aria-label="home.privacy">Privacy</a>
+          </div>
+        </div>
+        <div id="installArea" class="install-area" hidden>
+          <button id="installBtn" type="button" class="text-action install-action" data-i18n="install.device.fallback">Установить 5 на устройство</button>
+          <div id="installHelp" class="install-help" hidden>
+            <p class="install-help-title" data-i18n="install.title">Как установить 5</p>
+            <p id="installHelpCopy" class="install-help-copy"></p>
+            <button id="installHelpClose" type="button" class="install-help-close" data-i18n="install.help.close">Понятно</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="feedback" class="screen feedback-screen" aria-labelledby="feedbackTitle">
+      <div class="feedback-stack">
+        <div id="feedbackHeader" class="feedback-header">
+          <button id="feedbackBackBtn" type="button" class="round-btn feedback-back" aria-label="Назад" data-i18n-aria-label="feedback.back.aria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+          <p class="brand-name feedback-kicker" data-i18n="feedback.kicker">ПОМОГИ УЛУЧШИТЬ 5</p>
+          <h1 id="feedbackTitle" class="feedback-title" tabindex="-1" data-i18n="feedback.title">Что удалось заметить?</h1>
+          <p class="feedback-intro" data-i18n="feedback.intro">Напиши или запиши голосом — что было понятно, что мешало, что стоило бы сказать иначе.</p>
+        </div>
+
+        <div id="feedbackFields">
+          <form id="feedbackForm" class="feedback-form" novalidate>
+            <div class="feedback-honeypot" aria-hidden="true">
+              <label for="feedbackWebsite">Website</label>
+              <input id="feedbackWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <label class="field-label" for="feedbackText" data-i18n="feedback.label">Твоё впечатление</label>
+            <textarea id="feedbackText" class="feedback-text" rows="7" maxlength="5000" placeholder="Напиши здесь..." data-i18n-placeholder="feedback.placeholder"></textarea>
+
+            <div id="feedbackAudio" class="feedback-audio">
+              <div class="audio-header">
+                <p class="audio-title" data-i18n="feedback.voice.title">Или запиши голос</p>
+                <button id="audioRecordBtn" type="button" class="audio-record-btn" data-i18n="feedback.voice.record">Записать голос</button>
+              </div>
+              <p id="audioStatus" class="audio-status" data-i18n="feedback.voice.initial">До 2 минут. Запись не отправится, пока ты не нажмёшь «Отправить».</p>
+              <div id="audioPreview" class="audio-preview" hidden>
+                <audio id="audioPlayer" preload="metadata"></audio>
+                <div class="audio-player-row">
+                  <button id="audioPlayBtn" type="button" class="audio-play-btn" aria-label="Прослушать запись" data-i18n-aria-label="feedback.audio.play.aria">▶</button>
+                  <div class="audio-player-main">
+                    <div class="audio-player-meta">
+                      <span id="audioPlaybackLabel" data-i18n="feedback.audio.label">Голосовая запись</span>
+                      <span id="audioDuration">0:00</span>
+                    </div>
+                    <input id="audioSeek" class="audio-seek" type="range" min="0" max="1" step="0.01" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="feedback.audio.seek.aria" />
+                  </div>
+                </div>
+                <div class="audio-actions"><button id="audioDeleteBtn" type="button" class="audio-delete-btn" data-i18n="feedback.audio.delete">Удалить запись</button></div>
+              </div>
+            </div>
+
+            <label class="research-optin"><input id="researchOptin" type="checkbox" /> <span data-i18n="feedback.optin">Хочу иногда помогать с тестированием и улучшением тренажёра</span></label>
+            <p class="feedback-consent-copy" data-i18n="feedback.optin.note">Если отметишь этот пункт, мы попросим email только для коротких вопросов и приглашений к тестированию. Это не подписка на новости.</p>
+
+            <div id="emailWrap" class="email-wrap" hidden>
+              <label class="field-label" for="feedbackEmail">Email</label>
+              <input id="feedbackEmail" class="feedback-email" type="email" inputmode="email" autocomplete="email" maxlength="320" placeholder="name@example.com" />
+            </div>
+
+            <p class="feedback-privacy" data-i18n="feedback.privacy.short">При отправке мы сохраняем текст или голос, язык, версию приложения, версию показанного набора текста, номер только что завершённой тренировки на этом устройстве и технические данные отправки. Эти данные используются только для улучшения 5. Email сохраняется только если ты согласишься участвовать в тестировании. Голосовые записи хранятся приватно.</p>
+            <p class="feedback-consent-copy feedback-privacy-policy-link"><a class="howto-more" href="privacy.html" data-i18n-link="privacy" target="_blank" rel="noopener noreferrer" data-i18n="feedback.privacy.link">Политика конфиденциальности →</a></p>
+            <button id="feedbackSubmit" type="submit" class="primary feedback-submit" data-i18n="feedback.submit">Отправить</button>
+            <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div id="feedbackSuccess" class="feedback-success" hidden>
+          <div class="feedback-success-mark" aria-hidden="true">✓</div>
+          <h2 tabindex="-1" data-i18n="feedback.success.title">Спасибо.</h2>
+          <p data-i18n="feedback.success.body">Отзыв сохранён. Он поможет сделать 5 точнее и улучшать переводы.</p>
+          <button id="feedbackSuccessBack" type="button" class="primary feedback-success-done" data-i18n="feedback.success.done">Готово</button>
+        </div>
+      </div>
+    </section>
+
+    <p id="srStatus" class="sr-only" aria-live="polite"></p>
+  </main>
+
+  <dialog id="pwModeInfoDialog" class="practice-info-dialog" aria-labelledby="pwModeInfoTitle" aria-describedby="pwModeInfoBody">
+    <div class="practice-info-surface">
+      <div class="practice-info-heading"><h2 id="pwModeInfoTitle">О тренировке</h2><button id="pwModeInfoClose" class="practice-info-close" type="button" aria-label="Закрыть">×</button></div>
+      <p id="pwModeInfoBody" class="practice-info-text"></p>
+      <div id="pwModeIntroDetails" class="pw-intro-details"></div>
+      <p id="pwModeInfoUsage" class="practice-info-usage" hidden></p>
+      <label class="pw-intro-preference"><input type="checkbox" id="pwModeIntroSkip"> <span>Больше не показывать перед этой тренировкой</span></label>
+      <button id="pwModeInfoStart" class="practice-info-start" type="button"><span id="pwModeInfoStartText">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+    </div>
+  </dialog>
+  <aside hidden id="pwV2PreviewPanel" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg,#fff);color:var(--ink,#222);border-top:1px solid var(--line,#ccc);font:12px system-ui;padding:8px 12px;text-align:center" aria-label="Сохранение прогресса" data-i18n-aria-label="pilot.progress.aria">
+    <span id="pwV2PreviewStatus" role="status" data-state="loading">Загрузка локальной истории…</span>
+    <span id="pwV2LegacyRecovery" role="status" hidden></span>
+    <button id="pwV2AdoptLegacy" hidden type="button">Сохранить прежний прогресс</button>
+    <button id="pwV2Retry" hidden type="button">Повторить сохранение</button>
+  </aside>
+  <script src="pilot-data.js?v=ru-en-v3"></script>
+  <script src="pilot-data-en.js?v=ru-en-v3"></script>
+  <script>window.PW_PROGRESS_PREVIEW_READY=Promise.resolve(null);</script>
+  <script src="i18n.js?v=ru-en-v3"></script>
+  <script src="copy-rotation.js?v=integrated1"></script>
+  <script src="metta-focus.js?v=2"></script>
+  <script src="web-vnext/copy.js?v=ru-en-owner-v3"></script>
+  <script src="practice-intros.js?v=1"></script>
+  <script src="practice-modes.js?v=intros-review-1"></script>
+  <script src="app.js?v=integrated4"></script>
+  <script src="sound-v1.js"></script>
+  <script src="step-number.js?v=integrated1"></script>
+  <script>
+    /* Free practice and optional backup depend on the resolved locale. Waiting
+       for i18n avoids a mixed-language first paint for returning users. */
+    (() => {
+      const loadPracticeExtras = () => {
+        for (const src of ['free-practice.js?v=integrated3']) {
+          if (document.querySelector(`script[src="${src}"]`)) continue;
+          const script = document.createElement('script');
+          script.src = src;
+          script.async = false;
+          document.head.appendChild(script);
+        }
+      };
+      if (window.PW_I18N?.ready) window.PW_I18N.ready.then(loadPracticeExtras, loadPracticeExtras);
+      else loadPracticeExtras();
+    })();
+  </script>
+  <script>
+    /* Optional examples for all five Foundation steps.
+       Reviewed Russian and English copy. Opening pauses the timer;
+       Continue resumes only when this dialog initiated the pause. */
+    (() => {
+      const practiceScreen = document.getElementById('practice');
+      const stepGuideEl = document.getElementById('stepGuide');
+      const stepCountEl = document.getElementById('stepCount');
+      if (!practiceScreen || !stepGuideEl || !stepCountEl) return;
+
+      const COPY = {
+        ru: {
+          trigger: 'Пример',
+          triggerAria: 'Показать пример для этого шага',
+          continue: 'Продолжить',
+          step1: 'Например: ты вдруг замечаешь, что уже думаешь о других делах. Сам факт замечания — уже часть упражнения.',
+          step2: 'Например: птица за окном легко становится частью пейзажа. Попробуй увидеть не фон, а отдельную жизнь, которая продолжается независимо от тебя.',
+          step3: 'Например: можно мысленно сказать другу или животному: «Пусть у тебя всё будет хорошо». Тёплое чувство может не появиться — это не мешает практике.',
+          step4: 'Например: выкурить на одну сигарету меньше, дать телу отдохнуть или отказаться от чего-то, что вредит тебе или другим.',
+          step5: 'Например: не просто «постараюсь быть добрее», а «когда почувствую, что злюсь, сначала сделаю паузу и не скажу того, что может ранить другого».'
+        },
+        en: {
+          trigger: 'Example',
+          triggerAria: 'Show an example for this step',
+          continue: 'Continue',
+          step1: 'For example, you might notice your mind has wandered. Noticing that is already part of the exercise.',
+          step2: 'For example, a bird outside the window can easily fade into the background. Try to see it instead as a life of its own, independent of you.',
+          step3: 'For example, you might silently say to a friend or an animal, “I hope things go well for you.” A warm feeling may not come. You do not need one for the exercise.',
+          step4: 'For example: smoking one less cigarette, getting a little more rest, or saying no to something that would harm you or someone else.',
+          step5: 'For example: not just “I’ll try to be kinder,” but “When I notice I’m getting angry, I’ll pause before I speak so I don’t say something hurtful.”'
+        }
+      };
+      for (const [code, draft] of Object.entries(window.PW_DRAFT_LOCALES || {})) {
+        if (draft?.foundationExamples) COPY[code] = draft.foundationExamples;
+      }
+
+      const style = document.createElement('style');
+      style.id = 'pwPracticeHintStyles';
+      style.textContent = `
+        .pw-practice-hint-trigger{
+          appearance:none;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          min-height:34px;
+          margin:15px auto 0;
+          padding:4px 11px;
+          border:1px solid var(--line);
+          border-radius:999px;
+          background:transparent;
+          color:var(--muted);
+          font:600 .78rem/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          cursor:pointer;
+          opacity:.9;
+          transition:opacity .18s ease,background .18s ease,border-color .18s ease,transform .15s ease;
+        }
+        .pw-practice-hint-trigger[hidden]{display:none!important}
+        .pw-practice-hint-trigger:hover{
+          opacity:1;
+          background:rgba(123,141,123,.07);
+          border-color:rgba(123,141,123,.28);
+        }
+        .pw-practice-hint-trigger:active{transform:scale(.98)}
+        .pw-practice-hint-trigger:focus-visible{outline:2px solid #67766A;outline-offset:2px}
+        .pw-practice-hint-overlay{
+          position:fixed;
+          inset:0;
+          z-index:1600;
+          display:grid;
+          place-items:center;
+          padding:22px;
+          overflow-y:auto;
+          overscroll-behavior:contain;
+          background:rgba(18,22,20,.28);
+          backdrop-filter:blur(2px);
+          -webkit-backdrop-filter:blur(2px);
+        }
+        .pw-practice-hint-overlay[hidden]{display:none!important}
+        .pw-practice-hint-card{
+          width:min(100%,390px);
+          padding:24px 22px 20px;
+          border:1px solid var(--line);
+          border-radius:24px;
+          background:var(--surface);
+          color:var(--ink);
+          box-shadow:0 22px 70px rgba(18,22,20,.18);
+          text-align:center;
+        }
+        .pw-practice-hint-text{
+          margin:0 auto;
+          max-width:340px;
+          color:var(--text);
+          font-size:.98rem;
+          line-height:1.62;
+        }
+        .pw-practice-hint-continue{
+          appearance:none;
+          min-width:160px;
+          min-height:46px;
+          margin-top:20px;
+          padding:0 24px;
+          border:1px solid var(--line);
+          border-radius:999px;
+          background:var(--ink);
+          color:var(--surface);
+          font:700 .92rem/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          cursor:pointer;
+        }
+        .pw-practice-hint-continue:focus-visible{outline:2px solid #67766A;outline-offset:3px}
+        @media(max-width:420px){
+          .pw-practice-hint-overlay{padding:18px}
+          .pw-practice-hint-card{padding:22px 19px 18px;border-radius:22px}
+          .pw-practice-hint-text{font-size:.94rem;line-height:1.58}
+        }
+      `;
+      document.head.appendChild(style);
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'pw-practice-hint-trigger';
+      trigger.hidden = true;
+      stepGuideEl.insertAdjacentElement('afterend', trigger);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'pw-practice-hint-overlay';
+      overlay.hidden = true;
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-describedby', 'pwPracticeHintText');
+      overlay.innerHTML = `
+        <div class="pw-practice-hint-card">
+          <p id="pwPracticeHintText" class="pw-practice-hint-text"></p>
+          <button type="button" class="pw-practice-hint-continue"></button>
+        </div>`;
+      document.body.appendChild(overlay);
+
+      const hintText = overlay.querySelector('.pw-practice-hint-text');
+      const continueBtn = overlay.querySelector('.pw-practice-hint-continue');
+      let openStep = 0;
+      let pausedByHint = false;
+
+      function currentLocale() {
+        const raw = String(window.PW_I18N?.locale || document.documentElement.lang || 'ru');
+        const code = window.PW_I18N?.normalizeLocale?.(raw) || raw.toLowerCase().split('-')[0];
+        return COPY[code] ? code : 'ru';
+      }
+
+      function localeCopy() {
+        return COPY[currentLocale()];
+      }
+
+      function currentStep() {
+        try {
+          if (typeof stepIndex !== 'undefined' && Number.isInteger(stepIndex)) return stepIndex + 1;
+        } catch (_) {}
+        const match = String(stepCountEl.textContent || '').match(/\d+/);
+        return match ? Number(match[0]) : 0;
+      }
+
+      function isPausedNow() {
+        try { return typeof paused !== 'undefined' && paused === true; }
+        catch (_) { return false; }
+      }
+
+      function syncCopy() {
+        const copy = localeCopy();
+        trigger.textContent = copy.trigger;
+        trigger.setAttribute('aria-label', copy.triggerAria);
+        overlay.setAttribute('aria-label', copy.trigger);
+        continueBtn.textContent = copy.continue;
+      }
+
+      function syncTrigger() {
+        syncCopy();
+        const step = currentStep();
+        const available = practiceScreen.classList.contains('active') && step >= 1 && step <= 5;
+        trigger.hidden = !available;
+        if (!available && !overlay.hidden) closeHint(practiceScreen.classList.contains('active'));
+      }
+
+      function renderHint(step) {
+        hintText.textContent = window.PW_TRAINING_MODES?.example?.(step) || localeCopy()[`step${step}`] || '';
+      }
+
+      function pauseForHint() {
+        pausedByHint = false;
+        if (isPausedNow()) return;
+        try {
+          if (typeof pausePractice === 'function') {
+            pausePractice();
+            pausedByHint = isPausedNow();
+          }
+        } catch (_) {}
+      }
+
+      function resumeAfterHint() {
+        const shouldResume = pausedByHint;
+        pausedByHint = false;
+        if (!shouldResume || !isPausedNow()) return;
+        try {
+          if (typeof pausePractice === 'function') pausePractice();
+        } catch (_) {}
+      }
+
+      function openHint() {
+        const step = currentStep();
+        if (step < 1 || step > 5) return;
+        openStep = step;
+        pauseForHint();
+        renderHint(step);
+        overlay.hidden = false;
+
+        window.setTimeout(() => continueBtn.focus({ preventScroll:true }), 0);
+      }
+
+      function closeHint(resume = true) {
+        if (overlay.hidden) return;
+        overlay.hidden = true;
+        openStep = 0;
+        if (resume) resumeAfterHint();
+        else pausedByHint = false;
+        if (practiceScreen.classList.contains('active')) {
+          window.setTimeout(() => trigger.focus({ preventScroll:true }), 0);
+        }
+      }
+
+      trigger.addEventListener('click', openHint);
+      continueBtn.addEventListener('click', () => closeHint(true));
+      overlay.addEventListener('click', event => {
+        if (event.target !== overlay) return;
+        continueBtn.focus({ preventScroll:true });
+      });
+      document.addEventListener('keydown', event => {
+        if (overlay.hidden) return;
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          continueBtn.focus({ preventScroll:true });
+          return;
+        }
+        if (event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeHint(true);
+      }, true);
+
+      new MutationObserver(syncTrigger).observe(stepCountEl, { childList:true, characterData:true, subtree:true });
+      new MutationObserver(syncTrigger).observe(practiceScreen, { attributes:true, attributeFilter:['class'] });
+      document.addEventListener('pw:locale-changed', () => {
+        syncTrigger();
+        if (!overlay.hidden && openStep) renderHint(openStep);
+      });
+
+      syncTrigger();
+    })();
+  </script>
+  <script>
+    (() => {
+      const preview = new URLSearchParams(location.search).get('feedback');
+      if (!preview) return;
+
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+      const feedbackScreen = document.getElementById('feedback');
+      if (!feedbackScreen) return;
+      feedbackScreen.classList.add('active');
+      feedbackScreen.scrollTop = 0;
+
+      if (preview === 'success') {
+        const header = document.getElementById('feedbackHeader');
+        const fields = document.getElementById('feedbackFields');
+        const success = document.getElementById('feedbackSuccess');
+        if (header) header.hidden = true;
+        if (fields) fields.hidden = true;
+        if (success) success.hidden = false;
+        setTimeout(() => success?.querySelector('h2')?.focus({ preventScroll:true }), 0);
+      } else {
+        setTimeout(() => document.getElementById('feedbackTitle')?.focus({ preventScroll:true }), 0);
+      }
+    })();
+  </script>
+  <script src="web-vnext/world.js?v=2"></script>
+  <script src="pilot-v2.js?v=ru-en-owner-v3-no-full-note"></script>
+</body>
+</html>
