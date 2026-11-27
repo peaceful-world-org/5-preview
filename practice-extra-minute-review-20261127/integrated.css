@@ -1,0 +1,321 @@
+/* Isolated integrated guest pilot. */
+html[data-pw-progress-product] #home #pwModeProgress {display:none!important}
+html[data-pw-progress-product] #home .pw-my-progress {margin-top:10px}
+#pwV2PreviewPanel button {min-height:44px;cursor:pointer}
+#pwV2PreviewPanel:not(:has(#pwV2PreviewStatus[data-state="error"],#pwV2LegacyRecovery:not([hidden]),#pwV2Retry:not([hidden]))) {display:none}
+#pwModeDoneInstall,#pwModeInstall,#pwWorldShareBtn,#shareBtn,#feedbackBtn,#pwWebAiHome,#pwWebAiDone,.done-install-area {display:none!important}
+@media(min-width:700px){html[data-pw-progress-product] #home .pw-my-progress{width:100%;max-width:none}}
+
+/* Integrated pilot — home layout correction. Keep every practice and the
+   progress component intact. Use a common content rail at each breakpoint. */
+html[data-pw-progress-product][data-pw-focus-layout="scroll"]:has(#home.active) main.app {
+  width:min(100%,940px);
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+  width:100%;max-width:880px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home :is(.mode-section-label,#pwModeCards,#pwMyProgress,#pilotLibrary,#pwWorldPreview) {
+  box-sizing:border-box;width:100%;max-width:none;min-width:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-world-hero {
+  width:100%;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-world-hero .five-mark {
+  height:clamp(5.1rem,min(20vw,12dvh),6.4rem);
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .mode-section-label {
+  margin:16px 0 0;padding-top:12px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards {
+  margin-top:9px;gap:10px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+  border-radius:18px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {
+  min-height:46px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+  display:flex;position:relative;min-height:74px;
+  padding:12px 90px 12px 16px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-heading {
+  position:static;min-height:0;padding-inline-end:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-choice-title {
+  overflow-wrap:break-word;text-wrap:balance;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-info {
+  position:absolute;top:50%;right:44px;width:44px;height:44px;z-index:2;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  grid-area:auto;inset:0;width:100%;height:100%;margin:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress {
+  margin:10px 0 0;border-radius:17px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary {
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) 10px;
+  align-items:center;gap:10px;min-height:48px;padding:12px 15px;
+  font-size:1rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary::after {
+  margin-inline-start:0;justify-self:end;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgressBrief {
+  margin:0;max-width:100%;justify-self:end;font-size:.8rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pw-my-progress-body {
+  width:100%;max-width:580px;box-sizing:border-box;margin:0 auto;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwV2Calendar {
+  width:100%;max-width:420px;margin-inline:auto;box-sizing:border-box;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pilotLibrary {
+  margin:22px 0 0;padding:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-library-header {
+  padding-inline:2px;margin-bottom:11px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group-title {
+  min-width:0;line-height:1.35;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-skill {
+  min-width:0;min-height:58px;
+}
+@media(max-width:979px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"]:has(#home.active) main.app {
+    width:min(100%,600px);
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+    max-width:540px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-groups {
+    grid-template-columns:minmax(0,1fr);gap:10px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+    display:flex;flex-direction:column;align-items:stretch;
+    padding:13px 15px 14px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-detail-row {
+    margin:3px 0 12px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {
+    margin-top:auto;
+  }
+}
+@media(max-width:699px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .home-stack--cards {
+    max-width:416px;
+  }
+}
+@media(min-width:980px) {
+  /* One shared catalog surface, rather than three disconnected cards of
+     unequal heights. All categories and launch targets remain visible. */
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-groups {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;gap:0;
+    padding:13px 0 11px;box-sizing:border-box;
+    border:1px solid var(--line);border-radius:18px;background:var(--surface);
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group {
+    border:0;border-radius:0;background:transparent;padding:0 13px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group+.pilot-group {
+    border-inline-start:1px solid var(--line);padding-inline-start:13px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-group-title {
+    min-height:42px;padding:0 1px 8px;box-sizing:border-box;margin:0 0 3px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-skill {
+    min-height:68px;padding:9px 2px;
+  }
+}
+@media(max-width:359px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgress>summary {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 10px;gap:7px;padding-inline:12px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwMyProgressBrief {
+    font-size:.75rem;overflow-wrap:anywhere;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+    padding-inline-start:12px;
+  }
+}
+
+/* Revision 3. Shared information-button rail, outside the primary action.
+   Desktop: both info controls have the same right inset and vertical centre.
+   Mobile: base info stays in its title row, with the same right inset. */
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) {
+  position:relative;min-width:0;border-radius:18px;box-sizing:border-box;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-heading {
+  position:static;min-width:0;align-items:center;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-card-info {
+  position:absolute;inset:auto 12px auto auto;top:50%;transform:translateY(-50%);
+  box-sizing:border-box;width:44px;height:44px;z-index:3;margin:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+  padding:12px 105px 12px 16px;min-height:76px;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta>span:last-child {
+  right:65px;top:50%;transform:translateY(-50%);font-size:1.3rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:active {
+  transform:none;
+}
+@media(min-width:980px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,248px);
+    grid-template-rows:auto auto;column-gap:16px;
+    padding:14px 68px 14px 16px;align-items:center;min-height:90px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-heading {
+    padding-inline-end:0;min-height:28px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-cta {
+    grid-area:1/2/3/3;width:100%;align-self:center;margin:0;
+  }
+}
+@media(max-width:979px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation {
+    padding:12px 16px 14px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-heading {
+    padding-inline-end:48px;min-height:44px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-card-info {
+    top:12px;transform:none;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--foundation .practice-choice-detail-row {
+    margin:0 0 12px;
+  }
+}
+@media(max-width:359px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free {
+    padding-inline:12px 100px;
+  }
+}
+
+/* Revision 4 — both training entry cards share the same explicit CTA grid.
+   The existing free-start button is restored from the overlay treatment. */
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) {
+  gap:0;
+  padding:12px 16px 14px;
+  min-height:0;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  position:relative;inset:auto;grid-area:auto;
+  width:100%;height:auto;min-height:46px;
+  padding:9px 31px;margin:0;
+  border:1px solid #86621F;border-radius:999px;
+  background:#86621F;color:#fff;z-index:auto;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta>span:first-child {
+  position:static;width:auto;height:auto;padding:0;margin:0;
+  overflow:visible;clip-path:none;white-space:normal;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta>span:last-child {
+  right:16px;top:50%;transform:translateY(-52%);font-size:1.14rem;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:hover {
+  background:#75551D;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:active {
+  transform:scale(.985);
+}
+html[data-pw-theme="dark"][data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta {
+  background:#D4B36C;border-color:#D4B36C;color:#242118;
+}
+html[data-pw-theme="dark"][data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>.practice-choice--free .practice-card-cta:hover {
+  background:#DEC17D;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-title {
+  font-size:1.22rem;line-height:1.25;overflow-wrap:break-word;text-wrap:pretty;
+}
+@media(min-width:980px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) {
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,248px);
+    grid-template-rows:auto auto;align-items:center;column-gap:16px;
+    padding:14px 68px 14px 16px;min-height:90px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-heading {
+    grid-area:1/1/2/2;min-height:28px;padding-inline-end:0;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-detail-row {
+    grid-area:2/1/3/2;min-height:0;margin:3px 0 0;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-card-cta {
+    grid-area:1/2/3/3;align-self:center;margin:0;min-height:46px;
+  }
+}
+@media(max-width:979px) {
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) {
+    display:flex;flex-direction:column;align-items:stretch;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-heading {
+    min-height:44px;padding-inline-end:48px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-card-info {
+    top:12px;transform:none;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-choice-detail-row {
+    min-height:0;margin:0 0 12px;
+  }
+  html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards>:is(.practice-choice--foundation,.practice-choice--free) .practice-card-cta {
+    width:100%;min-height:46px;margin-top:auto;
+  }
+}
+
+/* Restore the existing guided-practice exit confirmation from the current app. */
+.pw-exit-dialog{width:min(92vw,370px);max-height:calc(100dvh - 28px);overflow-y:auto;padding:26px 23px 22px;border:1px solid var(--line);border-radius:23px;background:var(--surface);color:var(--ink);box-shadow:0 22px 70px rgba(18,22,20,.2);text-align:center}
+.pw-exit-dialog::backdrop{background:rgba(18,22,20,.35)}
+.pw-exit-dialog h2{margin:0;font-size:1.32rem;line-height:1.3}
+.pw-exit-dialog p{margin:13px auto 0;max-width:33ch;font-size:.95rem;line-height:1.55;color:var(--text);text-align:start}
+.pw-exit-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.pw-exit-actions .secondary{margin:0;min-width:125px;min-height:44px}
+@media(max-width:360px){.pw-exit-dialog{padding:18px 16px}.pw-exit-actions .secondary{flex:1 1 100%}}
+
+/* Intro review 2: one native action per practice; no competing detail icon. */
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards[data-intro-simple] > .practice-choice{
+  display:block;padding:0;min-height:0;overflow:visible;
+}
+#home #pwModeCards[data-intro-simple] > .practice-choice[hidden]{display:none!important}
+#home .pw-mode-choice-button{
+  display:flex;width:100%;box-sizing:border-box;align-items:center;justify-content:space-between;
+  min-height:82px;gap:14px;padding:14px 16px;margin:0;border:0;border-radius:inherit;
+  background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;
+}
+#home .pw-mode-choice-copy{display:flex;min-width:0;flex:1 1 auto;flex-direction:column;gap:6px}
+#home .pw-mode-choice-button .practice-choice-title{font-size:1.15rem;line-height:1.3;overflow-wrap:anywhere}
+#home .pw-mode-choice-button .practice-choice-description{font-size:.86rem;line-height:1.45;margin:0}
+#home .pw-mode-choice-duration{flex:0 0 auto;max-width:35%;color:var(--muted);font-size:.76rem;line-height:1.4;text-align:right}
+#home .pw-mode-choice-button:hover{background:rgba(103,118,103,.09)}
+html[data-pw-theme="dark"] #home .pw-mode-choice-button:hover{background:rgba(255,255,255,.05)}
+#home .pw-mode-choice-button:active,#home .pilot-skill:active{transform:scale(.99)}
+#home .pw-mode-choice-button:focus-visible,#home .pilot-skill:focus-visible,#pwIntroReset:focus-visible{outline:2px solid var(--accent-text);outline-offset:2px}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-list{display:grid;gap:7px;padding-top:3px}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-list > .pilot-skill{
+  display:flex;width:100%;min-width:0;min-height:70px;box-sizing:border-box;align-items:center;
+  padding:10px 12px;gap:0;border:1px solid var(--line);border-radius:12px;
+  background:var(--bg);text-align:left;
+}
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-list > .pilot-skill:hover,
+html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-list > .pilot-skill:focus-visible{background:var(--family-bg);border-color:var(--family-accent)}
+#home .pw-intro-preference-tools{width:100%;display:flex;justify-content:center;padding:8px 0 2px}
+#home .pw-intro-preference-tools[hidden]{display:none!important}
+#pwIntroReset{min-height:44px;padding:6px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:.81rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media(max-width:360px){#home .pw-mode-choice-button{padding:12px;gap:9px}#home .pw-mode-choice-button .practice-choice-title{font-size:1.04rem}#home .pw-mode-choice-duration{font-size:.71rem}}
+@media(prefers-reduced-motion:reduce){#home .pw-mode-choice-button:active,#home .pilot-skill:active{transform:none}}
+
+/* Same compact timer footer; one secondary time-extension control. */
+#practice .pw-timer-actions{display:flex;align-items:center;justify-content:center;gap:8px;width:min(100%,290px);margin-top:10px}
+#practice .pw-timer-actions .secondary{min-height:44px;margin:0;padding:0 14px}
+#practice .pw-timer-actions .pause-btn{flex:1;min-width:0}
+#practice .pw-extend-minute{flex:0 0 auto;min-width:82px;font-size:.87rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+#practice .pw-extend-minute:disabled{opacity:.38;cursor:default}
+#practice .pw-extend-minute:focus-visible{outline:2px solid var(--accent-text);outline-offset:2px}
+#practice .timer-shell.extended .timer{font-size:clamp(1.15rem,3.5vw,1.75rem);letter-spacing:-.045em;max-width:100%;white-space:nowrap}
+#practice .timer-shell.extended .timer-caption{letter-spacing:.06em}
+@media(orientation:landscape) and (max-height:520px){#practice .pw-timer-actions{margin-top:4px}#practice .timer-shell.extended .timer{font-size:1.1rem}}
