@@ -297,6 +297,9 @@ html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards
   font-family:"Google Sans",Arial,sans-serif;font-size:14px;line-height:20px;font-weight:500;
   padding:10px 12px;text-align:center;
 }
+/* Official current Google G, copied into the preview artifact at build time.
+   Keep the existing PKCE button and avoid any runtime third-party resource request. */
+#home .pw-account-entry .pw-google-signin::before{content:"";flex:0 0 18px;width:18px;height:18px;background:center/contain no-repeat url("google-signin-g.png")}
 #home .pw-account-entry .pw-google-signin:not(:disabled):hover{background:#f2f2f2}
 #home .pw-account-email{border:0;margin:0}
 #home .pw-account-email>summary{display:flex;align-items:center;justify-content:center;min-height:44px;text-align:center;color:var(--ink,var(--text));font-size:.85rem;font-weight:550;cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-sizing:border-box}

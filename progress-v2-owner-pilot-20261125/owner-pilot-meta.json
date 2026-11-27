@@ -16,5 +16,7 @@
   ],
   "modes": 12,
   "focusTextFields": 306,
-  "contentAcceptance": "canonical guest source parity and syntax checks; real hosted browser and cross-device acceptance pending"
+  "contentAcceptance": "canonical guest source parity and syntax checks; real hosted browser and cross-device acceptance pending",
+  "accountEntryRevision": "visible-home-entry-v1",
+  "accountEntryAcceptance": "isolated component fixture: RU/EN at 320, 390, 768 and 1280 pixels; hosted Auth and full-layout acceptance pending"
 }
