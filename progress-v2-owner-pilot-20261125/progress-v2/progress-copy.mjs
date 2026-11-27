@@ -1,6 +1,13 @@
 // Product copy is deliberately separate from Auth/storage code.
 // English fallback is provisional for locales other than ru/en.
 const ru={
+  'Save your progress':'Сохраняй свой прогресс',
+  'Keep your practice history across devices.':'История тренировок будет доступна на разных устройствах.',
+  'You can practise without an account.':'Можно тренироваться без аккаунта.',
+  'Continue with email':'Войти по электронной почте',
+  'My account':'Мой аккаунт',
+  'Manage account':'Управление аккаунтом',
+  'Backup on this device':'Резервная копия на устройстве',
   'Continue with Google':'Войти через Google',
   'Use an email link to sign in. You can keep practising without an account.':'Войди по ссылке из письма. Практиковать можно и без аккаунта.',
   'Send sign-in link':'Получить ссылку для входа',

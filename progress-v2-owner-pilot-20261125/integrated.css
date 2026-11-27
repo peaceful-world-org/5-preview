@@ -276,3 +276,50 @@ html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home #pwModeCards
 .pw-exit-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
 .pw-exit-actions .secondary{margin:0;min-width:125px;min-height:44px}
 @media(max-width:360px){.pw-exit-dialog{padding:18px 16px}.pw-exit-actions .secondary{flex:1 1 100%}}
+
+/* Visible account entry. Presentation only; existing practice, Auth and ledger runtime unchanged. */
+#home .pw-account-entry{
+  box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:14px auto 0;
+  padding:16px;border:1px solid var(--line);border-radius:18px;
+  background:var(--surface,var(--bg));color:var(--ink,var(--text));text-align:start;
+}
+#home .pw-account-layout{display:grid;gap:12px;min-width:0}
+#home .pw-account-intro h2{margin:0;font:inherit;font-size:1.06rem;line-height:1.35;font-weight:680}
+#home .pw-account-intro p,#home .pw-account-entry p{margin:5px 0 0;font-size:.84rem;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+#home .pw-account-auth,#home #pwV2LoginFields{min-width:0;width:100%}
+#home #pwV2LoginFields{display:grid;gap:8px}
+#home .pw-account-entry button{box-sizing:border-box;min-height:44px;max-width:100%;font:inherit;font-size:.85rem;font-weight:550;border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--ink,var(--text));padding:9px 12px;cursor:pointer;overflow-wrap:anywhere}
+#home .pw-account-entry button:disabled{opacity:.55;cursor:default}
+#home .pw-account-entry :focus-visible{outline:2px solid var(--accent-text,var(--text));outline-offset:3px}
+#home .pw-account-entry .pw-google-signin{
+  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:44px;
+  background:#fff;color:#1f1f1f;border:1px solid #747775;border-radius:999px;
+  font-family:"Google Sans",Arial,sans-serif;font-size:14px;line-height:20px;font-weight:500;
+  padding:10px 12px;text-align:center;
+}
+#home .pw-account-entry .pw-google-signin:not(:disabled):hover{background:#f2f2f2}
+#home .pw-account-email{border:0;margin:0}
+#home .pw-account-email>summary{display:flex;align-items:center;justify-content:center;min-height:44px;text-align:center;color:var(--ink,var(--text));font-size:.85rem;font-weight:550;cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-sizing:border-box}
+#home .pw-account-email>summary::-webkit-details-marker{display:none}
+#home .pw-account-email[open]>summary{border-radius:11px}
+#home .pw-account-email label{display:block;margin-top:10px;font-size:.8rem;color:var(--muted)}
+#home .pw-account-entry #pwV2Email{box-sizing:border-box;width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);padding:10px;font:inherit;margin:5px 0 8px}
+#home .pw-account-entry #pwV2Send{width:100%}
+#home .pw-account-entry .pw-account-guest{font-size:.76rem;margin-top:8px}
+#home .pw-account-entry .pw-account-status{font-size:.77rem;margin-top:8px}
+#home .pw-account-entry .pw-account-notice:empty{display:none}
+#home .pw-account-entry .pw-account-notice{margin-top:9px;color:var(--ink,var(--text))}
+#home .pw-account-entry #pwV2AccountPanel{margin:8px 0 0;border-top:1px solid var(--line);padding:0}
+#home .pw-account-entry #pwV2AccountPanel>summary{min-height:44px;box-sizing:border-box;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.8rem;cursor:pointer;list-style:none}
+#home .pw-account-entry #pwV2AccountPanel>summary::-webkit-details-marker{display:none}
+#home .pw-account-entry #pwV2AccountPanel>summary::after{content:"";width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin-inline-start:auto}
+#home .pw-account-entry #pwV2AccountPanel[open]>summary::after{transform:rotate(225deg)}
+#home .pw-account-entry #pwV2AccountPanel button{margin:3px 5px 3px 0}
+#home .pw-account-entry[data-account-mode="account"]{padding-block:12px}
+#home .pw-account-entry[data-account-mode="account"] .pw-account-layout{display:block}
+#home .pw-account-entry[data-account-mode="account"] #pwV2AccountPanel{margin-top:7px}
+#home .pw-account-entry [hidden]{display:none!important}
+@media(min-width:760px){
+  #home .pw-account-entry[data-account-mode="guest"] .pw-account-layout{grid-template-columns:minmax(0,1fr) minmax(220px,290px);align-items:start;gap:20px}
+}
+@media(max-width:359px){#home .pw-account-entry{padding:12px}}

@@ -34,7 +34,7 @@ export function mountMyProgress({getSnapshot,getAccount,getPreferences}){
   if(!cards||!account||!settings||!adopt)throw Error('Missing progress interface');
   cards.after(root);
   for(const panel of [account,settings])panel.removeAttribute('style');
-  controls.append(adopt,settings,account);
+  controls.append(adopt,settings); // Account is now a visible Home entry, not nested in progress.
   const calendar=document.getElementById('pwV2Calendar');
   el('pwMyProgressHistory').before(calendar);
   rememberOpen(root,'main');rememberOpen(settings,'settings');rememberOpen(account,'account');

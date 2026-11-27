@@ -2,6 +2,7 @@
 import { createPreviewAccount } from './preview-account.mjs';
 import { createGoogleFlow } from './google-flow.mjs';
 import { formatProgressExport } from './progress-export.mjs';
+import { mountAccountEntry } from './account-entry.mjs';
 import {t,localizeProgress,guestClaimText,productProgress} from './progress-copy.mjs';
 
 export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,canDelete=canSwitch}) {
@@ -29,7 +30,7 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
     '<button id="pwV2Export" type="button" data-progress-copy="Export saved progress (JSON)">Export saved progress (JSON)</button>'+
     '<button id="pwV2Reload" type="button" hidden data-progress-copy="Retry account verification">Retry account verification</button>'+
     '<p id="pwV2AccountNotice" role="status" aria-live="polite"></p>';
-  document.getElementById('pwModeProgress').after(panel);
+  const entry=mountAccountEntry(panel,{t,localizeProgress});
   const el=id=>document.getElementById(id);
   let noticeSource='';
   const notice=msg=>{noticeSource=msg;el('pwV2AccountNotice').textContent=t(msg);};
@@ -38,7 +39,7 @@ export async function mountAccountPanel({ledger,refresh,canSwitch,settle,show,ca
   const account=createPreviewAccount({ledger,auth:sdk.auth,...cfg,onChange:()=>render(),onError:notice,onSignedOut:()=>google.clearAfterSignOut(),onDeleted:()=>{try{window.PW_REVIEW_SESSION.setItem('pw-v2-deletion-completed','1');}catch(_){}}});
   function render(){
     const s=account.state();
-    localizeProgress(panel);el('pwV2AccountNotice').textContent=t(noticeSource);
+    entry.update(s);el('pwV2AccountNotice').textContent=t(noticeSource);
     const disabled=busy||s.transitioning||s.syncing||googleNavigating;
     el('pwV2Google').hidden=cfg.googleEnabled!==true;
     el('pwV2LoginFields').hidden=!!(s.signedIn||s.pendingEmail||s.unavailable);
