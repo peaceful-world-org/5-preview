@@ -277,4 +277,4 @@ html[data-pw-focus-layout="scroll"] .pilot-skill:focus-visible {background:var(-
 .pilot-skill-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
 .pilot-skill-row:last-child{border-bottom:0}
 .pilot-skill-row>.pilot-skill{flex:1 1 auto;min-width:0;border-bottom:0}
-.pilot-skill-row>.practice-card-info{flex:0 0 36px;min-width:36px;min-height:36px}
+#home .pilot-skill-row>.practice-card-info{position:relative;inset:auto;transform:none;flex:0 0 44px;width:44px;height:44px;min-width:44px;min-height:44px;margin:0}
