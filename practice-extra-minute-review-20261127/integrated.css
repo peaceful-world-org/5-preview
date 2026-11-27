@@ -319,3 +319,13 @@ html[data-pw-progress-product][data-pw-focus-layout="scroll"] #home .pilot-list 
 #practice .timer-shell.extended .timer{font-size:clamp(1.15rem,3.5vw,1.75rem);letter-spacing:-.045em;max-width:100%;white-space:nowrap}
 #practice .timer-shell.extended .timer-caption{letter-spacing:.06em}
 @media(orientation:landscape) and (max-height:520px){#practice .pw-timer-actions{margin-top:4px}#practice .timer-shell.extended .timer{font-size:1.1rem}}
+
+/* Quiet, legible number and unmistakable primary start action in both themes. */
+html[data-pw-theme="dark"] #pwModeInfoStart{background:#e4e9e2;color:#202522}
+html[data-pw-theme="dark"] #pwModeInfoStart:hover{background:#f0f3ee}
+#practice .step-number{color:rgba(67,83,71,.48)}
+html[data-pw-theme="dark"] #practice .step-number{color:rgba(156,177,156,.56)}
+@media(prefers-contrast:more){
+  #practice .step-number{color:#596d5c}
+  html[data-pw-theme="dark"] #practice .step-number{color:#b5c8b6}
+}

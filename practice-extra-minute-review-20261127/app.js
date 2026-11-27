@@ -792,7 +792,6 @@ function maybeResetCompletedView() {
 
 function requestExit() {
   if (v2GuidedSaving || !practice.classList.contains('active') || exitDialog?.open) return;
-  if (IS_DEMO) { void exit(); return; }
   resumeAfterExitDialog = Boolean(interval) && !paused;
   if (resumeAfterExitDialog) pausePractice();
   if (!exitDialog?.showModal) {
