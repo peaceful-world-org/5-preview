@@ -22,10 +22,10 @@ const SHARE_URL = 'https://5.peaceful-world.org/';
 // Last-resort Russian copy if both the i18n and rotation layers are unavailable.
 // Keep in sync with copy-rotation.js and locales/ru.json.
 const FALLBACK_STEPS = [
-  { title:'Остановись', guide:'Найди то, на чём легко сосредоточиться: дыхание, предмет, звук или ощущение в теле. В течение минуты спокойно удерживай на этом внимание. Если отвлечёшься, мягко возвращайся к выбранному.' },
-  { title:'Увидь живое', guide:'Начни с себя. Заметь: как и ты, каждое живое существо хочет жить и не хочет страдать. В течение минуты побудь с этой мыслью.' },
-  { title:'Пожелай добра', guide:'Представь кого-то, кому легко пожелать добра. В течение минуты мысленно возвращайся к добрым пожеланиям.' },
-  { title:'Уменьши вред', guide:'Вспомни что-то в повседневной жизни, что хотя бы немного вредит тебе или кому-то ещё. В течение минуты поищи способы уменьшить этот вред.' },
+  { title:'Остановись', guide:'Найди то, на чём легко сосредоточиться: дыхание, предмет, звук или ощущение в теле. Спокойно удерживай на этом внимание. Если отвлечёшься, мягко возвращайся к выбранному.' },
+  { title:'Увидь живое', guide:'Начни с себя. Заметь: как и ты, каждое живое существо хочет жить и не хочет страдать. Побудь с этой мыслью.' },
+  { title:'Пожелай добра', guide:'Представь кого-то, кому легко пожелать добра. Мысленно возвращайся к добрым пожеланиям.' },
+  { title:'Уменьши вред', guide:'Вспомни что-то в повседневной жизни, что хотя бы немного вредит тебе или кому-то ещё. Поищи способы уменьшить этот вред.' },
   { title:'Сделай выбор', guide:'Прими одно небольшое решение: что сделать или чего не делать в ближайшее время. Представь подходящий момент и мысленно репетируй, как поступишь.' }
 ];
 let STEPS = FALLBACK_STEPS.map(step => ({ ...step }));
@@ -453,8 +453,8 @@ function renderTimer() {
   timerShell.classList.toggle('ending', seconds <= 5);
   const extended=durationMs>PRACTICE*1000;
   timerShell.classList.toggle('extended',extended);
-  timer.textContent=extended?Math.floor(ariaSeconds/60)+':'+String(ariaSeconds%60).padStart(2,'0'):String(seconds);
-  timerCaption.textContent=extended?'МИН:СЕК':i18nText('practice.seconds','СЕКУНД');
+  timer.textContent=extended?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):String(seconds);
+  timerCaption.textContent=extended?i18nText('practice.minsec','МИН:СЕК'):i18nText('practice.seconds','СЕКУНД');
   timerShell.setAttribute(
     'aria-label',
     i18nText(
@@ -474,7 +474,11 @@ function renderTimer() {
 }
 
 function extendCurrentMinute() {
-  if (!practice.classList.contains('active')||!interval||phase!=='practice'||transitionLock||v2GuidedSaving||document.hidden||exitDialog?.open||document.querySelector('dialog[open]'))return false;
+  if (!practice.classList.contains('active')||!interval||phase!=='practice'||transitionLock||v2GuidedSaving||document.hidden||exitDialog?.open||document.querySelector('dialog[open]')||Array.from(document.querySelectorAll('.pw-practice-hint-overlay')).some(e=>!e.hidden&&e.getClientRects().length>0))return false;
+  // Respect the existing suspension guard before re-anchoring the clock.
+  const originalStep=stepIndex;
+  if(!paused&&performance.now()-lastLoopAt>CONFIG.freezeGapMs)tick();
+  if(stepIndex!==originalStep||phase!=='practice'||transitionLock||!interval||v2GuidedSaving)return false;
   const ms=left();
   if(ms<=0)return false;
   // Extend only the current active-work interval. Never resume a paused timer,
@@ -488,7 +492,7 @@ function extendCurrentMinute() {
   lastLoopAt=startedAt;
   lastTick=Math.max(0,Math.ceil(remainingMs/1000)-1);
   renderTimer();
-  announce('Добавлена одна минута.');
+  announce(i18nText('practice.sr.minute.added','Добавлена одна минута.'));
   return true;
 }
 function updatePhaseVisual() {
@@ -747,8 +751,8 @@ async function finish() {
   closeBtn.disabled = true;
   pauseBtn.disabled = true;
   try {
-    if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided();
-    window.PW_COPY_ROTATION?.completeSession?.();
+    if (!IS_DEMO) await (await window.PW_PROGRESS_PREVIEW_READY).finishGuided(completedActiveSeconds);
+    window.PW_COPY_ROTATION?.completeSession?.(completedActiveSeconds);
     if(IS_DEMO)window.PW_LAST_COMPLETION={mode:window.PW_TRAINING_MODES?.mode||'foundation',durationSeconds:completedActiveSeconds,demo:true};
   } catch (error) {
     window.PW_PROGRESS_PREVIEW?.report(error, finish);

@@ -163,7 +163,6 @@
     }
     if(dialog.open) updateInfo();
   }
-
   const introKey=id=>'practice-intro-skip-v1:'+id;
   const introCatalog=window.PW_PRACTICE_INTROS;
   const skipped=id=>{try{return window.PW_REVIEW_STORAGE.getItem(introKey(id))==='1'}catch(_){return false}};
@@ -193,7 +192,7 @@
     for(const [i,step] of entry.steps.entries()){const li=make('li');li.append(make('strong','',liveSteps?.[i]?.title||step.title),make('span','',step.description));list.append(li)}
     sequence.append(list);
     host.replaceChildren(section('Педагогическая основа',entry.basis),sequence,
-      section('Как выполнять',info==='free'?'Когда будешь готов, запусти таймер. Выбирай свою длительность.':'На каждом шаге — 5 секунд подготовки и минута для предложенной умственной работы. Не нужно искать правильный ответ. Если отвлечёшься, спокойно вернись к заданию. Если хочешь уделить текущему шагу больше времени, нажми «+1 мин». Можно добавлять минуты повторно.'),
+      section('Как выполнять',info==='free'?'Когда будешь готов, запусти таймер. Выбирай свою длительность.':'На каждом шаге сначала 5 секунд подготовки, затем минута для упражнения. Не нужно искать правильный ответ. Если отвлечёшься, спокойно вернись к заданию. '+(window.PW_I18N?.t?.('practice.extend.instructions')||"Если хочешь уделить текущему шагу больше времени, нажми «+1 мин». Можно добавлять минуты повторно.")),
       section('Важно',entry.guard+' Ты можешь остановиться в любой момент.'));
   }
   function updateInfo(){
@@ -209,7 +208,7 @@
     info=which;infoOpener=opener||document.activeElement;
     updateInfo();fillIntro();$('pwModeIntroSkip').checked=skipped(which);
     if(typeof dialog.showModal==='function')dialog.showModal();
-    dialog.scrollTop=0;$('pwModeInfoClose')?.focus({preventScroll:true});
+    dialog.scrollTop=0;dialog.querySelector(".pw-intro-scroll").scrollTop=0;$('pwModeInfoClose')?.focus({preventScroll:true});
   }
   function requestStart(id,opener){
     if(!canStart(id)||dialog.open)return;
@@ -335,20 +334,20 @@
     mettaDemo=Boolean(opts.demo);mettaActive=true;mettaFinished=false;mettaMeta=null;
     return getMettaSteps();
   };
-  rotation.completeSession=function(){
+  rotation.completeSession=function(activeSeconds=300){
     if(focus.has(selected)){
       if(focusFinished)return focusMeta;
       focusFinished=true;
       const n=focusDemo||window.PW_PROGRESS_PREVIEW?.recordingEnabled===false?null:safeInt(focusKey(selected));
       focusMeta={practiceNumber:n===null?null:stats().guided,modeNumber:n,copyVersion:focusPack(selected,focusSessionLocale).version,setId:selected,locale:focusSessionLocale,demo:focusDemo};
-      window.PW_LAST_COMPLETION={mode:selected,practiceNumber:focusMeta.practiceNumber,durationSeconds:focusDemo?null:300,demo:focusDemo};
+      window.PW_LAST_COMPLETION={mode:selected,practiceNumber:focusMeta.practiceNumber,durationSeconds:focusDemo?null:activeSeconds,demo:focusDemo};
       document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       return focusMeta;
     }
     if(selected!=='metta'){
       const result=originalComplete();
       if(result&&!result.demo){
-        window.PW_LAST_COMPLETION={mode:'foundation',practiceNumber:result.practiceNumber,durationSeconds:300};
+        window.PW_LAST_COMPLETION={mode:'foundation',practiceNumber:result.practiceNumber,durationSeconds:activeSeconds};
         document.dispatchEvent(new CustomEvent('pw:completion-changed'));
       }
       return result;
@@ -363,7 +362,7 @@
       copyVersion:mettaCopyVersion(),setId:'metta-focus-01',
       locale:locale(),demo:mettaDemo
     };
-    window.PW_LAST_COMPLETION={mode:'metta',practiceNumber,durationSeconds:mettaDemo?null:300,demo:mettaDemo};
+    window.PW_LAST_COMPLETION={mode:'metta',practiceNumber,durationSeconds:mettaDemo?null:activeSeconds,demo:mettaDemo};
     document.dispatchEvent(new CustomEvent('pw:completion-changed'));
     return mettaMeta;
   };

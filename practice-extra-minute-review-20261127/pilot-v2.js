@@ -74,7 +74,7 @@
     const note=el('pilotModeNote');
     note.hidden=false;
     note.textContent='Реальный таймер · 5 секунд подготовки, 60 секунд работы · можно добавить минуты. История не сохраняется.';
-    document.title='5 — Дополнительная минута';
+    document.title='5 — Русский эталон · предпросмотр';
     window.PW_TRAINING_MODES.refreshIntroChoices();
     syncNav();
   }

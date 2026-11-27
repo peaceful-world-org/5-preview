@@ -61,11 +61,11 @@
   <link rel="stylesheet" href="step-number.css" />
   <link rel="stylesheet" href="completion-polish.css" />
   <link rel="stylesheet" href="practice-modes.css" />
-  <title>5 — Дополнительная минута</title>
+  <title>5 — Русский эталон · предпросмотр</title>
   <link rel="stylesheet" href="web-vnext/world.css?v=2" />
   <link rel="stylesheet" href="pilot-v2.css?v=intro-buttons-2" />
   <link rel="stylesheet" href="progress-v2/my-progress.css?v=1" />
-  <link rel="stylesheet" href="integrated.css?v=extra-minute-2" />
+  <link rel="stylesheet" href="integrated.css?v=ru-v4-review-1" />
 </head>
 <body>
   <main class="app">
@@ -208,7 +208,8 @@
           <summary data-i18n="home.howto.title">Как проходит тренировка</summary>
           <div class="howto-body">
             <p data-i18n="home.howto.p1">На каждом шаге сначала есть 5 секунд, чтобы прочитать подсказку и настроиться. Затем начинается полная минута тренировки.</p>
-            <p data-i18n="home.howto.p2">Используй эту минуту, чтобы удерживать внимание, думать, вспоминать или представлять. Не нужно искать правильный ответ.</p>
+            <p data-i18n="home.howto.p2">Используй это время, чтобы удерживать внимание, думать, вспоминать или представлять. Не нужно искать правильный ответ.</p>
+            <p data-i18n="practice.extend.instructions">Если хочешь уделить текущему шагу больше времени, нажми «+1 мин». Можно добавлять минуты повторно.</p>
             <p data-i18n="home.howto.p3">На последнем шаге прими одно небольшое решение и представь, как поступишь в подходящий момент.</p>
             <p class="howto-more-row"><a class="howto-more" href="https://peaceful-world.org/ru/research/peaceful-world-practice" data-i18n-link="article" target="_blank" rel="noopener noreferrer" data-i18n="home.howto.more">Подробнее о тренажёре →</a></p>
           </div>
@@ -244,7 +245,7 @@
         </div>
         <div class="pw-timer-actions">
           <button id="pauseBtn" type="button" class="secondary pause-btn" data-i18n="practice.pause">Пауза</button>
-          <button id="extendMinuteBtn" type="button" class="secondary pw-extend-minute" aria-label="Добавить одну минуту к текущему шагу" disabled>+1 мин</button>
+          <button id="extendMinuteBtn" type="button" class="secondary pw-extend-minute" data-i18n="practice.extend" data-i18n-aria-label="practice.extend.aria" aria-label="Добавить одну минуту к текущему шагу" disabled>+1 мин</button>
         </div>
         <nav id="pilotStepNav" class="pilot-step-nav" aria-label="Быстрый просмотр шагов" data-i18n-aria-label="pilot.steps.aria" hidden>
           <button id="pilotPrev" data-i18n="pilot.prev" type="button">← Назад</button><span id="pilotStepPosition"></span><button id="pilotNext" type="button">Дальше →</button>
@@ -375,11 +376,15 @@
   <dialog id="pwModeInfoDialog" class="practice-info-dialog" aria-labelledby="pwModeInfoTitle" aria-describedby="pwModeInfoBody">
     <div class="practice-info-surface">
       <div class="practice-info-heading"><h2 id="pwModeInfoTitle">О тренировке</h2><button id="pwModeInfoClose" class="practice-info-close" type="button" aria-label="Закрыть">×</button></div>
+      <div class="pw-intro-scroll">
       <p id="pwModeInfoBody" class="practice-info-text"></p>
       <div id="pwModeIntroDetails" class="pw-intro-details"></div>
       <p id="pwModeInfoUsage" class="practice-info-usage" hidden></p>
+      </div>
+      <div class="pw-intro-footer">
       <label class="pw-intro-preference"><input type="checkbox" id="pwModeIntroSkip"> <span>Больше не показывать перед этой тренировкой</span></label>
       <button id="pwModeInfoStart" class="practice-info-start" type="button"><span id="pwModeInfoStartText">Начать · 5 минут</span><span aria-hidden="true">→</span></button>
+      </div>
     </div>
   </dialog>
   <aside hidden id="pwV2PreviewPanel" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg,#fff);color:var(--ink,#222);border-top:1px solid var(--line,#ccc);font:12px system-ui;padding:8px 12px;text-align:center" aria-label="Сохранение прогресса" data-i18n-aria-label="pilot.progress.aria">
@@ -388,16 +393,16 @@
     <button id="pwV2AdoptLegacy" hidden type="button">Сохранить прежний прогресс</button>
     <button id="pwV2Retry" hidden type="button">Повторить сохранение</button>
   </aside>
-  <script src="pilot-data.js?v=ru-en-v3"></script>
+  <script src="pilot-data.js?v=ru-v4-review-1"></script>
   <script src="pilot-data-en.js?v=ru-en-v3"></script>
   <script>window.PW_PROGRESS_PREVIEW_READY=Promise.resolve(null);</script>
   <script src="i18n.js?v=ru-en-v3"></script>
-  <script src="copy-rotation.js?v=integrated1"></script>
+  <script src="copy-rotation.js?v=ru-v4-review-1"></script>
   <script src="metta-focus.js?v=2"></script>
   <script src="web-vnext/copy.js?v=ru-en-owner-v3"></script>
-  <script src="practice-intros.js?v=1"></script>
-  <script src="practice-modes.js?v=extra-minute-1"></script>
-  <script src="app.js?v=extra-minute-2"></script>
+  <script src="practice-intros.js?v=ru-v4-review-1"></script>
+  <script src="practice-modes.js?v=ru-v4-review-1"></script>
+  <script src="app.js?v=ru-v4-review-1"></script>
   <script src="sound-v1.js"></script>
   <script src="step-number.js?v=integrated1"></script>
   <script>
